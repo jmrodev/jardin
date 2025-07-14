@@ -1,0 +1,25 @@
+### Crear Nuevo Alumno
+POST http://localhost:3000/api/alumnos
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "fecha_nacimiento": "2020-03-15",
+  "sala": "Sala de 3",
+  "dni": "12345678"
+}
+
+### Crear Alumna
+POST http://localhost:3000/api/alumnos
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "nombre": "María",
+  "apellido": "González",
+  "fecha_nacimiento": "2019-08-22",
+  "sala": "Sala de 4",
+  "dni": "87654321"
+} 

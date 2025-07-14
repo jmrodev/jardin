@@ -1,0 +1,11 @@
+### Obtener Todos los Alumnos
+GET http://localhost:3000/api/alumnos
+Authorization: Bearer {{authToken}}
+
+### Obtener Alumno por ID
+GET http://localhost:3000/api/alumnos/1
+Authorization: Bearer {{authToken}}
+
+### Obtener Alumno por ID (otro)
+GET http://localhost:3000/api/alumnos/2
+Authorization: Bearer {{authToken}} 

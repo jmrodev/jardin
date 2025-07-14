@@ -1,0 +1,31 @@
+### Obtener Contactos Alternativos
+GET http://localhost:3000/api/contactos
+Authorization: Bearer {{authToken}}
+
+### Crear Contacto Alternativo (cuando se implemente)
+POST http://localhost:3000/api/contactos
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "alumno_id": 1,
+  "nombre": "Roberto",
+  "apellido": "Pérez",
+  "telefono": "11-5555-1234",
+  "parentesco": "tío",
+  "direccion": "Av. Corrientes 1234, CABA"
+}
+
+### Crear Abuela
+POST http://localhost:3000/api/contactos
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "alumno_id": 1,
+  "nombre": "Carmen",
+  "apellido": "García",
+  "telefono": "11-4444-5678",
+  "parentesco": "abuela",
+  "direccion": "Belgrano 567, CABA"
+} 
