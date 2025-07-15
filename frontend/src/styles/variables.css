@@ -123,36 +123,26 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Background Colors */
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
-    --bg-card: #1e293b;
-    --bg-overlay: rgba(0, 0, 0, 0.7);
-    
-    /* Surface Colors for Cards - Dark Mode */
-    --color-surface: #1e293b;
-    --color-surface-elevated: #334155;
-    --color-surface-hover: #475569;
-    --color-border: #475569;
-    --color-border-light: #334155;
-    --color-text: #f8fafc;
-    --color-text-secondary: #cbd5e1;
-    --color-text-tertiary: #94a3b8;
-    --color-shadow: rgba(0, 0, 0, 0.3);
-    --color-shadow-light: rgba(0, 0, 0, 0.2);
-    --color-primary-alpha: rgba(96, 165, 250, 0.2);
-    
-    /* Text Colors */
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-tertiary: #94a3b8;
-    --text-inverse: #0f172a;
-    
-    /* Border Colors */
-    --border-primary: #334155;
-    --border-secondary: #475569;
-    --border-focus: #60a5fa;
+    --bg-primary: #101522;
+    --bg-secondary: #1a2233;
+    --bg-tertiary: #232b3e;
+    --bg-card: #1a2233;
+
+    --color-surface: #232b3e;
+    --color-surface-elevated: #2d3650;
+    --color-surface-hover: #313a55;
+    --color-border: #3b4261;
+    --color-border-light: #232b3e;
+    --color-text: #f5f6fa;
+    --color-text-secondary: #b0b8d1;
+    --color-text-tertiary: #7a8199;
+    --color-primary: #60a5fa;
+    --color-primary-dark: #2563eb;
+    --color-accent: #fbbf24;
+    --color-danger: #ef4444;
+    --color-shadow: rgba(0,0,0,0.5);
+    --color-shadow-light: rgba(0,0,0,0.2);
+    --border-radius: 0.75rem;
   }
 }
 

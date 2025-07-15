@@ -1,11 +1,18 @@
 .pageContainer {
-  padding: 2rem 1rem;
-  max-width: 900px;
+  padding: var(--space-md) 0;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .header {
   color: var(--color-primary);
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-md);
   text-align: center;
+  font-size: var(--font-size-xl);
+}
+
+.section {
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
 } 

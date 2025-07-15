@@ -6,17 +6,22 @@
 }
 
 .studentCard {
-  background: var(--color-secondary);
-  color: var(--color-bg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 1rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 4px var(--color-shadow-light);
+  margin-bottom: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: box-shadow 0.2s;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: box-shadow 0.2s, border 0.2s;
 }
 
 .studentCard:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  border: 1.5px solid var(--color-primary);
 } 

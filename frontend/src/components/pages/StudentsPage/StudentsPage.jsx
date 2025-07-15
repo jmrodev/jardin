@@ -11,6 +11,7 @@ export default function StudentsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentDetail, setStudentDetail] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -50,9 +51,21 @@ export default function StudentsPage() {
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.header}>Estudiantes</h1>
-      <StudentForm onSubmit={handleAddStudent} />
-      <StudentsList students={students} onViewDetail={handleViewDetail} />
-      {studentDetail && <StudentDetail student={studentDetail} />}
+      <section className={styles.section}>
+        {!showForm && (
+          <button className={styles.button} onClick={() => setShowForm(true)}>
+            Agregar estudiante
+          </button>
+        )}
+        {showForm && (
+          <StudentForm onSubmit={handleAddStudent} onCancel={() => setShowForm(false)} />
+        )}
+      </section>
+      <section className={styles.section}>
+        <h2>Lista de estudiantes</h2>
+        <StudentsList students={students} onSelect={handleViewDetail} />
+        {studentDetail && <StudentDetail student={studentDetail} />}
+      </section>
     </div>
   );
 } 

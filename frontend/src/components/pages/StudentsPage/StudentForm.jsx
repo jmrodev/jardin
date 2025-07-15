@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { getPersons } from '../../../services/api/persons';
 import styles from './StudentForm.module.css';
 
-export default function StudentForm({ onSubmit, initialData }) {
-  const [form, setForm] = useState({
-    firstname: '',
-    lastname_father: '',
-    lastname_mother: '',
-    classroom: '',
-    dni: '',
-    birth_date: '',
-    responsibles: [],
+export default function StudentForm({ onSubmit, onCancel, initialData }) {
+  const [form, setForm] = React.useState({
+    firstname: initialData?.firstname || '',
+    lastname_father: initialData?.lastname_father || '',
+    lastname_mother: initialData?.lastname_mother || '',
+    dni: initialData?.dni || '',
+    classroom: initialData?.classroom || '',
+    birth_date: initialData?.birth_date || '',
   });
   const [errors, setErrors] = useState({});
   const [persons, setPersons] = useState([]);
@@ -52,12 +51,12 @@ export default function StudentForm({ onSubmit, initialData }) {
     }));
   };
 
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    if (!form.firstname || !form.lastname_father || !form.lastname_mother) {
-      setErrors({ general: 'Completa los campos obligatorios' });
-      return;
-    }
     onSubmit(form);
   };
 
@@ -65,15 +64,61 @@ export default function StudentForm({ onSubmit, initialData }) {
     <form className={styles.formContainer} onSubmit={handleSubmit}>
       <input
         className={styles.inputField}
-        name="name"
-        defaultValue={initialData?.name || ''}
+        name="firstname"
         placeholder="Nombre"
+        value={form.firstname}
+        onChange={handleChange}
         required
       />
-      {/* Otros campos */}
-      <button className={styles.button} type="submit">
-        Guardar
-      </button>
+      <input
+        className={styles.inputField}
+        name="lastname_father"
+        placeholder="Apellido paterno"
+        value={form.lastname_father}
+        onChange={handleChange}
+        required
+      />
+      <input
+        className={styles.inputField}
+        name="lastname_mother"
+        placeholder="Apellido materno"
+        value={form.lastname_mother}
+        onChange={handleChange}
+        required
+      />
+      <input
+        className={styles.inputField}
+        name="dni"
+        placeholder="DNI"
+        value={form.dni}
+        onChange={handleChange}
+        required
+      />
+      <input
+        className={styles.inputField}
+        name="classroom"
+        placeholder="Sala"
+        value={form.classroom}
+        onChange={handleChange}
+        required
+      />
+      <input
+        className={styles.inputField}
+        name="birth_date"
+        type="date"
+        placeholder="Fecha de nacimiento"
+        value={form.birth_date}
+        onChange={handleChange}
+        required
+      />
+      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+        <button className={styles.button} type="submit">Guardar</button>
+        {onCancel && (
+          <button className={styles.button} type="button" onClick={onCancel} style={{ background: 'var(--color-danger)' }}>
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 } 
