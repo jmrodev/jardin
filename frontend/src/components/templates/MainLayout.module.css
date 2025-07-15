@@ -4,37 +4,88 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
 }
 
 .header {
-  background: var(--color-primary);
-  color: var(--text-inverse);
-  padding: var(--space-md);
-  text-align: center;
-  border-bottom: 2px solid var(--color-border);
-  box-shadow: 0 2px 8px var(--color-shadow-light);
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-primary);
+  padding: var(--space-md) 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  width: 100%;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo {
+  color: var(--color-primary);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.themeButton {
+  padding: var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.userName {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.userRole {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
 .main {
   flex: 1;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 24px var(--color-shadow-light);
-  margin-top: var(--space-lg);
-  margin-bottom: var(--space-lg);
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-2xl) 0;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-}
-
-@media (prefers-color-scheme: dark) {
-  .main {
-    background: var(--bg-card);
-    box-shadow: 0 4px 32px var(--color-shadow);
-  }
 }
 
 .footer {
@@ -44,4 +95,17 @@
   padding: var(--space-sm);
   font-size: var(--font-size-sm);
   border-top: 1px solid var(--color-border);
-} 
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .headerContent {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

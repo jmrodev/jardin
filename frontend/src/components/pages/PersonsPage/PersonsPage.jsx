@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { getPersons, createPerson, updatePerson, deletePerson } from '../../../services/api/persons';
 import PersonForm from './PersonForm.jsx';
+import MainLayout from '../../templates/MainLayout';
+import Button from '../../atoms/Button';
+import styles from './PersonsPage.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function PersonsPage() {
   const [persons, setPersons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editPerson, setEditPerson] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchPersons();
@@ -18,7 +23,7 @@ export default function PersonsPage() {
       const data = await getPersons();
       setPersons(data);
     } catch (error) {
-      alert('Error al obtener personas');
+      alert(t('fetchPersonsError'));
     }
     setLoading(false);
   };
@@ -28,9 +33,9 @@ export default function PersonsPage() {
       await createPerson(data);
       await fetchPersons();
       setShowForm(false);
-      alert('Persona creada correctamente');
+      alert(t('personCreated'));
     } catch (error) {
-      alert('Error al crear persona');
+      alert(t('createPersonError'));
     }
   };
 
@@ -45,20 +50,20 @@ export default function PersonsPage() {
       await fetchPersons();
       setEditPerson(null);
       setShowForm(false);
-      alert('Persona actualizada correctamente');
+      alert(t('personUpdated'));
     } catch (error) {
-      alert('Error al actualizar persona');
+      alert(t('updatePersonError'));
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('¿Seguro que deseas eliminar esta persona?')) return;
+    if (!window.confirm(t('confirmDeleteMsg'))) return;
     try {
       await deletePerson(id);
       await fetchPersons();
-      alert('Persona eliminada correctamente');
+      alert(t('personDeleted'));
     } catch (error) {
-      alert('Error al eliminar persona');
+      alert(t('deletePersonError'));
     }
   };
 
@@ -68,49 +73,55 @@ export default function PersonsPage() {
   };
 
   return (
-    <div>
-      <h2>Gestión de personas</h2>
-      <button onClick={() => { setShowForm(true); setEditPerson(null); }}>Agregar persona</button>
-      {showForm && (
-        <PersonForm
-          onSubmit={editPerson ? handleUpdate : handleCreate}
-          initialData={editPerson || {}}
-          submitLabel={editPerson ? 'Actualizar persona' : 'Crear persona'}
-        />
-      )}
-      {showForm && <button onClick={handleCancel}>Cancelar</button>}
-      <h3>Listado de personas</h3>
-      {loading ? <p>Cargando...</p> : (
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>DNI</th>
-              <th>Relación</th>
-              <th>Teléfono</th>
-              <th>Email</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {persons.map(person => (
-              <tr key={person.id}>
-                <td>{person.name}</td>
-                <td>{person.lastname}</td>
-                <td>{person.dni}</td>
-                <td>{person.relationship}</td>
-                <td>{person.phone}</td>
-                <td>{person.email}</td>
-                <td>
-                  <button onClick={() => handleEdit(person)}>Editar</button>
-                  <button onClick={() => handleDelete(person.id)}>Eliminar</button>
-                </td>
+    <MainLayout>
+      <div className={styles.container}>
+        <div className={styles.headerRow}>
+          <h1>{t('personsManagement')}</h1>
+          <Button onClick={() => { setShowForm(true); setEditPerson(null); }}>{t('addPerson')}</Button>
+        </div>
+        {showForm && (
+          <div>
+            <PersonForm
+              onSubmit={editPerson ? handleUpdate : handleCreate}
+              initialData={editPerson || {}}
+              submitLabel={editPerson ? t('updatePerson') : t('createPerson')}
+            />
+            <Button onClick={handleCancel}>{t('cancel')}</Button>
+          </div>
+        )}
+        <h3>{t('personsList')}</h3>
+        {loading ? <p>{t('loading')}</p> : (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>{t('name')}</th>
+                <th>{t('lastname')}</th>
+                <th>{t('dni')}</th>
+                <th>{t('relationship')}</th>
+                <th>{t('phone')}</th>
+                <th>{t('email')}</th>
+                <th>{t('actions')}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {persons.map(person => (
+                <tr key={person.id}>
+                  <td>{person.name}</td>
+                  <td>{person.lastname}</td>
+                  <td>{person.dni}</td>
+                  <td>{person.relationship}</td>
+                  <td>{person.phone}</td>
+                  <td>{person.email}</td>
+                  <td className={styles.actions}>
+                    <Button onClick={() => handleEdit(person)}>{t('edit')}</Button>
+                    <Button onClick={() => handleDelete(person.id)} variant="danger">{t('delete')}</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </MainLayout>
   );
 } 

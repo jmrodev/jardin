@@ -1,0 +1,32 @@
+.container {
+  padding: var(--space-2xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid var(--border-primary);
+  padding: var(--space-md);
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--bg-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+}
