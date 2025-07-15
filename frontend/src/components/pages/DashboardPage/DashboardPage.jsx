@@ -29,6 +29,10 @@ const DashboardPage = () => {
     navigate('/attendance');
   };
 
+  const handleViewParents = () => {
+    navigate('/parents');
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -124,6 +128,17 @@ const DashboardPage = () => {
                 >
                   <Icon name="Calendar" size={24} />
                   {t('dashboard.attendanceBtn')}
+                </Button>
+              )}
+              {(isAdmin || isDirector) && (
+                <Button 
+                  variant="primary" 
+                  size="lg" 
+                  className={styles.actionButton}
+                  onClick={handleViewParents}
+                >
+                  <Icon name="User" size={24} />
+                  {t('dashboard.viewParentsBtn')}
                 </Button>
               )}
             </div>

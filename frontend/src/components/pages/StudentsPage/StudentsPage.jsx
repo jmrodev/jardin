@@ -3,10 +3,13 @@ import { getStudents, createStudent, deleteStudent } from '../../../services/api
 import EntityGridTemplate from '../../templates/EntityGridTemplate';
 import StudentForm from './StudentForm';
 import { useTranslation } from 'react-i18next';
+import DetailModal from '../../atoms/DetailModal';
 
 export default function StudentsPage() {
   const [students, setStudents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -34,8 +37,26 @@ export default function StudentsPage() {
   };
 
   const handleEdit = (student) => {
-    // Aquí lógica para abrir modal de edición
-    alert(t('edit') + ': ' + student.firstname);
+    setEditData(student);
+    setEditModalOpen(true);
+  };
+
+  const handleEditSave = async (studentData) => {
+    try {
+      // Asume que existe updateStudent en api/students.js
+      await import('../../../services/api/students').then(mod => mod.updateStudent(studentData));
+      await fetchStudents();
+      setEditModalOpen(false);
+      setEditData(null);
+      alert(t('studentUpdated'));
+    } catch (error) {
+      alert(t('editStudentError'));
+    }
+  };
+
+  const handleEditCancel = () => {
+    setEditModalOpen(false);
+    setEditData(null);
   };
 
   const handleDelete = async (student) => {
@@ -77,6 +98,10 @@ export default function StudentsPage() {
           onClick: handleDelete
         }
       ]}
-    />
+    >
+      <DetailModal open={editModalOpen} onClose={handleEditCancel}>
+        <StudentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
+      </DetailModal>
+    </EntityGridTemplate>
   );
 } 
