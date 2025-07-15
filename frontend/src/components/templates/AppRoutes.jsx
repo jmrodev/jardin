@@ -5,7 +5,9 @@ import DashboardPage from '../pages/DashboardPage';
 import StudentsPage from '../pages/StudentsPage';
 import TeachersPage from '../pages/TeachersPage';
 import AttendancePage from '../pages/AttendancePage';
+import PersonsPage from '../pages/PersonsPage/PersonsPage.jsx';
 import LoadingSpinner from '../molecules/LoadingSpinner';
+import MainLayout from './MainLayout';
 
 const AppRoutes = () => {
   const { isAuthenticated, loading, initialized } = useAuth();
@@ -23,19 +25,23 @@ const AppRoutes = () => {
       />
       <Route 
         path="/dashboard" 
-        element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" />} 
+        element={isAuthenticated ? <MainLayout><DashboardPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/students" 
-        element={isAuthenticated ? <StudentsPage /> : <Navigate to="/login" />} 
+        element={isAuthenticated ? <MainLayout><StudentsPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/teachers" 
-        element={isAuthenticated ? <TeachersPage /> : <Navigate to="/login" />} 
+        element={isAuthenticated ? <MainLayout><TeachersPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/attendance" 
-        element={isAuthenticated ? <AttendancePage /> : <Navigate to="/login" />} 
+        element={isAuthenticated ? <MainLayout><AttendancePage /></MainLayout> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/persons" 
+        element={isAuthenticated ? <MainLayout><PersonsPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/" 

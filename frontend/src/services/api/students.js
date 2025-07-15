@@ -1,6 +1,7 @@
 import { fetchResource } from './baseResource';
 
-export const getStudents = () => fetchResource('/api/students');
-export const createStudent = (data) => fetchResource('/api/students', 'POST', data);
-export const updateStudent = (id, data) => fetchResource(`/api/students/${id}`, 'PUT', data);
-export const deleteStudent = (id) => fetchResource(`/api/students/${id}`, 'DELETE'); 
+export const getStudents = () => fetchResource('/students');
+export const createStudent = (data) => fetchResource('/students', 'POST', data);
+export const updateStudent = (id, data) => fetchResource(`/students/${id}`, 'PUT', data);
+export const deleteStudent = (id) => fetchResource(`/students/${id}`, 'DELETE');
+export const getStudent = (id) => fetchResource(`/students/${id}`); 

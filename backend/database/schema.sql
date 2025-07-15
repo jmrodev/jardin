@@ -23,6 +23,18 @@ CREATE TABLE staff (
   INDEX idx_staff_name (name, lastname)
 );
 
+-- Persons table (padres, madres, tutores, familiares, etc.)
+CREATE TABLE IF NOT EXISTS persons (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  lastname VARCHAR(100) NOT NULL,
+  dni VARCHAR(20) UNIQUE,
+  address TEXT,
+  phone VARCHAR(20),
+  email VARCHAR(100),
+  relationship ENUM('padre', 'madre', 'tutor', 'familiar', 'otro') NOT NULL
+);
+
 -- Students table
 CREATE TABLE IF NOT EXISTS students (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,36 +59,17 @@ CREATE TABLE IF NOT EXISTS students (
   authorized_pickups JSON DEFAULT NULL
 );
 
--- Parents table
-CREATE TABLE parents (
-  id INT PRIMARY KEY AUTO_INCREMENT,
+-- Student responsibles table (padre, madre, tutores, familiares, etc. con permisos)
+CREATE TABLE IF NOT EXISTS student_responsibles (
+  id INT AUTO_INCREMENT PRIMARY KEY,
   student_id INT NOT NULL,
-  name VARCHAR(100) NOT NULL,
-  lastname VARCHAR(100) NOT NULL,
-  phone VARCHAR(20),
-  email VARCHAR(100),
-  relationship ENUM('father', 'mother', 'guardian') NOT NULL,
+  person_id INT NOT NULL,
+  can_pickup BOOLEAN DEFAULT FALSE,
+  can_change_diapers BOOLEAN DEFAULT FALSE,
+  notes TEXT,
+  type ENUM('padre', 'madre', 'tutor', 'familiar', 'otro') NOT NULL,
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-  INDEX idx_parents_student_id (student_id),
-  INDEX idx_parents_relationship (relationship),
-  INDEX idx_parents_name (name, lastname),
-  INDEX idx_parents_email (email)
-);
-
--- Alternative contacts table
-CREATE TABLE alternative_contacts (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  student_id INT NOT NULL,
-  name VARCHAR(100) NOT NULL,
-  lastname VARCHAR(100) NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  relationship VARCHAR(50),
-  address TEXT,
-  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-  INDEX idx_contacts_student_id (student_id),
-  INDEX idx_contacts_relationship (relationship),
-  INDEX idx_contacts_name (name, lastname),
-  INDEX idx_contacts_phone (phone)
+  FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE
 );
 
 -- Attendance table
@@ -103,3 +96,40 @@ INSERT INTO staff (name, lastname, username, email, password, role, phone, hire_
 ('Maria', 'Gonzalez', 'director', 'director@kindergarten.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'director', '11-2222-2222', '2024-01-15'),
 ('Ana', 'Martinez', 'teacher', 'teacher@kindergarten.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'teacher', '11-3333-3333', '2024-02-01'),
 ('Carlos', 'Lopez', 'preceptor', 'preceptor@kindergarten.com', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'preceptor', '11-4444-4444', '2024-02-15');
+
+-- Poblar la tabla persons con datos de ejemplo
+INSERT INTO persons (name, lastname, dni, address, phone, email, relationship) VALUES
+('Juan', 'Pérez', '12345678', 'Calle Falsa 123', '111111111', 'juan@mail.com', 'padre'),
+('María', 'Gómez', '87654321', 'Calle Falsa 123', '222222222', 'maria@mail.com', 'madre'),
+('Ana', 'López', '11223344', 'Calle Real 456', '333333333', 'ana@mail.com', 'tutor'),
+('Carlos', 'Sánchez', '55667788', 'Calle Real 789', '444444444', 'carlos@mail.com', 'familiar'),
+('Laura', 'Martínez', '99887766', 'Calle Nueva 321', '555555555', 'laura@mail.com', 'madre'),
+('Pedro', 'García', '33445566', 'Calle Vieja 654', '666666666', 'pedro@mail.com', 'padre'),
+('Sofía', 'Ruiz', '22334455', 'Calle Sur 111', '777777777', 'sofia@mail.com', 'tutor'),
+('Miguel', 'Torres', '44556677', 'Calle Norte 222', '888888888', 'miguel@mail.com', 'familiar');
+
+-- Poblar la tabla students con varios alumnos
+INSERT INTO students (firstname, lastname_father, lastname_mother, address, dni, birth_date, classroom, shift) VALUES
+('Pedro', 'Pérez', 'Gómez', 'Calle Falsa 123', '10000001', '2018-05-10', 'Sala 3', 'Mañana'),
+('Lucía', 'García', 'Martínez', 'Calle Nueva 321', '10000002', '2017-09-15', 'Sala 4', 'Tarde'),
+('Martín', 'Sánchez', 'Ruiz', 'Calle Sur 111', '10000003', '2019-01-20', 'Sala 3', 'Mañana'),
+('Valentina', 'Torres', 'López', 'Calle Real 456', '10000004', '2018-12-05', 'Sala 5', 'Tarde'),
+('Agustina', 'Pérez', 'Gómez', 'Calle Falsa 123', '10000005', '2017-03-22', 'Sala 4', 'Mañana');
+
+-- Poblar la tabla student_responsibles con asociaciones y permisos
+-- Pedro (id=1) tiene como padre a Juan (id=1), madre a María (id=2), tutor a Ana (id=3)
+INSERT INTO student_responsibles (student_id, person_id, can_pickup, can_change_diapers, notes, type) VALUES
+(1, 1, TRUE, TRUE, '', 'padre'),
+(1, 2, TRUE, FALSE, '', 'madre'),
+(1, 3, TRUE, TRUE, 'Puede retirar solo los viernes', 'tutor'),
+(1, 4, FALSE, TRUE, 'Solo cambia pañales', 'familiar'),
+-- Lucía (id=2) tiene como padre a Pedro (id=6), madre a Laura (id=5)
+(2, 6, TRUE, FALSE, '', 'padre'),
+(2, 5, TRUE, TRUE, '', 'madre'),
+-- Martín (id=3) tiene como tutor a Sofía (id=7)
+(3, 7, TRUE, TRUE, '', 'tutor'),
+-- Valentina (id=4) tiene como familiar a Miguel (id=8)
+(4, 8, FALSE, TRUE, 'Solo cambia pañales', 'familiar'),
+-- Agustina (id=5) tiene como padre a Juan (id=1), madre a María (id=2)
+(5, 1, TRUE, FALSE, '', 'padre'),
+(5, 2, TRUE, TRUE, '', 'madre');

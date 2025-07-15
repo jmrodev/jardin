@@ -1,0 +1,32 @@
+@import '../../styles/variables.css';
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  background: var(--color-primary);
+  color: var(--text-inverse);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.main {
+  flex: 1;
+  padding: var(--space-lg) var(--space-md);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.footer {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: var(--space-sm);
+  font-size: var(--font-size-sm);
+} 
