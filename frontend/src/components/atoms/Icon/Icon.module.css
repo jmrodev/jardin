@@ -1,7 +1,14 @@
 .icon {
-  display: inline-block;
-  vertical-align: middle;
-  transition: all var(--transition-fast);
+  width: 1.5em;
+  height: 1.5em;
+  color: var(--text-primary);
+  margin-right: var(--space-xs);
+}
+@media (min-width: 768px) {
+  .icon {
+    width: 2em;
+    height: 2em;
+  }
 }
 
 .icon:hover {

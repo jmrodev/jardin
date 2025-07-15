@@ -29,7 +29,7 @@ const DashboardPage = () => {
 
   return (
     <DashboardTemplate>
-      <div className={styles.permissions}>
+      {/* <div className={styles.permissions}>
         <h3>{t('dashboard.permissions')}</h3>
         <ul className={styles.permissionsList}>
           {isAdmin && <li>{t('dashboard.fullAccess')}</li>}
@@ -37,7 +37,7 @@ const DashboardPage = () => {
           {isTeacher && <li>{t('dashboard.viewStudents')}</li>}
           {isPreceptor && <li>{t('dashboard.limitedAccess')}</li>}
         </ul>
-      </div>
+      </div> */}
 
       <div className={styles.quickActions}>
         <h3>{t('dashboard.quickActions')}</h3>

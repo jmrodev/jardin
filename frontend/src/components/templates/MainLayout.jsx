@@ -5,15 +5,36 @@ import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
 import LanguageSelector from '../atoms/LanguageSelector';
 import styles from './MainLayout.module.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+const TITLES = {
+  '/': 'dashboard.title',
+  '/dashboard': 'dashboard.title',
+  '/students': 'studentsManagement',
+  '/teachers': 'teachersManagement',
+  '/parents': 'parentsManagement',
+  '/attendance': 'attendanceManagement',
+};
 
 export default function MainLayout({ children }) {
   const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
   };
+
+  const handleGoDashboard = () => {
+    navigate('/dashboard');
+  };
+
+  // Determinar el título dinámico según la ruta
+  const currentPath = location.pathname;
+  const titleKey = TITLES[currentPath] || 'dashboard.title';
+  const showDashboardBtn = !['/', '/dashboard'].includes(currentPath);
 
   return (
     <div className={styles.layout}>
@@ -21,7 +42,7 @@ export default function MainLayout({ children }) {
         <div className={styles.headerContent}>
           <div className={styles.brand}>
             <Icon name="GraduationCap" size={32} className={styles.logo} />
-            <h1 className={styles.title}>{t('dashboard.title')}</h1>
+            <h1 className={styles.title}>{t(titleKey)}</h1>
           </div>
 
           <div className={styles.headerActions}>
@@ -38,6 +59,18 @@ export default function MainLayout({ children }) {
                 size={20}
               />
             </Button>
+
+            {showDashboardBtn && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleGoDashboard}
+                className={styles.dashboardButton}
+              >
+                <Icon name="Home" size={16} />
+                {t('dashboard.title')}
+              </Button>
+            )}
 
             <div className={styles.userInfo}>
               <span className={styles.userName}>{user?.name}</span>

@@ -1,5 +1,5 @@
 .container {
-  padding: var(--space-2xl);
+  padding: var(--space-lg);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -29,4 +29,23 @@
 .actions {
   display: flex;
   gap: var(--space-sm);
+}
+
+.pageContainer {
+  padding: var(--space-lg);
+  margin: 0 auto;
+}
+.card {
+  border: 1px solid var(--border-primary);
+  padding: var(--space-md);
+  background-color: var(--bg-tertiary);
+  gap: var(--space-sm);
+}
+@media (min-width: 768px) {
+  .pageContainer {
+    padding: var(--space-2xl);
+  }
+  .card {
+    padding: var(--space-lg);
+  }
 }

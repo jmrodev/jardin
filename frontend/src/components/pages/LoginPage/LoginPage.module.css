@@ -69,6 +69,13 @@
   font-size: var(--font-size-sm);
 }
 
+.errorBackground {
+  background-color: rgba(237, 153, 122, 0.1); /* var(--color-danger-rgb) */
+}
+.errorBorder {
+  border: 1px solid rgba(237, 153, 122, 0.2); /* var(--color-danger-rgb) */
+}
+
 .submitButton {
   margin-top: var(--space-md);
 }

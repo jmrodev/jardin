@@ -19,6 +19,8 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   transition: background-color var(--transition-normal), color var(--transition-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Typography */
@@ -63,9 +65,10 @@ button {
 }
 
 /* Focus Styles */
-*:focus {
-  outline: 2px solid var(--color-primary);
+*:focus-visible {
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--border-focus);
 }
 
 /* Utility Classes */

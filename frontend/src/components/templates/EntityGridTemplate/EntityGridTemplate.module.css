@@ -1,44 +1,134 @@
 .container {
-  padding: var(--space-2xl);
-  max-width: 1400px;
+  padding: var(--space-lg);
+  max-width: 1600px;
   margin: 0 auto;
 }
+
 .headerRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
+
+.headerActions {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.dashboardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-normal);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboardLink:hover {
+  background-color: var(--bg-tertiary);
+}
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-lg);
 }
+
 .card {
-  background: var(--color-bg, #fff);
-  border-radius: var(--radius-md, 8px);
-  box-shadow: 0 2px 8px rgba(var(--color-black-rgb, 0,0,0), 0.06);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  min-height: 180px;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
+  overflow: hidden;
 }
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardActions {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.actionBtn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.actionBtn.danger:hover {
+  background-color: var(--color-danger);
+  color: var(--text-inverse);
+}
+
 .cardMain {
-  flex: 1;
+  flex-grow: 1;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
+
 .cardField {
-  font-size: 1rem;
-  color: var(--color-text, #222);
-  margin-bottom: 0.25rem;
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
 }
+
+.cardField b {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
 .formContainer {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-lg);
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
 }
+
 .modalField {
-  font-size: 1.05rem;
-  color: var(--color-text, #222);
-  margin-bottom: 0.5rem;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.modalField b {
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-md);
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+
+  .hideOnMobile {
+    display: none;
+  }
 } 

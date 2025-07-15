@@ -8,26 +8,26 @@
 }
 
 .spinner {
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3b82f6;
+  border: 3px solid var(--bg-tertiary);
+  border-top: 3px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 .loadingText {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.875rem;
   margin: 0;
   text-align: center;
 }
 
 [data-theme="dark"] .loadingText {
-  color: #cbd5e1;
+  color: var(--border-secondary);
 }
 
 [data-theme="dark"] .spinner {
-  border: 3px solid #334155;
-  border-top: 3px solid #60a5fa;
+  border: 3px solid var(--secondary1-400);
+  border-top: 3px solid var(--primary-100);
 }
 
 .sm {

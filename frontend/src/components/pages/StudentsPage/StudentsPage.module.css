@@ -1,7 +1,12 @@
 .pageContainer {
-  padding: var(--space-md) 0;
-  max-width: 800px;
-  margin: 0 auto;
+  padding: var(--space-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+@media (min-width: 768px) {
+  .pageContainer {
+    padding: var(--space-2xl);
+  }
 }
 
 .header {

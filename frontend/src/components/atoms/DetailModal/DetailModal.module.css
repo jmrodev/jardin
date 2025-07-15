@@ -11,6 +11,7 @@
   transition: opacity 0.25s;
 }
 
+
 .modal {
   background: var(--color-bg, #fff);
   border-radius: var(--radius-md, 8px);
@@ -43,9 +44,9 @@
 }
 
 .title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  color: var(--color-text, #222);
+  color: var(--text-primary);
 }
 
 .closeBtn {
@@ -54,18 +55,18 @@
   gap: 0.5rem;
   background: none;
   border: none;
-  color: var(--color-text, #222);
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-sm, 4px);
   transition: background 0.2s;
 }
 .closeBtn:hover {
-  background: var(--color-bg-hover, #f0f0f0);
+  background: var(--bg-secondary);
 }
 
 .content {
   overflow-y: auto;
-  color: var(--color-text, #222);
+  color: var(--text-primary);
 } 

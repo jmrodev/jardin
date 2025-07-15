@@ -67,7 +67,7 @@ const ParentsPage = () => {
         },
         {
           label: t('delete'),
-          icon: 'delete',
+          icon: 'trash',
           color: 'danger',
           onClick: handleDelete
         }

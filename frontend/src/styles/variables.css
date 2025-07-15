@@ -1,70 +1,70 @@
 :root {
   /* Colors - Light Mode */
-  --color-primary: #3b82f6;
-  --color-primary-dark: #2563eb;
-  --color-primary-light: #60a5fa;
-  
-  --color-secondary: #10b981;
-  --color-secondary-dark: #059669;
-  --color-secondary-light: #34d399;
-  
-  --color-accent: #f59e0b;
-  --color-accent-dark: #d97706;
-  --color-accent-light: #fbbf24;
-  
-  --color-danger: #ef4444;
-  --color-danger-dark: #dc2626;
-  --color-danger-light: #f87171;
-  
-  --color-warning: #f59e0b;
-  --color-warning-dark: #d97706;
-  --color-warning-light: #fbbf24;
-  
-  --color-success: #10b981;
-  --color-success-dark: #059669;
-  --color-success-light: #34d399;
-  
-  --color-info: #06b6d4;
-  --color-info-dark: #0891b2;
-  --color-info-light: #22d3ee;
-  
+  --color-primary: #007aff; /* iOS Blue */
+  --color-primary-dark: #005bb5;
+  --color-primary-light: #66b2ff;
+
+  --color-secondary: #ff9500; /* iOS Orange */
+  --color-secondary-dark: #b76b00;
+  --color-secondary-light: #ffc266;
+
+  --color-accent: #ff2d55; /* iOS Pink */
+  --color-accent-dark: #b7203d;
+  --color-accent-light: #ff7991;
+
+  --color-danger: #ff3b30; /* iOS Red */
+  --color-danger-dark: #b72a22;
+  --color-danger-light: #ff8075;
+
+  --color-warning: #ffcc00; /* iOS Yellow */
+  --color-warning-dark: #b79500;
+  --color-warning-light: #ffe666;
+
+  --color-success: #34c759; /* iOS Green */
+  --color-success-dark: #248f3f;
+  --color-success-light: #80d995;
+
+  --color-info: #5ac8fa; /* iOS Teal */
+  --color-info-dark: #408fb7;
+  --color-info-light: #a0ddfc;
+
   /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
+  --bg-primary: #f9f9f9;
+  --bg-secondary: #efeff4;
+  --bg-tertiary: #e5e5ea;
   --bg-card: #ffffff;
-  --bg-overlay: rgba(0, 0, 0, 0.5);
-  
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+
   /* Surface Colors for Cards */
   --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
-  --color-surface-hover: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-  --color-text: #1e293b;
-  --color-text-secondary: #64748b;
-  --color-text-tertiary: #94a3b8;
+  --color-surface-hover: #f2f2f2;
+  --color-border: #d1d1d6;
+  --color-border-light: #e5e5ea;
+  --color-text: #000000;
+  --color-text-secondary: #8e8e93;
+  --color-text-tertiary: #c7c7cc;
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-light: rgba(0, 0, 0, 0.05);
-  --color-primary-alpha: rgba(59, 130, 246, 0.1);
-  
+  --color-primary-alpha: rgba(0, 122, 255, 0.1);
+
   /* Text Colors */
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-tertiary: #94a3b8;
+  --text-primary: #000000;
+  --text-secondary: #8e8e93;
+  --text-tertiary: #c7c7cc;
   --text-inverse: #ffffff;
-  
+
   /* Border Colors */
-  --border-primary: #e2e8f0;
-  --border-secondary: #cbd5e1;
-  --border-focus: #3b82f6;
-  
+  --border-primary: #d1d1d6;
+  --border-secondary: #c7c7cc;
+  --border-focus: #007aff;
+
   /* Shadow */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  
+
   /* Spacing */
   --space-xs: 0.25rem;   /* 4px */
   --space-sm: 0.5rem;    /* 8px */
@@ -73,18 +73,18 @@
   --space-xl: 2rem;      /* 32px */
   --space-2xl: 3rem;     /* 48px */
   --space-3xl: 4rem;     /* 64px */
-  
+
   /* Border Radius */
   --radius-sm: 0.25rem;  /* 4px */
-  --radius-md: 0.375rem; /* 6px */
-  --radius-lg: 0.5rem;   /* 8px */
-  --radius-xl: 0.75rem;  /* 12px */
-  --radius-2xl: 1rem;    /* 16px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;  /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
-  --border-radius: 0.5rem;
-  
+  --border-radius: 0.75rem;
+
   /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-size-xs: 0.75rem;   /* 12px */
   --font-size-sm: 0.875rem;  /* 14px */
   --font-size-base: 1rem;    /* 16px */
@@ -93,22 +93,22 @@
   --font-size-2xl: 1.5rem;   /* 24px */
   --font-size-3xl: 1.875rem; /* 30px */
   --font-size-4xl: 2.25rem;  /* 36px */
-  
+
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   --line-height-tight: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.75;
-  
+
   /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-normal: 250ms ease-in-out;
-  --transition-slow: 350ms ease-in-out;
-  
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 450ms cubic-bezier(0.4, 0, 0.2, 1);
+
   /* Z-Index */
   --z-dropdown: 1000;
   --z-sticky: 1020;
@@ -121,121 +121,63 @@
 }
 
 /* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #101522;
-    --bg-secondary: #1a2233;
-    --bg-tertiary: #232b3e;
-    --bg-card: #1a2233;
-
-    --color-surface: #232b3e;
-    --color-surface-elevated: #2d3650;
-    --color-surface-hover: #313a55;
-    --color-border: #3b4261;
-    --color-border-light: #232b3e;
-    --color-text: #f5f6fa;
-    --color-text-secondary: #b0b8d1;
-    --color-text-tertiary: #7a8199;
-    --color-primary: #60a5fa;
-    --color-primary-dark: #2563eb;
-    --color-accent: #fbbf24;
-    --color-danger: #ef4444;
-    --color-shadow: rgba(0,0,0,0.5);
-    --color-shadow-light: rgba(0,0,0,0.2);
-    --border-radius: 0.75rem;
-  }
-}
-
-/* Dark Mode Class (for manual toggle) */
 [data-theme="dark"] {
+  --color-primary: #0a84ff; /* iOS Blue Dark */
+  --color-primary-dark: #0060d1;
+  --color-primary-light: #6ab7ff;
+
+  --color-secondary: #ff9f0a; /* iOS Orange Dark */
+  --color-secondary-dark: #b77400;
+  --color-secondary-light: #ffc966;
+
+  --color-accent: #ff375f; /* iOS Pink Dark */
+  --color-accent-dark: #b72744;
+  --color-accent-light: #ff85a1;
+  
+  --color-danger: #ff453a; /* iOS Red Dark */
+  --color-danger-dark: #b7322a;
+  --color-danger-light: #ff8d85;
+
+  --color-warning: #ffd60a; /* iOS Yellow Dark */
+  --color-warning-dark: #b79c00;
+  --color-warning-light: #ffe966;
+
+  --color-success: #32d74b; /* iOS Green Dark */
+  --color-success-dark: #249937;
+  --color-success-light: #80e392;
+
+  --color-info: #64d2ff; /* iOS Teal Dark */
+  --color-info-dark: #4897b7;
+  --color-info-light: #a9e6ff;
+
   /* Background Colors */
-  --bg-primary: #181a1b;
-  --bg-secondary: #23272a;
-  --bg-tertiary: #232b3e;
-  --bg-card: #23272a;
-  --bg-overlay: rgba(0, 0, 0, 0.7);
-  
-  /* Surface Colors for Cards - Dark Mode */
-  --color-surface: #23272a;
-  --color-surface-elevated: #2d3136;
-  --color-surface-hover: #31363b;
-  --color-border: #3b4261;
-  --color-border-light: #232b3e;
-  --color-text: #f5f6fa;
-  --color-text-secondary: #b0b8d1;
-  --color-text-tertiary: #7a8199;
-  --color-primary: #60a5fa;
-  --color-primary-dark: #2563eb;
-  --color-accent: #ffd166;
-  --color-danger: #ef4444;
-  --color-shadow: rgba(0,0,0,0.7);
-  --color-shadow-light: rgba(0,0,0,0.32);
-  --color-primary-alpha: rgba(96, 165, 250, 0.18);
-  
+  --bg-primary: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --bg-card: #1c1c1e;
+  --bg-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Surface Colors for Cards */
+  --color-surface: #1c1c1e;
+  --color-surface-elevated: #2c2c2e;
+  --color-surface-hover: #3a3a3c;
+  --color-border: #38383a;
+  --color-border-light: #2c2c2e;
+  --color-text: #ffffff;
+  --color-text-secondary: #8d8d93;
+  --color-text-tertiary: #48484a;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+  --color-shadow-light: rgba(0, 0, 0, 0.25);
+  --color-primary-alpha: rgba(10, 132, 255, 0.2);
+
   /* Text Colors */
-  --text-primary: #f5f6fa;
-  --text-secondary: #b0b8d1;
-  --text-tertiary: #7a8199;
-  --text-inverse: #181a1b;
-  
+  --text-primary: #ffffff;
+  --text-secondary: #8d8d93;
+  --text-tertiary: #48484a;
+  --text-inverse: #000000;
+
   /* Border Colors */
-  --border-primary: #3b4261;
-  --border-secondary: #475569;
-  --border-focus: #60a5fa;
-}
-
-/* Mejoras para contraste en tarjetas y modales */
-.card, .modal, .content, .formContainer {
-  background: var(--color-surface) !important;
-  color: var(--color-text) !important;
-  border: 1px solid var(--color-border) !important;
-  box-shadow: 0 2px 12px var(--color-shadow-light) !important;
-}
-
-.button, button {
-  background: var(--color-primary) !important;
-  color: var(--text-inverse) !important;
-  border-radius: var(--radius-md) !important;
-  border: none;
-  font-weight: 600;
-  transition: background 0.2s, color 0.2s;
-}
-
-.button:hover, button:hover {
-  background: var(--color-primary-dark) !important;
-  color: var(--color-surface) !important;
-}
-
-/* Light Mode Class (for manual toggle) */
-[data-theme="light"] {
-  /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-overlay: rgba(0, 0, 0, 0.5);
-  
-  /* Surface Colors for Cards - Light Mode */
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffffff;
-  --color-surface-hover: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-  --color-text: #1e293b;
-  --color-text-secondary: #64748b;
-  --color-text-tertiary: #94a3b8;
-  --color-shadow: rgba(0, 0, 0, 0.1);
-  --color-shadow-light: rgba(0, 0, 0, 0.05);
-  --color-primary-alpha: rgba(59, 130, 246, 0.1);
-  
-  /* Text Colors */
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-tertiary: #94a3b8;
-  --text-inverse: #ffffff;
-  
-  /* Border Colors */
-  --border-primary: #e2e8f0;
-  --border-secondary: #cbd5e1;
-  --border-focus: #3b82f6;
+  --border-primary: #38383a;
+  --border-secondary: #48484a;
+  --border-focus: #0a84ff;
 } 

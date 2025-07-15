@@ -39,90 +39,91 @@ export default function EntityGridTemplate({
   };
 
   return (
-    <MainLayout>
-      <div className={styles.container}>
-        <div className={styles.headerRow}>
-          <h1>{title}</h1>
-          <div className={styles.headerActions}>
-            <Link to="/dashboard" title={t('goToDashboard')} className={styles.dashboardLink}>
-              <Icon name="dashboard" />
-              <span className={styles.hideOnMobile}>{t('dashboard')}</span>
-            </Link>
-            <Button onClick={onAdd}>{t('add')}</Button>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.headerRow}>
+        {/* <h1>{title}</h1> */}
+        <div className={styles.headerActions}>
+          <Link to="/dashboard" title={t('goToDashboard')} className={styles.dashboardLink}>
+            <Icon name="layout-dashboard" />
+            <span className={styles.hideOnMobile}>{t('dashboard')}</span>
+          </Link>
+          <Button onClick={onAdd}>{t('add')}</Button>
         </div>
-        {renderForm && <div className={styles.formContainer}>{renderForm}</div>}
-        <div className={styles.grid}>
-          {entities.map((entity) => (
-            <div className={styles.card} key={entity.id}>
-              <div className={styles.cardActions}>
-                {actions.map((action) => (
-                  <button
-                    key={action.label}
-                    className={styles.actionBtn + (action.color === 'danger' ? ' ' + styles.danger : '')}
-                    title={action.label}
-                    onClick={() => handleAction(action, entity)}
-                    type="button"
-                  >
-                    <Icon name={action.icon} />
-                  </button>
-                ))}
-              </div>
-              <div className={styles.cardMain}>
-                {fields.map((field) => (
-                  <div key={field.key} className={styles.cardField}>
-                    <b>{field.label}:</b>{' '}
-                    {field.isDate
-                      ? formatDate(entity[field.key])
-                      : entity[field.key]}
-                  </div>
-                ))}
-              </div>
-              <Button
-                onClick={() => {
-                  setSelected(entity);
-                  setModalOpen(true);
-                }}
-                variant="secondary"
-              >
-                {t('details')}
-              </Button>
+      </div>
+      {renderForm && <div className={styles.formContainer}>{renderForm}</div>}
+      <div className={styles.grid}>
+        {entities.map((entity) => (
+          <div
+            className={styles.card}
+            key={entity.responsible_id || entity.person_id || entity.id}
+          >
+            <div className={styles.cardActions}>
+              {actions.map((action) => (
+                <button
+                  key={action.label}
+                  className={styles.actionBtn + (action.color === 'danger' ? ' ' + styles.danger : '')}
+                  title={action.label}
+                  onClick={() => handleAction(action, entity)}
+                  type="button"
+                >
+                  <Icon name={action.icon === 'delete' ? 'trash' : action.icon} />
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
-        <DetailModal
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          title={entityLabel}
-        >
-          {selected && (
-            <div>
+            <div className={styles.cardMain}>
               {fields.map((field) => (
-                <div key={field.key} className={styles.modalField}>
+                <div key={field.key} className={styles.cardField}>
                   <b>{field.label}:</b>{' '}
                   {field.isDate
-                    ? formatDate(selected[field.key])
-                    : selected[field.key]}
+                    ? formatDate(entity[field.key])
+                    : entity[field.key]}
                 </div>
               ))}
             </div>
-          )}
-        </DetailModal>
-        {/* Modal de confirmación para eliminar */}
-        {confirmDelete && (
-          <DetailModal
-            isOpen={!!confirmDelete}
-            onClose={() => setConfirmDelete(null)}
-            title={t('confirmDeleteTitle')}
-          >
-            <div style={{ marginBottom: '1.5rem' }}>{t('confirmDeleteMsg')}</div>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-              <Button onClick={() => setConfirmDelete(null)} variant="secondary">{t('cancel')}</Button>
-              <Button onClick={handleConfirmDelete} variant="danger">{t('delete')}</Button>
-            </div>
-          </DetailModal>
-        )}
+            <Button
+              onClick={() => {
+                setSelected(entity);
+                setModalOpen(true);
+              }}
+              variant="secondary"
+            >
+              {t('details')}
+            </Button>
+          </div>
+        ))}
       </div>
-    </MainLayout>
+      <DetailModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={entityLabel}
+      >
+        {selected && (
+          <div>
+            {fields.map((field) => (
+              <div key={field.key} className={styles.modalField}>
+                <b>{field.label}:</b>{' '}
+                {field.isDate
+                  ? formatDate(selected[field.key])
+                  : selected[field.key]}
+              </div>
+            ))}
+          </div>
+        )}
+      </DetailModal>
+      {/* Modal de confirmación para eliminar */}
+      {confirmDelete && (
+        <DetailModal
+          isOpen={!!confirmDelete}
+          onClose={() => setConfirmDelete(null)}
+          title={t('confirmDeleteTitle')}
+        >
+          <div style={{ marginBottom: '1.5rem' }}>{t('confirmDeleteMsg')}</div>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+            <Button onClick={() => setConfirmDelete(null)} variant="secondary">{t('cancel')}</Button>
+            <Button onClick={handleConfirmDelete} variant="danger">{t('delete')}</Button>
+          </div>
+        </DetailModal>
+      )}
+    </div>
   );
 } 
