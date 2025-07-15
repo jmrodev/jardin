@@ -1,2 +1,2 @@
 import DetailModal from './DetailModal';
-export default DetailModal; 
+export default DetailModal;

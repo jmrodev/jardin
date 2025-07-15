@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStudents, createStudent } from '../../../services/api/students';
+import { getStudents, createStudent, deleteStudent } from '../../../services/api/students';
 import EntityGridTemplate from '../../templates/EntityGridTemplate';
 import StudentForm from './StudentForm';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +33,20 @@ export default function StudentsPage() {
     }
   };
 
+  const handleEdit = (student) => {
+    // Aquí lógica para abrir modal de edición
+    alert(t('edit') + ': ' + student.firstname);
+  };
+
+  const handleDelete = async (student) => {
+    try {
+      await deleteStudent(student.id);
+      setStudents(students.filter(s => s.id !== student.id));
+    } catch (error) {
+      alert(t('deleteError'));
+    }
+  };
+
   return (
     <EntityGridTemplate
       title={t('studentsManagement')}
@@ -50,6 +64,19 @@ export default function StudentsPage() {
         <StudentForm onSubmit={handleAddStudent} onCancel={() => setShowForm(false)} />
       ) : null}
       entityLabel={t('studentDetails')}
+      actions={[
+        {
+          label: t('edit'),
+          icon: 'edit',
+          onClick: handleEdit
+        },
+        {
+          label: t('delete'),
+          icon: 'delete',
+          color: 'danger',
+          onClick: handleDelete
+        }
+      ]}
     />
   );
 } 
