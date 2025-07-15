@@ -1,0 +1,44 @@
+.container {
+  padding: var(--space-2xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+}
+.card {
+  background: var(--color-bg, #fff);
+  border-radius: var(--radius-md, 8px);
+  box-shadow: 0 2px 8px rgba(var(--color-black-rgb, 0,0,0), 0.06);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 180px;
+}
+.cardMain {
+  flex: 1;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.cardField {
+  font-size: 1rem;
+  color: var(--color-text, #222);
+  margin-bottom: 0.25rem;
+}
+.formContainer {
+  margin-bottom: var(--space-lg);
+}
+.modalField {
+  font-size: 1.05rem;
+  color: var(--color-text, #222);
+  margin-bottom: 0.5rem;
+} 
