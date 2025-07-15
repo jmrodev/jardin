@@ -4,7 +4,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@kindergarten.com",
+  "username": "admin",
   "password": "password"
 }
 
@@ -17,7 +17,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "director@kindergarten.com",
+  "username": "director",
   "password": "password"
 }
 
@@ -30,7 +30,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "teacher@kindergarten.com",
+  "username": "teacher",
   "password": "password"
 }
 
@@ -43,7 +43,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "preceptor@kindergarten.com",
+  "username": "preceptor",
   "password": "password"
 }
 

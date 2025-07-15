@@ -4,12 +4,12 @@ import { generateToken } from './generateToken.js';
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     const pool = getConnection();
     
     const [users] = await pool.execute(
-      'SELECT * FROM staff WHERE email = ?',
-      [email]
+      'SELECT * FROM staff WHERE username = ?',
+      [username]
     );
     
     if (users.length === 0) {
@@ -29,6 +29,7 @@ export const login = async (req, res) => {
       token,
       user: {
         id: user.id,
+        username: user.username,
         email: user.email,
         role: user.role,
         name: user.name

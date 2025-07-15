@@ -1,0 +1,114 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  padding: var(--space-md);
+  position: relative;
+}
+
+.headerActions {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.themeButton {
+  padding: var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.loginCard {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-2xl);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--border-primary);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.logo {
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.errorMessage {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: var(--font-size-sm);
+}
+
+.submitButton {
+  margin-top: var(--space-md);
+}
+
+.footer {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-primary);
+}
+
+.demoInfo {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.credentials {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  line-height: var(--line-height-relaxed);
+}
+
+.credentials > div {
+  margin-bottom: var(--space-xs);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .loginCard {
+    padding: var(--space-xl);
+    margin: var(--space-md);
+  }
+  
+  .title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .headerActions {
+    top: var(--space-sm);
+    right: var(--space-sm);
+  }
+} 

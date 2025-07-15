@@ -1,0 +1,9 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  transition: all var(--transition-fast);
+}
+
+.icon:hover {
+  transform: scale(1.05);
+} 
