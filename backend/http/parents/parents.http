@@ -1,0 +1,44 @@
+### Admin Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Auth Token
+@authToken = {{login.response.body.token}}
+
+### Get Parents
+GET http://localhost:3000/api/parents
+Authorization: Bearer {{authToken}}
+
+### Create Father (when implemented)
+POST http://localhost:3000/api/parents
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "name": "Carlos",
+  "lastname": "Smith",
+  "phone": "11-9876-5432",
+  "email": "carlos.smith@email.com",
+  "relationship": "father"
+}
+
+### Create Mother
+POST http://localhost:3000/api/parents
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "name": "Laura",
+  "lastname": "Garcia",
+  "phone": "11-8765-4321",
+  "email": "laura.garcia@email.com",
+  "relationship": "mother"
+} 

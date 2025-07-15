@@ -1,7 +1,0 @@
-### Eliminar Alumno
-DELETE http://localhost:3000/api/alumnos/1
-Authorization: Bearer {{authToken}}
-
-### Eliminar Otro Alumno
-DELETE http://localhost:3000/api/alumnos/2
-Authorization: Bearer {{authToken}} 

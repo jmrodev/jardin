@@ -1,0 +1,44 @@
+### Admin Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Auth Token
+@authToken = {{login.response.body.token}}
+
+### Get Alternative Contacts
+GET http://localhost:3000/api/contacts
+Authorization: Bearer {{authToken}}
+
+### Create Alternative Contact (when implemented)
+POST http://localhost:3000/api/contacts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "name": "Robert",
+  "lastname": "Smith",
+  "phone": "11-5555-1234",
+  "relationship": "uncle",
+  "address": "123 Main St, City"
+}
+
+### Create Grandmother
+POST http://localhost:3000/api/contacts
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "name": "Carmen",
+  "lastname": "Garcia",
+  "phone": "11-4444-5678",
+  "relationship": "grandmother",
+  "address": "456 Oak Ave, City"
+} 

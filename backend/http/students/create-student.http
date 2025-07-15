@@ -1,0 +1,38 @@
+### Admin Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Auth Token
+@authToken = {{login.response.body.token}}
+
+### Create New Student
+POST http://localhost:3000/api/students
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "John",
+  "lastname": "Smith",
+  "birth_date": "2020-03-15",
+  "classroom": "3-Year-Old Class",
+  "dni": "12345678"
+}
+
+### Create Student
+POST http://localhost:3000/api/students
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Maria",
+  "lastname": "Gonzalez",
+  "birth_date": "2019-08-22",
+  "classroom": "4-Year-Old Class",
+  "dni": "87654321"
+} 

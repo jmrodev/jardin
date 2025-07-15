@@ -1,0 +1,166 @@
+### Test Admin Login
+# @name adminLogin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Admin Token
+@adminToken = {{adminLogin.response.body.token}}
+
+### Test Director Login
+# @name directorLogin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "director@kindergarten.com",
+  "password": "password"
+}
+
+### Get Director Token
+@directorToken = {{directorLogin.response.body.token}}
+
+### Test Teacher Login
+# @name teacherLogin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teacher@kindergarten.com",
+  "password": "password"
+}
+
+### Get Teacher Token
+@teacherToken = {{teacherLogin.response.body.token}}
+
+### Test Preceptor Login
+# @name preceptorLogin
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "preceptor@kindergarten.com",
+  "password": "password"
+}
+
+### Get Preceptor Token
+@preceptorToken = {{preceptorLogin.response.body.token}}
+
+### Test Admin - Get Students (should work)
+GET http://localhost:3000/api/students
+Authorization: Bearer {{adminToken}}
+
+### Test Director - Get Students (should work)
+GET http://localhost:3000/api/students
+Authorization: Bearer {{directorToken}}
+
+### Test Teacher - Get Students (should work)
+GET http://localhost:3000/api/students
+Authorization: Bearer {{teacherToken}}
+
+### Test Preceptor - Get Students (should fail - no access)
+GET http://localhost:3000/api/students
+Authorization: Bearer {{preceptorToken}}
+
+### Test Admin - Create Student (should work)
+POST http://localhost:3000/api/students
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "name": "Test",
+  "lastname": "Student",
+  "birth_date": "2020-01-01",
+  "classroom": "Test Class",
+  "dni": "99999999"
+}
+
+### Test Director - Create Student (should work)
+POST http://localhost:3000/api/students
+Content-Type: application/json
+Authorization: Bearer {{directorToken}}
+
+{
+  "name": "Test2",
+  "lastname": "Student2",
+  "birth_date": "2020-02-02",
+  "classroom": "Test Class",
+  "dni": "88888888"
+}
+
+### Test Teacher - Create Student (should fail - no access)
+POST http://localhost:3000/api/students
+Content-Type: application/json
+Authorization: Bearer {{teacherToken}}
+
+{
+  "name": "Test3",
+  "lastname": "Student3",
+  "birth_date": "2020-03-03",
+  "classroom": "Test Class",
+  "dni": "77777777"
+}
+
+### Test Admin - Get Teachers (should work)
+GET http://localhost:3000/api/teachers
+Authorization: Bearer {{adminToken}}
+
+### Test Director - Get Teachers (should work)
+GET http://localhost:3000/api/teachers
+Authorization: Bearer {{directorToken}}
+
+### Test Teacher - Get Teachers (should fail - no access)
+GET http://localhost:3000/api/teachers
+Authorization: Bearer {{teacherToken}}
+
+### Test Admin - Register Attendance (should work)
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-12-15",
+  "present": true,
+  "observations": "Admin test"
+}
+
+### Test Director - Register Attendance (should work)
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{directorToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-12-16",
+  "present": false,
+  "observations": "Director test"
+}
+
+### Test Teacher - Register Attendance (should work)
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{teacherToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-12-17",
+  "present": true,
+  "observations": "Teacher test"
+}
+
+### Test Preceptor - Register Attendance (should fail - no access)
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{preceptorToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-12-18",
+  "present": true,
+  "observations": "Preceptor test"
+} 

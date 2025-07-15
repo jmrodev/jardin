@@ -1,0 +1,28 @@
+### Admin Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Auth Token
+@authToken = {{login.response.body.token}}
+
+### Get Today's Attendance
+GET http://localhost:3000/api/attendance?date=2024-01-15
+Authorization: Bearer {{authToken}}
+
+### Get Attendance by Classroom
+GET http://localhost:3000/api/attendance?classroom=3-Year-Old Class
+Authorization: Bearer {{authToken}}
+
+### Get Student Attendance
+GET http://localhost:3000/api/attendance?student_id=1
+Authorization: Bearer {{authToken}}
+
+### Get All Attendance
+GET http://localhost:3000/api/attendance
+Authorization: Bearer {{authToken}} 

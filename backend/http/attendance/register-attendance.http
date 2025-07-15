@@ -1,0 +1,48 @@
+### Admin Login
+# @name login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@kindergarten.com",
+  "password": "password"
+}
+
+### Get Auth Token
+@authToken = {{login.response.body.token}}
+
+### Register Attendance - Present
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-01-15",
+  "present": true,
+  "observations": "Arrived on time"
+}
+
+### Register Attendance - Absent
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 1,
+  "date": "2024-01-15",
+  "present": false,
+  "observations": "Family reported illness"
+}
+
+### Register Attendance - Late
+POST http://localhost:3000/api/attendance
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "student_id": 2,
+  "date": "2024-01-15",
+  "present": true,
+  "observations": "Arrived 30 minutes late"
+} 
