@@ -37,4 +37,6 @@ api.interceptors.response.use(
   }
 );
 
-export default api; 
+export default api;
+
+// Aquí puedes dejar funciones generales o reexportar desde otros archivos atómicos si lo deseas. 

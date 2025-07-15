@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import { getTeachers, createTeacher } from '../../../services/api/teachers';
 import styles from './TeachersPage.module.css';
 
 const TeachersPage = () => {
