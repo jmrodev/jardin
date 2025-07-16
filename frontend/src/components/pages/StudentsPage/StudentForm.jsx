@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPersons } from '../../../services/api/persons';
 import styles from './StudentForm.module.css';
+import Button from '../../atoms/Button/Button';
 
 export default function StudentForm({ onSubmit, onCancel, initialData }) {
   const [form, setForm] = React.useState({
@@ -112,11 +113,11 @@ export default function StudentForm({ onSubmit, onCancel, initialData }) {
         required
       />
       <div className={styles.buttonContainer}>
-        <button className={styles.button} type="submit">Guardar</button>
+        <Button type="submit" variant="primary">Guardar</Button>
         {onCancel && (
-          <button className={`${styles.button} ${styles.cancelButton}`} type="button" onClick={onCancel}>
+          <Button type="button" variant="danger" onClick={onCancel}>
             Cancelar
-          </button>
+          </Button>
         )}
       </div>
     </form>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../StudentsPage/StudentForm.module.css';
 import { useTranslation } from 'react-i18next';
+import Button from '../../atoms/Button/Button';
 
 export default function ParentForm({ onSubmit, onCancel, initialData }) {
   const [form, setForm] = useState({
@@ -74,9 +75,9 @@ export default function ParentForm({ onSubmit, onCancel, initialData }) {
         required
       />
       <div className={styles.buttonContainer}>
-        <button className={styles.button} type="submit">{t('parents.save')}</button>
+        <Button type="submit" variant="primary">{t('parents.save')}</Button>
         {onCancel && (
-          <button className={`${styles.button} ${styles.cancelButton}`} type="button" onClick={onCancel}>{t('parents.cancel')}</button>
+          <Button type="button" variant="danger" onClick={onCancel}>{t('parents.cancel')}</Button>
         )}
       </div>
     </form>

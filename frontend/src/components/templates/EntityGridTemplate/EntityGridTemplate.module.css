@@ -63,26 +63,6 @@
   gap: var(--space-sm);
 }
 
-.actionBtn {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: var(--space-xs);
-  border-radius: var(--radius-full);
-  transition: background-color var(--transition-fast), color var(--transition-fast);
-}
-
-.actionBtn:hover {
-  background-color: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.actionBtn.danger:hover {
-  background-color: var(--color-danger);
-  color: var(--text-inverse);
-}
-
 .cardMain {
   flex-grow: 1;
   width: 100%;

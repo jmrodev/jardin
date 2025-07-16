@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './PersonForm.module.css';
+import Button from '../../atoms/Button/Button';
 
 const initialState = {
   name: '',
@@ -116,7 +117,7 @@ export default function PersonForm({ onSubmit, initialData = {}, submitLabel = '
       </select>
       {errors.relationship && <span className={styles.error}>{errors.relationship}</span>}
       
-      <button type="submit" className={styles.button}>{submitLabel}</button>
+      <Button type="submit" variant="primary">{submitLabel}</Button>
     </form>
   );
 } 

@@ -35,19 +35,4 @@
   color: var(--color-danger);
   font-size: var(--font-size-sm);
   margin-top: var(--space-xs);
-}
-
-.button {
-  background: var(--color-primary);
-  color: var(--text-inverse);
-  border: none;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background var(--transition-fast);
-}
-
-.button:hover {
-  background: var(--color-primary-dark);
 } 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getPersons, createPerson, updatePerson, deletePerson } from '../../../services/api/persons';
 import PersonForm from './PersonForm.jsx';
 import MainLayout from '../../templates/MainLayout';
-import Button from '../../atoms/Button';
+import Button from '../../atoms/Button/Button';
 import styles from './PersonsPage.module.css';
 import { useTranslation } from 'react-i18next';
 

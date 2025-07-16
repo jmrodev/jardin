@@ -50,20 +50,7 @@
 }
 
 .closeBtn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm, 4px);
-  transition: background 0.2s;
-}
-.closeBtn:hover {
-  background: var(--bg-secondary);
+  /* Solo estilos de posicionamiento si son necesarios */
 }
 
 .content {

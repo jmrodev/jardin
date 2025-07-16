@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './DetailModal.module.css';
 import { useTranslation } from 'react-i18next';
 import Icon from '../Icon';
+import Button from '../Button';
 
 export default function DetailModal({ isOpen, onClose, title, children }) {
   const { t } = useTranslation();
@@ -36,10 +37,15 @@ export default function DetailModal({ isOpen, onClose, title, children }) {
       <div className={styles.modal} tabIndex={0}>
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
-          <button className={styles.closeBtn} onClick={onClose} type="button">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className={styles.closeBtn}
+          >
             <Icon name="close" size={18} />
             <span>{t('close')}</span>
-          </button>
+          </Button>
         </div>
         <div className={styles.content}>{children}</div>
       </div>

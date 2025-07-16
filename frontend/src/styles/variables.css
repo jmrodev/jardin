@@ -119,6 +119,65 @@
   --z-popover: 1060;
   --z-tooltip: 1070;
   --z-toast: 1080;
+
+  /* Button Sizes */
+  --button-sm-padding: var(--space-xs) var(--space-sm);
+  --button-sm-font-size: var(--font-size-sm);
+  --button-sm-min-height: 32px;
+
+  --button-md-padding: var(--space-sm) var(--space-md);
+  --button-md-font-size: var(--font-size-base);
+  --button-md-min-height: 40px;
+
+  --button-lg-padding: var(--space-md) var(--space-lg);
+  --button-lg-font-size: var(--font-size-lg);
+  --button-lg-min-height: 48px;
+
+  --button-xl-padding: var(--space-lg) var(--space-xl);
+  --button-xl-font-size: var(--font-size-xl);
+  --button-xl-min-height: 56px;
+
+  /* Button Base Styles */
+  --button-display: inline-flex;
+  --button-align-items: center;
+  --button-justify-content: center;
+  --button-border: none;
+  --button-border-radius: var(--radius-md);
+  --button-font-weight: var(--font-weight-medium);
+  --button-cursor: pointer;
+  --button-transition: all var(--transition-fast);
+  --button-white-space: nowrap;
+  --button-user-select: none;
+
+  /* Button States */
+  --button-focus-outline: 2px solid var(--color-primary);
+  --button-focus-outline-offset: 2px;
+  --button-disabled-opacity: 0.5;
+  --button-disabled-cursor: not-allowed;
+
+  /* Button Variants */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-color: var(--text-inverse);
+  --button-primary-hover-bg: var(--color-primary-dark);
+
+  --button-secondary-bg: var(--color-secondary);
+  --button-secondary-color: var(--text-inverse);
+  --button-secondary-hover-bg: var(--color-secondary-dark);
+
+  --button-outline-bg: transparent;
+  --button-outline-color: var(--color-primary);
+  --button-outline-border: 1px solid var(--color-primary);
+  --button-outline-hover-bg: var(--color-primary);
+  --button-outline-hover-color: var(--text-inverse);
+
+  --button-ghost-bg: transparent;
+  --button-ghost-color: var(--color-primary);
+  --button-ghost-border: 1px solid var(--color-primary);
+  --button-ghost-hover-bg: var(--color-primary-alpha);
+
+  --button-danger-bg: var(--color-danger);
+  --button-danger-color: var(--text-inverse);
+  --button-danger-hover-bg: var(--color-danger-dark);
 }
 
 /* Dark Mode */
@@ -182,4 +241,46 @@
   --border-primary: #38383a;
   --border-secondary: #48484a;
   --border-focus: #0a84ff;
+
+  /* Button Base Styles */
+  --button-display: inline-flex;
+  --button-align-items: center;
+  --button-justify-content: center;
+  --button-border: none;
+  --button-border-radius: var(--radius-md);
+  --button-font-weight: var(--font-weight-medium);
+  --button-cursor: pointer;
+  --button-transition: all var(--transition-fast);
+  --button-white-space: nowrap;
+  --button-user-select: none;
+
+  /* Button States */
+  --button-focus-outline: 2px solid var(--color-primary);
+  --button-focus-outline-offset: 2px;
+  --button-disabled-opacity: 0.5;
+  --button-disabled-cursor: not-allowed;
+
+  /* Button Variants */
+  --button-primary-bg: var(--color-primary);
+  --button-primary-color: var(--text-inverse);
+  --button-primary-hover-bg: var(--color-primary-dark);
+
+  --button-secondary-bg: var(--color-secondary);
+  --button-secondary-color: var(--text-inverse);
+  --button-secondary-hover-bg: var(--color-secondary-dark);
+
+  --button-outline-bg: transparent;
+  --button-outline-color: var(--color-primary);
+  --button-outline-border: 1px solid var(--color-primary);
+  --button-outline-hover-bg: var(--color-primary);
+  --button-outline-hover-color: var(--text-inverse);
+
+  --button-ghost-bg: transparent;
+  --button-ghost-color: var(--color-primary);
+  --button-ghost-border: 1px solid var(--color-primary);
+  --button-ghost-hover-bg: var(--color-primary-alpha);
+
+  --button-danger-bg: var(--color-danger);
+  --button-danger-color: var(--text-inverse);
+  --button-danger-hover-bg: var(--color-danger-dark);
 } 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DetailModal from '../../atoms/DetailModal';
-import Button from '../../atoms/Button';
+import Button from '../../atoms/Button/Button';
 import formatDate from '../../../utils/formatDate';
 import styles from './EntityGridTemplate.module.css';
 import { useTranslation } from 'react-i18next';
@@ -59,15 +59,15 @@ export default function EntityGridTemplate({
           >
             <div className={styles.cardActions}>
               {actions.map((action) => (
-                <button
+                <Button
                   key={action.label}
-                  className={styles.actionBtn + (action.color === 'danger' ? ' ' + styles.danger : '')}
-                  title={action.label}
+                  variant={action.color === 'danger' ? 'danger' : 'ghost'}
+                  size="sm"
                   onClick={() => handleAction(action, entity)}
-                  type="button"
+                  title={action.label}
                 >
                   <Icon name={action.icon === 'delete' ? 'trash' : action.icon} />
-                </button>
+                </Button>
               ))}
             </div>
             <div className={styles.cardMain}>

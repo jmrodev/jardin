@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTheme } from '../../../contexts/ThemeContext';
 import Input from '../../atoms/Input';
-import Button from '../../atoms/Button';
+import Button from '../../atoms/Button/Button';
 import Icon from '../../atoms/Icon';
 import LanguageSelector from '../../atoms/LanguageSelector';
 import styles from './LoginPage.module.css';

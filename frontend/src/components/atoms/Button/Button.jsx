@@ -1,5 +1,3 @@
-import styles from './Button.module.css';
-
 const Button = ({ 
   children, 
   variant = 'primary', 
@@ -11,10 +9,10 @@ const Button = ({
   ...props 
 }) => {
   const buttonClasses = [
-    styles.button,
-    styles[variant],
-    styles[size],
-    disabled && styles.disabled,
+    'button',
+    variant,
+    size,
+    disabled && 'disabled',
     className
   ].filter(Boolean).join(' ');
 

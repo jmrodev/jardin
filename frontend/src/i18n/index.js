@@ -266,7 +266,7 @@ const resources = {
       // Login Page
       'login.title': 'Login',
       'login.subtitle': 'Kindergarten Management System',
-      'login.username': 'Username',
+      'login.userName': 'Username',
       'login.password': 'Password',
       'login.loginButton': 'Login',
       'login.error': 'Authentication error',

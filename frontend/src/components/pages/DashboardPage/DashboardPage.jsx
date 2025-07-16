@@ -1,7 +1,8 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
-import Button from '../../atoms/Button';
+import Button from '../../atoms/Button/Button';
 import Icon from '../../atoms/Icon';
 import DashboardTemplate from '../../templates/DashboardTemplate/DashboardTemplate';
 import styles from './DashboardPage.module.css';

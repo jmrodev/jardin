@@ -1,7 +1,8 @@
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import Button from '../atoms/Button';
+import Button from '../atoms/Button/Button';
 import Icon from '../atoms/Icon';
 import LanguageSelector from '../atoms/LanguageSelector';
 import styles from './MainLayout.module.css';
