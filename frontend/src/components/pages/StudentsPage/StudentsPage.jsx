@@ -3,7 +3,7 @@ import { getStudents, createStudent, deleteStudent } from '../../../services/api
 import EntityGridTemplate from '../../templates/EntityGridTemplate';
 import StudentForm from './StudentForm';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../../atoms/DetailModal';
+import DetailModal from '../../atoms/DetailModal/DetailModal';
 
 export default function StudentsPage() {
   const [students, setStudents] = useState([]);

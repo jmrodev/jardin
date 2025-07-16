@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getParents, deleteParent } from '../../../services/api/parents';
 import EntityGridTemplate from '../../templates/EntityGridTemplate';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../../atoms/DetailModal';
+import DetailModal from '../../atoms/DetailModal/DetailModal';
 import ParentForm from './ParentForm';
 import { updateParent } from '../../../services/api/parents';
 

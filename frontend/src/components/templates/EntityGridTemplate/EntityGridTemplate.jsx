@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DetailModal from '../../atoms/DetailModal';
+import DetailModal from '../../atoms/DetailModal/DetailModal';
 import Button from '../../atoms/Button/Button';
 import formatDate from '../../../utils/formatDate';
 import styles from './EntityGridTemplate.module.css';

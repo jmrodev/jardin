@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getTeachers, deleteTeacher } from '../../../services/api/teachers';
 import EntityGridTemplate from '../../templates/EntityGridTemplate';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../../atoms/DetailModal';
+import DetailModal from '../../atoms/DetailModal/DetailModal';
 import TeacherForm from './TeacherForm';
 import { updateTeacher } from '../../../services/api/teachers';
 
