@@ -2,10 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import Button from '../atoms/Button/Button';
-import Icon from '../atoms/Icon/Icon';
-import LanguageSelector from '../atoms/LanguageSelector/LanguageSelector';
-import styles from './MainLayout.module.css';
+import Button from '../atoms/Button';
+import Icon from '../atoms/Icon';
+import LanguageSelector from '../atoms/LanguageSelector';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const TITLES = {
@@ -38,22 +37,22 @@ export default function MainLayout({ children }) {
   const showDashboardBtn = !['/', '/dashboard'].includes(currentPath);
 
   return (
-    <div className={styles.layout}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.brand}>
-            <Icon name="GraduationCap" size={32} className={styles.logo} />
-            <h1 className={styles.title}>{t(titleKey)}</h1>
+    <div className="layout">
+      <header className="header">
+        <div className="header-content">
+          <div className="brand">
+            <Icon name="GraduationCap" size={32} className="logo" />
+            <h1 className="title">{t(titleKey)}</h1>
           </div>
 
-          <div className={styles.headerActions}>
+          <div className="header-actions">
             <LanguageSelector />
 
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className={styles.themeButton}
+              className="theme-button"
             >
               <Icon
                 name={theme === 'dark' ? 'Sun' : 'Moon'}
@@ -66,23 +65,22 @@ export default function MainLayout({ children }) {
                 variant="outline"
                 size="sm"
                 onClick={handleGoDashboard}
-                className={styles.dashboardButton}
               >
                 <Icon name="Home" size={16} />
                 {t('dashboard.title')}
               </Button>
             )}
 
-            <div className={styles.userInfo}>
-              <span className={styles.userName}>{user?.name}</span>
-              <span className={styles.userRole}>{t(`roles.${user?.role}`)}</span>
+            <div className="user-info">
+              <span className="user-name">{user?.name}</span>
+              <span className="user-role">{t(`roles.${user?.role}`)}</span>
             </div>
 
             <Button
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className={styles.logoutButton}
+              className="logout-button"
             >
               <Icon name="LogOut" size={16} />
               {t('dashboard.logout')}
@@ -90,10 +88,10 @@ export default function MainLayout({ children }) {
           </div>
         </div>
       </header>
-      <main className={styles.main}>
+      <main className="main">
         {children}
       </main>
-      <footer className={styles.footer}>
+      <footer className="footer">
         <span>© 2024 Jardín</span>
       </footer>
     </div>

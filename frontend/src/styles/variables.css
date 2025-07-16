@@ -178,6 +178,81 @@
   --button-danger-bg: var(--color-danger);
   --button-danger-color: var(--text-inverse);
   --button-danger-hover-bg: var(--color-danger-dark);
+
+  /* Input Base Styles */
+  --input-container-display: flex;
+  --input-container-flex-direction: column;
+  --input-container-gap: var(--space-xs);
+
+  --input-label-font-size: var(--font-size-sm);
+  --input-label-font-weight: var(--font-weight-medium);
+  --input-label-color: var(--text-primary);
+
+  --input-required-color: var(--color-danger);
+  --input-required-margin-left: var(--space-xs);
+
+  --input-padding: var(--space-sm) var(--space-md);
+  --input-border: 1px solid var(--border-primary);
+  --input-border-radius: var(--radius-md);
+  --input-font-size: var(--font-size-base);
+  --input-bg-color: var(--bg-primary);
+  --input-color: var(--text-primary);
+  --input-transition: all var(--transition-fast);
+  --input-min-height: 40px;
+
+  /* Input States */
+  --input-focus-outline: none;
+  --input-focus-border-color: var(--color-primary);
+  --input-focus-box-shadow: 0 0 0 3px var(--color-primary-alpha);
+
+  --input-disabled-bg: var(--bg-secondary);
+  --input-disabled-color: var(--text-tertiary);
+  --input-disabled-cursor: not-allowed;
+
+  --input-placeholder-color: var(--text-tertiary);
+
+  /* Input Error States */
+  --input-error-border-color: var(--color-danger);
+  --input-error-focus-box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+
+  --input-error-message-font-size: var(--font-size-sm);
+  --input-error-message-color: var(--color-danger);
+  --input-error-message-margin-top: var(--space-xs);
+
+  /* Modal Base Styles */
+  --modal-overlay-position: fixed;
+  --modal-overlay-inset: 0;
+  --modal-overlay-bg: rgba(var(--color-black-rgb, 0,0,0), 0.5);
+  --modal-overlay-display: flex;
+  --modal-overlay-align-items: center;
+  --modal-overlay-justify-content: center;
+  --modal-overlay-z-index: 1000;
+  --modal-overlay-opacity: 1;
+  --modal-overlay-pointer-events: auto;
+  --modal-overlay-transition: opacity 0.25s;
+
+  --modal-bg: var(--bg-card);
+  --modal-border-radius: var(--radius-md, 8px);
+  --modal-box-shadow: 0 4px 24px rgba(var(--color-black-rgb, 0,0,0), 0.12);
+  --modal-min-width: 320px;
+  --modal-max-width: 90vw;
+  --modal-max-height: 90vh;
+  --modal-padding: 2rem;
+  --modal-display: flex;
+  --modal-flex-direction: column;
+  --modal-animation: modalIn 0.3s cubic-bezier(0.4,0,0.2,1);
+
+  --modal-header-display: flex;
+  --modal-header-align-items: center;
+  --modal-header-justify-content: space-between;
+  --modal-header-margin-bottom: 1.5rem;
+
+  --modal-title-font-size: var(--font-size-xl);
+  --modal-title-font-weight: 600;
+  --modal-title-color: var(--text-primary);
+
+  --modal-content-overflow-y: auto;
+  --modal-content-color: var(--text-primary);
 }
 
 /* Dark Mode */
@@ -283,4 +358,79 @@
   --button-danger-bg: var(--color-danger);
   --button-danger-color: var(--text-inverse);
   --button-danger-hover-bg: var(--color-danger-dark);
+
+  /* Input Base Styles */
+  --input-container-display: flex;
+  --input-container-flex-direction: column;
+  --input-container-gap: var(--space-xs);
+
+  --input-label-font-size: var(--font-size-sm);
+  --input-label-font-weight: var(--font-weight-medium);
+  --input-label-color: var(--text-primary);
+
+  --input-required-color: var(--color-danger);
+  --input-required-margin-left: var(--space-xs);
+
+  --input-padding: var(--space-sm) var(--space-md);
+  --input-border: 1px solid var(--border-primary);
+  --input-border-radius: var(--radius-md);
+  --input-font-size: var(--font-size-base);
+  --input-bg-color: var(--bg-primary);
+  --input-color: var(--text-primary);
+  --input-transition: all var(--transition-fast);
+  --input-min-height: 40px;
+
+  /* Input States */
+  --input-focus-outline: none;
+  --input-focus-border-color: var(--color-primary);
+  --input-focus-box-shadow: 0 0 0 3px var(--color-primary-alpha);
+
+  --input-disabled-bg: var(--bg-secondary);
+  --input-disabled-color: var(--text-tertiary);
+  --input-disabled-cursor: not-allowed;
+
+  --input-placeholder-color: var(--text-tertiary);
+
+  /* Input Error States */
+  --input-error-border-color: var(--color-danger);
+  --input-error-focus-box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+
+  --input-error-message-font-size: var(--font-size-sm);
+  --input-error-message-color: var(--color-danger);
+  --input-error-message-margin-top: var(--space-xs);
+
+  /* Modal Base Styles */
+  --modal-overlay-position: fixed;
+  --modal-overlay-inset: 0;
+  --modal-overlay-bg: rgba(var(--color-black-rgb, 0,0,0), 0.5);
+  --modal-overlay-display: flex;
+  --modal-overlay-align-items: center;
+  --modal-overlay-justify-content: center;
+  --modal-overlay-z-index: 1000;
+  --modal-overlay-opacity: 1;
+  --modal-overlay-pointer-events: auto;
+  --modal-overlay-transition: opacity 0.25s;
+
+  --modal-bg: var(--bg-card);
+  --modal-border-radius: var(--radius-md, 8px);
+  --modal-box-shadow: 0 4px 24px rgba(var(--color-black-rgb, 0,0,0), 0.12);
+  --modal-min-width: 320px;
+  --modal-max-width: 90vw;
+  --modal-max-height: 90vh;
+  --modal-padding: 2rem;
+  --modal-display: flex;
+  --modal-flex-direction: column;
+  --modal-animation: modalIn 0.3s cubic-bezier(0.4,0,0.2,1);
+
+  --modal-header-display: flex;
+  --modal-header-align-items: center;
+  --modal-header-justify-content: space-between;
+  --modal-header-margin-bottom: 1.5rem;
+
+  --modal-title-font-size: var(--font-size-xl);
+  --modal-title-font-weight: 600;
+  --modal-title-color: var(--text-primary);
+
+  --modal-content-overflow-y: auto;
+  --modal-content-color: var(--text-primary);
 } 

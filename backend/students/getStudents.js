@@ -4,7 +4,7 @@ export const getStudents = async (req, res) => {
   try {
     const pool = getConnection();
     const [rows] = await pool.execute(
-      'SELECT id, firstname, lastname_father, lastname_mother, address, dni, birth_date, classroom, shift, special_education, needs_assistant, special_diet, celiac, diabetic, takes_dairy, care_diseases, medication, diapers, diaper_responsible, authorized_pickups FROM students'
+      'SELECT id, firstname, lastname_father, lastname_mother, address, dni, birth_date, gender, classroom, shift, special_education, needs_assistant, special_diet, celiac, diabetic, takes_dairy, care_diseases, medication, diapers, diaper_responsible, authorized_pickups FROM students'
     );
     const students = rows.map(student => ({
       ...student,
