@@ -73,7 +73,7 @@ const TeachersPage = () => {
         }
       ]}
     >
-      <DetailModal open={editModalOpen} onClose={handleEditCancel}>
+      <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <TeacherForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>
     </EntityGridTemplate>

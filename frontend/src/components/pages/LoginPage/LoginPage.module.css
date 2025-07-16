@@ -61,19 +61,19 @@
 }
 
 .errorMessage {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: var(--color-danger-alpha);
   color: var(--color-danger);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--color-danger-alpha);
   font-size: var(--font-size-sm);
 }
 
 .errorBackground {
-  background-color: rgba(237, 153, 122, 0.1); /* var(--color-danger-rgb) */
+  background-color: var(--color-danger-alpha);
 }
 .errorBorder {
-  border: 1px solid rgba(237, 153, 122, 0.2); /* var(--color-danger-rgb) */
+  border: 1px solid var(--color-danger-alpha);
 }
 
 .submitButton {

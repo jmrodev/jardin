@@ -111,10 +111,10 @@ export default function StudentForm({ onSubmit, onCancel, initialData }) {
         onChange={handleChange}
         required
       />
-      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+      <div className={styles.buttonContainer}>
         <button className={styles.button} type="submit">Guardar</button>
         {onCancel && (
-          <button className={styles.button} type="button" onClick={onCancel} style={{ background: 'var(--color-danger)' }}>
+          <button className={`${styles.button} ${styles.cancelButton}`} type="button" onClick={onCancel}>
             Cancelar
           </button>
         )}

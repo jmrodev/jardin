@@ -47,6 +47,7 @@
   --color-shadow: rgba(0, 0, 0, 0.1);
   --color-shadow-light: rgba(0, 0, 0, 0.05);
   --color-primary-alpha: rgba(0, 122, 255, 0.1);
+  --color-danger-alpha: rgba(255, 59, 48, 0.1);
 
   /* Text Colors */
   --text-primary: #000000;
@@ -169,6 +170,7 @@
   --color-shadow: rgba(0, 0, 0, 0.5);
   --color-shadow-light: rgba(0, 0, 0, 0.25);
   --color-primary-alpha: rgba(10, 132, 255, 0.2);
+  --color-danger-alpha: rgba(255, 59, 48, 0.2);
 
   /* Text Colors */
   --text-primary: #ffffff;

@@ -73,7 +73,7 @@ const ParentsPage = () => {
         }
       ]}
     >
-      <DetailModal open={editModalOpen} onClose={handleEditCancel}>
+      <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <ParentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>
     </EntityGridTemplate>

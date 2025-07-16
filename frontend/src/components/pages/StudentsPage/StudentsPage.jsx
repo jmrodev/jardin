@@ -99,7 +99,7 @@ export default function StudentsPage() {
         }
       ]}
     >
-      <DetailModal open={editModalOpen} onClose={handleEditCancel}>
+      <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <StudentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>
     </EntityGridTemplate>

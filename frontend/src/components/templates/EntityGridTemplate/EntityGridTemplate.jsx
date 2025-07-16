@@ -117,8 +117,8 @@ export default function EntityGridTemplate({
           onClose={() => setConfirmDelete(null)}
           title={t('confirmDeleteTitle')}
         >
-          <div style={{ marginBottom: '1.5rem' }}>{t('confirmDeleteMsg')}</div>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+          <div className={styles.confirmMessage}>{t('confirmDeleteMsg')}</div>
+          <div className={styles.confirmActions}>
             <Button onClick={() => setConfirmDelete(null)} variant="secondary">{t('cancel')}</Button>
             <Button onClick={handleConfirmDelete} variant="danger">{t('delete')}</Button>
           </div>

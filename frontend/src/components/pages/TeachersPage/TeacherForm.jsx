@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../StudentsPage/StudentForm.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function TeacherForm({ onSubmit, onCancel, initialData }) {
   const [form, setForm] = useState({
@@ -20,12 +21,14 @@ export default function TeacherForm({ onSubmit, onCancel, initialData }) {
     onSubmit(form);
   };
 
+  const { t } = useTranslation();
+
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
       <input
         className={styles.inputField}
         name="firstname"
-        placeholder="Nombre"
+        placeholder={t('teachers.firstname')}
         value={form.firstname}
         onChange={handleChange}
         required
@@ -33,7 +36,7 @@ export default function TeacherForm({ onSubmit, onCancel, initialData }) {
       <input
         className={styles.inputField}
         name="lastname_father"
-        placeholder="Apellido paterno"
+        placeholder={t('teachers.lastnameFather')}
         value={form.lastname_father}
         onChange={handleChange}
         required
@@ -41,7 +44,7 @@ export default function TeacherForm({ onSubmit, onCancel, initialData }) {
       <input
         className={styles.inputField}
         name="lastname_mother"
-        placeholder="Apellido materno"
+        placeholder={t('teachers.lastnameMother')}
         value={form.lastname_mother}
         onChange={handleChange}
         required
@@ -49,7 +52,7 @@ export default function TeacherForm({ onSubmit, onCancel, initialData }) {
       <input
         className={styles.inputField}
         name="dni"
-        placeholder="DNI"
+        placeholder={t('teachers.dni')}
         value={form.dni}
         onChange={handleChange}
         required
@@ -71,12 +74,10 @@ export default function TeacherForm({ onSubmit, onCancel, initialData }) {
         onChange={handleChange}
         required
       />
-      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-        <button className={styles.button} type="submit">Guardar</button>
+      <div className={styles.buttonContainer}>
+        <button className={styles.button} type="submit">{t('teachers.save')}</button>
         {onCancel && (
-          <button className={styles.button} type="button" onClick={onCancel} style={{ background: 'var(--color-danger)' }}>
-            Cancelar
-          </button>
+          <button className={`${styles.button} ${styles.cancelButton}`} type="button" onClick={onCancel}>{t('teachers.cancel')}</button>
         )}
       </div>
     </form>
