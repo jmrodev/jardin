@@ -145,7 +145,6 @@ export default function StudentsPage() {
   const renderStudentCard = (student) => (
     <div className="student-card-content">
       <div className="student-info">
-        <p className="student-name">{student.firstname}</p>
         <p className="student-details">{student.classroom} • {student.shift}</p>
         <p className="student-age">{calculateAge(student.birth_date)} {t('filters.years')} • {student.gender}</p>
       </div>
@@ -167,7 +166,6 @@ export default function StudentsPage() {
         onAdd={() => setShowForm(true)}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        onViewDetails={handleEdit} // Usar el mismo modal para ver detalles y editar
         entityType="estudiante"
         renderEntityCard={renderStudentCard}
         addButtonText={t('addStudent')}

@@ -30,10 +30,9 @@ export default function StudentFilters({ filters, onFilterChange, onClearFilters
         </h3>
         {hasActiveFilters && (
           <Button 
-            variant="ghost" 
+            variant="danger" 
             size="sm" 
             onClick={clearAllFilters}
-            className="clear-filters-btn"
           >
             <Icon name="X" size={16} />
             {t('filters.clearAll')}

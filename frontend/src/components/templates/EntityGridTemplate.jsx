@@ -72,39 +72,18 @@ export default function EntityGridTemplate({
       ) : (
         <div className="entity-grid">
           {entities.map((entity) => (
-            <div key={entity.id} className="entity-card">
+            <div 
+              key={entity.id} 
+              className="entity-card"
+              onClick={() => handleViewDetails(entity)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="entity-card-header">
-                <h3 className="entity-card-title">
-                  {entity.name || entity.firstname || entity.title || `ID: ${entity.id}`}
-                </h3>
-                <div className="entity-card-actions">
-                  {onViewDetails && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleViewDetails(entity)}
-                    >
-                      <Icon name="Eye" size={16} />
-                    </Button>
-                  )}
-                  {onEdit && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onEdit(entity)}
-                    >
-                      <Icon name="Edit" size={16} />
-                    </Button>
-                  )}
-                  {onDelete && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onDelete(entity.id)}
-                    >
-                      <Icon name="Trash2" size={16} />
-                    </Button>
-                  )}
+                <div className="entity-card-title">
+                  <div className="student-firstname">{entity.firstname}</div>
+                  <div className="student-lastnames">
+                    {entity.lastname_father} {entity.lastname_mother}
+                  </div>
                 </div>
               </div>
               
@@ -139,87 +118,118 @@ export default function EntityGridTemplate({
         <DetailModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          title={selectedEntity.name || selectedEntity.firstname || `Detalles de ${entityType}`}
+          title={
+            selectedEntity.firstname 
+              ? `${selectedEntity.firstname} ${selectedEntity.lastname_father || ''} ${selectedEntity.lastname_mother || ''}`.trim()
+              : selectedEntity.name || `Detalles de ${entityType}`
+          }
         >
-                      <div className="entity-details">
-              {/* Información Personal */}
-              <div className="detail-section">
-                <h3 className="detail-section-title">Información Personal</h3>
-                {detailFields.filter(field => 
-                  ['firstname', 'lastname_father', 'lastname_mother', 'dni', 'gender', 'birth_date', 'age'].includes(field.key)
-                ).map((field) => {
-                  let value = 'N/A';
-                  
-                  if (field.type === 'date') {
-                    value = selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A';
-                  } else if (field.type === 'calculated' && field.key === 'age') {
-                    // Calcular edad para el modal
-                    const today = new Date();
-                    const birth = new Date(selectedEntity.birth_date);
-                    let age = today.getFullYear() - birth.getFullYear();
-                    const monthDiff = today.getMonth() - birth.getMonth();
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                      age--;
-                    }
-                    value = `${age} años`;
-                  } else {
-                    value = selectedEntity[field.key] || 'N/A';
-                  }
-                  
-                  return (
-                    <div key={field.key} className="detail-field">
-                      <strong>{field.label}:</strong>
-                      <span>{value}</span>
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="modal-actions">
+            {onEdit && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  onEdit(selectedEntity);
+                  handleCloseModal();
+                }}
+              >
+                <Icon name="Edit" size={16} />
+                Editar
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => {
+                  onDelete(selectedEntity.id);
+                  handleCloseModal();
+                }}
+              >
+                <Icon name="Trash2" size={16} />
+                Eliminar
+              </Button>
+            )}
+          </div>
+          
+          {/* Información Personal */}
+          <div className="detail-section">
+            <h3 className="detail-section-title">Información Personal</h3>
+            {detailFields.filter(field => 
+              ['firstname', 'lastname_father', 'lastname_mother', 'dni', 'gender', 'birth_date', 'age'].includes(field.key)
+            ).map((field) => {
+              let value = 'N/A';
+              
+              if (field.type === 'date') {
+                value = selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A';
+              } else if (field.type === 'calculated' && field.key === 'age') {
+                // Calcular edad para el modal
+                const today = new Date();
+                const birth = new Date(selectedEntity.birth_date);
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                  age--;
+                }
+                value = `${age} años`;
+              } else {
+                value = selectedEntity[field.key] || 'N/A';
+              }
+              
+              return (
+                <div key={field.key} className="detail-field">
+                  <strong>{field.label}:</strong>
+                  <span>{value}</span>
+                </div>
+              );
+            })}
+          </div>
 
-              {/* Información Académica */}
-              <div className="detail-section">
-                <h3 className="detail-section-title">Información Académica</h3>
-                {detailFields.filter(field => 
-                  ['classroom', 'shift'].includes(field.key)
-                ).map((field) => (
-                  <div key={field.key} className="detail-field">
-                    <strong>{field.label}:</strong>
-                    <span>{selectedEntity[field.key] || 'N/A'}</span>
-                  </div>
-                ))}
+          {/* Información Académica */}
+          <div className="detail-section">
+            <h3 className="detail-section-title">Información Académica</h3>
+            {detailFields.filter(field => 
+              ['classroom', 'shift'].includes(field.key)
+            ).map((field) => (
+              <div key={field.key} className="detail-field">
+                <strong>{field.label}:</strong>
+                <span>{selectedEntity[field.key] || 'N/A'}</span>
               </div>
+            ))}
+          </div>
 
-              {/* Información de Contacto */}
-              <div className="detail-section">
-                <h3 className="detail-section-title">Información de Contacto</h3>
-                {detailFields.filter(field => 
-                  ['address'].includes(field.key)
-                ).map((field) => (
-                  <div key={field.key} className="detail-field">
-                    <strong>{field.label}:</strong>
-                    <span>{selectedEntity[field.key] || 'N/A'}</span>
-                  </div>
-                ))}
+          {/* Información de Contacto */}
+          <div className="detail-section">
+            <h3 className="detail-section-title">Información de Contacto</h3>
+            {detailFields.filter(field => 
+              ['address'].includes(field.key)
+            ).map((field) => (
+              <div key={field.key} className="detail-field">
+                <strong>{field.label}:</strong>
+                <span>{selectedEntity[field.key] || 'N/A'}</span>
               </div>
+            ))}
+          </div>
 
-              {/* Información del Sistema */}
-              <div className="detail-section">
-                <h3 className="detail-section-title">Información del Sistema</h3>
-                {detailFields.filter(field => 
-                  ['created_at', 'updated_at'].includes(field.key)
-                ).map((field) => {
-                  const value = field.type === 'date' 
-                    ? (selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A')
-                    : (selectedEntity[field.key] || 'N/A');
-                  
-                  return (
-                    <div key={field.key} className="detail-field">
-                      <strong>{field.label}:</strong>
-                      <span>{value}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Información del Sistema */}
+          <div className="detail-section">
+            <h3 className="detail-section-title">Información del Sistema</h3>
+            {detailFields.filter(field => 
+              ['created_at', 'updated_at'].includes(field.key)
+            ).map((field) => {
+              const value = field.type === 'date' 
+                ? (selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A')
+                : (selectedEntity[field.key] || 'N/A');
+              
+              return (
+                <div key={field.key} className="detail-field">
+                  <strong>{field.label}:</strong>
+                  <span>{value}</span>
+                </div>
+              );
+            })}
+          </div>
         </DetailModal>
       )}
     </div>
