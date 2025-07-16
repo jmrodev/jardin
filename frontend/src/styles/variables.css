@@ -234,9 +234,9 @@
   --modal-bg: var(--bg-card);
   --modal-border-radius: var(--radius-md, 8px);
   --modal-box-shadow: 0 4px 24px rgba(var(--color-black-rgb, 0,0,0), 0.12);
-  --modal-min-width: 320px;
-  --modal-max-width: 90vw;
-  --modal-max-height: 90vh;
+  --modal-min-width: 400px;
+  --modal-max-width: 700px;
+  --modal-max-height: 85vh;
   --modal-padding: 2rem;
   --modal-display: flex;
   --modal-flex-direction: column;
@@ -414,9 +414,9 @@
   --modal-bg: var(--bg-card);
   --modal-border-radius: var(--radius-md, 8px);
   --modal-box-shadow: 0 4px 24px rgba(var(--color-black-rgb, 0,0,0), 0.12);
-  --modal-min-width: 320px;
-  --modal-max-width: 90vw;
-  --modal-max-height: 90vh;
+  --modal-min-width: 400px;
+  --modal-max-width: 700px;
+  --modal-max-height: 85vh;
   --modal-padding: 2rem;
   --modal-display: flex;
   --modal-flex-direction: column;

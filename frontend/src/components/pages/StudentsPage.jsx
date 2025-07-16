@@ -145,17 +145,9 @@ export default function StudentsPage() {
   const renderStudentCard = (student) => (
     <div className="student-card-content">
       <div className="student-info">
-        <p><strong>{t('name')}:</strong> <span>{student.firstname}</span></p>
-        <p><strong>{t('lastnameFather')}:</strong> <span>{student.lastname_father}</span></p>
-        <p><strong>{t('lastnameMother')}:</strong> <span>{student.lastname_mother}</span></p>
-        <p><strong>{t('dni')}:</strong> <span>{student.dni}</span></p>
-        <p><strong>{t('classroom')}:</strong> <span>{student.classroom}</span></p>
-        <p><strong>{t('filters.shift')}:</strong> <span>{student.shift}</span></p>
-        <p><strong>{t('filters.gender')}:</strong> <span>{student.gender}</span></p>
-        <p><strong>{t('filters.age')}:</strong> <span>{calculateAge(student.birth_date)} {t('filters.years')}</span></p>
-        {student.birth_date && (
-          <p><strong>{t('birthDate')}:</strong> <span>{formatDate(student.birth_date)}</span></p>
-        )}
+        <p className="student-name">{student.firstname}</p>
+        <p className="student-details">{student.classroom} • {student.shift}</p>
+        <p className="student-age">{calculateAge(student.birth_date)} {t('filters.years')} • {student.gender}</p>
       </div>
     </div>
   );
@@ -185,10 +177,14 @@ export default function StudentsPage() {
           { key: 'lastname_father', label: t('lastnameFather') },
           { key: 'lastname_mother', label: t('lastnameMother') },
           { key: 'dni', label: t('dni') },
+          { key: 'address', label: 'Dirección' },
           { key: 'classroom', label: t('classroom') },
           { key: 'shift', label: t('filters.shift') },
           { key: 'gender', label: t('filters.gender') },
-          { key: 'birth_date', label: t('birthDate'), type: 'date' }
+          { key: 'birth_date', label: t('birthDate'), type: 'date' },
+          { key: 'age', label: t('filters.age'), type: 'calculated' },
+          { key: 'created_at', label: 'Fecha de registro', type: 'date' },
+          { key: 'updated_at', label: 'Última actualización', type: 'date' }
         ]}
       />
 
