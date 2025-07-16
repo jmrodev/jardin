@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import Button from '../atoms/Button/Button';
-import Icon from '../atoms/Icon';
-import LanguageSelector from '../atoms/LanguageSelector';
+import Icon from '../atoms/Icon/Icon';
+import LanguageSelector from '../atoms/LanguageSelector/LanguageSelector';
 import styles from './MainLayout.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 

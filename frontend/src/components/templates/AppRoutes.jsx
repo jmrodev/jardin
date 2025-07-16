@@ -1,13 +1,14 @@
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import LoginPage from '../pages/LoginPage';
-import DashboardPage from '../pages/DashboardPage';
-import StudentsPage from '../pages/StudentsPage';
-import TeachersPage from '../pages/TeachersPage';
-import AttendancePage from '../pages/AttendancePage';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import DashboardPage from '../pages/DashboardPage/DashboardPage';
+import StudentsPage from '../pages/StudentsPage/StudentsPage';
+import TeachersPage from '../pages/TeachersPage/TeachersPage';
+import AttendancePage from '../pages/AttendancePage/AttendancePage';
 import PersonsPage from '../pages/PersonsPage/PersonsPage.jsx';
 import ParentsPage from '../pages/ParentsPage/ParentsPage.jsx';
-import LoadingSpinner from '../molecules/LoadingSpinner';
+import LoadingSpinner from '../molecules/LoadingSpinner/LoadingSpinner';
 import MainLayout from './MainLayout';
 
 const AppRoutes = () => {
