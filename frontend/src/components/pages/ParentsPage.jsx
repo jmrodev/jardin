@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import api from '@/services/api/api.js';
-import ListPageLayout from '@/components/templates/ListPageLayout';
-import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
 import EntityGrid from '@/components/organisms/EntityGrid';
 import LoadingSpinner from '@/components/molecules/LoadingSpinner';
+import ListPageLayout from '@/components/templates/ListPageLayout';
+import personService from '@/services/api/persons';
 
 const ParentsPage = () => {
   const { t } = useTranslation();
@@ -63,16 +62,14 @@ const ParentsPage = () => {
   const fetchParents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.persons.list('parent', filters);
+      const response = await personService.list('parent');
       setParents(response.data);
-      setError(null);
     } catch (err) {
-      setError(err.message || t('fetchError'));
-      setParents([]);
+      setError(err.message || 'Failed to fetch parents');
     } finally {
       setLoading(false);
     }
-  }, [filters, t]);
+  }, []);
 
   useEffect(() => {
     fetchParents();
@@ -111,12 +108,15 @@ const ParentsPage = () => {
         <EntityGrid
           entities={parents}
           entityType="parent"
-          cardConfig={parentCardConfig}
-          detailConfig={parentDetailConfig}
-          formConfig={parentFormConfig}
           onEntityCreated={handleEntityCreated}
           onEntityUpdated={handleEntityUpdated}
           onEntityDeleted={handleEntityDeleted}
+          cardConfig={parentCardConfig}
+          detailConfig={parentDetailConfig}
+          formConfig={parentFormConfig}
+          createService={personService.create}
+          updateService={personService.update}
+          deleteService={personService.delete}
         />
       )}
     </ListPageLayout>

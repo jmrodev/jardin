@@ -19,6 +19,9 @@ const EntityGrid = ({
   cardConfig,
   detailConfig,
   formConfig, // Nueva prop
+  createService, // Nueva prop
+  updateService, // Nueva prop
+  deleteService, // Nueva prop
 }) => {
   const { t } = useTranslation();
   const [selectedEntity, setSelectedEntity] = useState(null);
@@ -128,7 +131,7 @@ const EntityGrid = ({
 
   const handleCreate = async (formData) => {
     try {
-      const response = await personService.create(entityType, formData);
+      const response = await createService(entityType, formData);
       onEntityCreated(response.data);
       setCreateModalOpen(false);
       showToast(`${t(entityType)} ${t('created_successfully')}`, 'success');
@@ -141,7 +144,7 @@ const EntityGrid = ({
 
   const handleUpdate = async (formData) => {
     try {
-      const response = await personService.update(selectedEntity.id, entityType, formData);
+      const response = await updateService(selectedEntity.id, entityType, formData);
       onEntityUpdated(response.data);
       setEditModalOpen(false);
       setSelectedEntity(null);
@@ -156,7 +159,7 @@ const EntityGrid = ({
   const handleDelete = async (entityId) => {
     if (window.confirm(t('confirmDelete'))) {
       try {
-        await personService.delete(entityId, entityType);
+        await deleteService(entityId, entityType);
         onEntityDeleted(entityId);
         setDetailModalOpen(false);
         setSelectedEntity(null);
@@ -323,6 +326,9 @@ EntityGrid.propTypes = {
     })
   ).isRequired,
   formConfig: PropTypes.object.isRequired,
+  createService: PropTypes.func.isRequired,
+  updateService: PropTypes.func.isRequired,
+  deleteService: PropTypes.func.isRequired,
 };
 
 EntityGrid.defaultProps = {

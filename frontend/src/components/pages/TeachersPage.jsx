@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import api from '@/services/api/api.js';
-import ListPageLayout from '@/components/templates/ListPageLayout';
-import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
 import EntityGrid from '@/components/organisms/EntityGrid';
 import LoadingSpinner from '@/components/molecules/LoadingSpinner';
+import ListPageLayout from '@/components/templates/ListPageLayout';
+import personService from '@/services/api/persons';
 
 const TeachersPage = () => {
   const { t } = useTranslation();
@@ -64,16 +63,14 @@ const TeachersPage = () => {
   const fetchTeachers = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.persons.list('teacher', filters);
+      const response = await personService.list('teacher');
       setTeachers(response.data);
-      setError(null);
     } catch (err) {
-      setError(err.message || t('fetchError'));
-      setTeachers([]);
+      setError(err.message || 'Failed to fetch teachers');
     } finally {
       setLoading(false);
     }
-  }, [filters, t]);
+  }, []);
 
   useEffect(() => {
     fetchTeachers();
@@ -112,12 +109,15 @@ const TeachersPage = () => {
         <EntityGrid
           entities={teachers}
           entityType="teacher"
-          cardConfig={teacherCardConfig}
-          detailConfig={teacherDetailConfig}
-          formConfig={teacherFormConfig}
           onEntityCreated={handleEntityCreated}
           onEntityUpdated={handleEntityUpdated}
           onEntityDeleted={handleEntityDeleted}
+          cardConfig={teacherCardConfig}
+          detailConfig={teacherDetailConfig}
+          formConfig={teacherFormConfig}
+          createService={personService.create}
+          updateService={personService.update}
+          deleteService={personService.delete}
         />
       )}
     </ListPageLayout>

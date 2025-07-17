@@ -4,7 +4,8 @@ import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
 import EntityGrid from '@/components/organisms/EntityGrid';
 import LoadingSpinner from '@/components/molecules/LoadingSpinner';
 import ListPageLayout from '@/components/templates/ListPageLayout';
-import api from '@/services/api/api.js';
+import personService from '@/services/api/persons'; // Usamos el servicio específico
+import classroomService from '@/services/api/classroom'; // Para las aulas
 import '@/styles/pages/students.css';
 
 const StudentsPage = () => {
@@ -151,7 +152,7 @@ const StudentsPage = () => {
   const fetchStudents = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.persons.list('student', filters);
+      const response = await personService.list('student', filters);
       setStudents(response.data);
       setError(null);
     } catch (err) {
@@ -169,7 +170,7 @@ const StudentsPage = () => {
   useEffect(() => {
     const fetchClassrooms = async () => {
       try {
-        const response = await api.classrooms.list();
+        const response = await classroomService.list();
         setClassrooms(response.data);
       } catch (error) {
         console.error("Error fetching classrooms:", error);
@@ -219,6 +220,9 @@ const StudentsPage = () => {
             cardConfig={studentCardConfig}
             detailConfig={studentDetailConfig}
             formConfig={studentFormConfig}
+            createService={personService.create}
+            updateService={personService.update}
+            deleteService={personService.delete}
           />
         )}
       </div>
