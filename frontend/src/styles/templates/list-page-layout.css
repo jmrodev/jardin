@@ -1,0 +1,29 @@
+.list-page-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-large);
+  padding: var(--spacing-medium);
+  height: calc(100vh - var(--header-height, 60px) - var(--spacing-medium) * 2);
+}
+
+.list-page-layout__filters {
+  background-color: var(--color-background-secondary);
+  padding: var(--spacing-medium);
+  border-radius: var(--border-radius);
+  overflow-y: auto;
+}
+
+.list-page-layout__content {
+  overflow-y: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .list-page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .list-page-layout__filters {
+    margin-bottom: var(--spacing-medium);
+  }
+} 

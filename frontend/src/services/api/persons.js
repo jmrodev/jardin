@@ -1,6 +1,25 @@
-import { fetchResource } from './baseResource';
+import api from './base.js';
 
-export const getPersons = () => fetchResource('/persons');
-export const createPerson = (data) => fetchResource('/persons', 'POST', data);
-export const updatePerson = (id, data) => fetchResource(`/persons/${id}`, 'PUT', data);
-export const deletePerson = (id) => fetchResource(`/persons/${id}`, 'DELETE'); 
+const personService = {
+  list(personType, params = {}) {
+    return api.get(`/${personType}s`, { params });
+  },
+
+  get(id, personType) {
+    return api.get(`/${personType}s/${id}`);
+  },
+
+  create(personType, data) {
+    return api.post(`/${personType}s`, data);
+  },
+
+  update(id, personType, data) {
+    return api.put(`/${personType}s/${id}`, data);
+  },
+
+  delete(id, personType) {
+    return api.delete(`/${personType}s/${id}`);
+  },
+};
+
+export default personService;

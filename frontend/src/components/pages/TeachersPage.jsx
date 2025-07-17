@@ -1,80 +1,126 @@
-import React, { useEffect, useState } from 'react';
-import { getPersons, deletePerson, updatePerson } from '../../services/api/person';
-import EntityGrid from '../organisms/EntityGrid';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../molecules/DetailModal';
-import TeacherForm from '../organisms/TeacherForm';
+import api from '@/services/api/api.js';
+import ListPageLayout from '@/components/templates/ListPageLayout';
+import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
+import EntityGrid from '@/components/organisms/EntityGrid';
+import LoadingSpinner from '@/components/molecules/LoadingSpinner';
+
 const TeachersPage = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
   const { t } = useTranslation();
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({});
+
+  // Configuraciones para Profesores
+  const teacherCardConfig = {
+    title: (teacher) => `${teacher.name} ${teacher.lastname_father}`,
+    subtitle: (teacher) => teacher.email,
+    detail: (teacher) => teacher.phone,
+  };
+
+  const teacherDetailConfig = [
+    { key: 'name', label: t('name') },
+    { key: 'lastname_father', label: t('lastnameFather') },
+    { key: 'lastname_mother', label: t('lastnameMother') },
+    { key: 'dni', label: t('dni') },
+    { key: 'birthdate', label: t('birthdate'), type: 'date' },
+    { key: 'address', label: t('address') },
+    { key: 'phone', label: t('phone') },
+    { key: 'email', label: t('email') },
+  ];
+
+  const teacherFilterConfig = [
+    // Por ahora, un filtro simple. Se pueden añadir más si es necesario.
+    { name: 'name', label: t('name'), type: 'text', placeholder: t('search_by_name') },
+  ];
+
+  const teacherFormConfig = {
+    createTitle: t('addTeacher'),
+    editTitle: t('editTeacher'),
+    sections: [
+      {
+        title: t('personal_information'),
+        fields: [
+            { name: 'name', label: t('name'), type: 'text' },
+            { name: 'lastname_father', label: t('lastnameFather'), type: 'text' },
+            { name: 'lastname_mother', label: t('lastnameMother'), type: 'text' },
+            { name: 'dni', label: t('dni'), type: 'text' },
+            { name: 'birthdate', label: t('birthdate'), type: 'date' },
+        ]
+      },
+      {
+        title: t('contact_information'),
+        fields: [
+          { name: 'address', label: t('address'), type: 'text' },
+          { name: 'phone', label: t('phone'), type: 'tel' },
+          { name: 'email', label: t('email'), type: 'email' },
+        ]
+      },
+    ]
+  };
+
+  const fetchTeachers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.persons.list('teacher', filters);
+      setTeachers(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err.message || t('fetchError'));
+      setTeachers([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [filters, t]);
 
   useEffect(() => {
-    getPersons('teacher').then(setTeachers);
-  }, []);
+    fetchTeachers();
+  }, [fetchTeachers]);
 
-  const handleEdit = (teacher) => {
-    setEditData(teacher);
-    setEditModalOpen(true);
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
   };
 
-  const handleEditSave = async (teacherData) => {
-    try {
-      await updatePerson(teacherData.id, teacherData, 'teacher');
-      setEditModalOpen(false);
-      setEditData(null);
-      getPersons('teacher').then(setTeachers);
-      alert(t('teacherUpdated'));
-    } catch (error) {
-      alert(t('editTeacherError'));
-    }
+  const handleEntityCreated = (newEntity) => {
+    setTeachers((prev) => [newEntity, ...prev]);
   };
 
-  const handleEditCancel = () => {
-    setEditModalOpen(false);
-    setEditData(null);
+  const handleEntityUpdated = (updatedEntity) => {
+    setTeachers((prev) =>
+      prev.map((e) => (e.id === updatedEntity.id ? updatedEntity : e))
+    );
   };
 
-  const handleDelete = async (teacher) => {
-    try {
-      await deletePerson(teacher.id, 'teacher');
-      setTeachers(teachers.filter(t => t.id !== teacher.id));
-    } catch (error) {
-      alert(t('deleteError'));
-    }
+  const handleEntityDeleted = (entityId) => {
+    setTeachers((prev) => prev.filter((e) => e.id !== entityId));
   };
 
   return (
-    <EntityGrid
-      title={t('teachersManagement')}
-      entities={teachers}
-      fields={[
-        { key: 'name', label: t('name') },
-        { key: 'birthDate', label: t('birthDate'), isDate: true }
-      ]}
-      onAdd={() => setShowForm((v) => !v)}
-      renderForm={showForm ? <TeacherForm onSubmit={() => {}} onCancel={() => setShowForm(false)} /> : null}
-      entityLabel={t('teacherDetails')}
-      actions={[
-        {
-          label: t('edit'),
-          icon: 'edit',
-          onClick: handleEdit
-        },
-        {
-          label: t('delete'),
-          icon: 'trash',
-          color: 'danger',
-          onClick: handleDelete
-        }
-      ]}
+    <ListPageLayout
+      filters={
+        <FilterPanel
+          filterConfig={teacherFilterConfig}
+          onFilterChange={handleFilterChange}
+        />
+      }
     >
-      <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
-        <TeacherForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
-      </DetailModal>
-    </EntityGrid>
+      {loading && <LoadingSpinner />}
+      {error && <p className="error-message">{error}</p>}
+      {!loading && !error && (
+        <EntityGrid
+          entities={teachers}
+          entityType="teacher"
+          cardConfig={teacherCardConfig}
+          detailConfig={teacherDetailConfig}
+          formConfig={teacherFormConfig}
+          onEntityCreated={handleEntityCreated}
+          onEntityUpdated={handleEntityUpdated}
+          onEntityDeleted={handleEntityDeleted}
+        />
+      )}
+    </ListPageLayout>
   );
 };
 

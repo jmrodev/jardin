@@ -1,77 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { getPersons } from '../../services/api/persons';
 import Button from '../atoms/Button';
 import { useTranslation } from 'react-i18next';
 
-export default function StudentForm({ onSubmit, onCancel, initialData }) {
+export default function StudentForm({ onSubmit, onCancel, initialData, classrooms = [] }) {
   const { t } = useTranslation();
-  const [form, setForm] = React.useState({
-    firstname: initialData?.firstname || '',
+  
+  const [form, setForm] = useState({
+    name: initialData?.name || '',
     lastname_father: initialData?.lastname_father || '',
     lastname_mother: initialData?.lastname_mother || '',
     address: initialData?.address || '',
     dni: initialData?.dni || '',
     gender: initialData?.gender || '',
-    classroom: initialData?.classroom || '',
+    classroom_id: initialData?.classroom_id || '',
     shift: initialData?.shift || '',
-    birth_date: initialData?.birth_date || '',
+    birthdate: initialData?.birthdate ? new Date(initialData.birthdate).toISOString().split('T')[0] : '',
   });
+
   const [errors, setErrors] = useState({});
-  const [persons, setPersons] = useState([]);
 
   useEffect(() => {
-    // Obtener personas reales del backend
-    const fetchPersons = async () => {
-      try {
-        const data = await getPersons();
-        setPersons(data);
-      } catch (error) {
-        setPersons([]);
-        alert('Error al obtener personas');
-      }
-    };
-    fetchPersons();
-  }, []);
-
-  const handleResponsibleChange = (idx, field, value) => {
-    const updated = [...form.responsibles];
-    updated[idx][field] = value;
-    setForm(prev => ({ ...prev, responsibles: updated }));
-  };
-
-  const addResponsible = () => {
-    setForm(prev => ({
-      ...prev,
-      responsibles: [
-        ...prev.responsibles,
-        { person_id: '', can_pickup: false, can_change_diapers: false, type: '', notes: '' }
-      ]
-    }));
-  };
-
-  const removeResponsible = idx => {
-    setForm(prev => ({
-      ...prev,
-      responsibles: prev.responsibles.filter((_, i) => i !== idx)
-    }));
-  };
-
+    if (initialData) {
+      setForm({
+        name: initialData.name || '',
+        lastname_father: initialData.lastname_father || '',
+        lastname_mother: initialData.lastname_mother || '',
+        address: initialData.address || '',
+        dni: initialData.dni || '',
+        gender: initialData.gender || '',
+        classroom_id: initialData.classroom_id || '',
+        shift: initialData.shift || '',
+        birthdate: initialData.birthdate ? new Date(initialData.birthdate).toISOString().split('T')[0] : '',
+      });
+    }
+  }, [initialData]);
+  
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(form);
+    const dataToSubmit = {
+      ...initialData,
+      ...form,
+      person_type: 'student',
+    };
+    onSubmit(dataToSubmit);
   };
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
       <input
         className="input-field"
-        name="firstname"
+        name="name"
         placeholder={t('name')}
-        value={form.firstname}
+        value={form.name}
         onChange={handleChange}
         required
       />
@@ -89,7 +74,6 @@ export default function StudentForm({ onSubmit, onCancel, initialData }) {
         placeholder={t('lastnameMother')}
         value={form.lastname_mother}
         onChange={handleChange}
-        required
       />
       <input
         className="input-field"
@@ -116,21 +100,23 @@ export default function StudentForm({ onSubmit, onCancel, initialData }) {
         required
       >
         <option value="">{t('filters.gender')}</option>
-        <option value="varón">{t('filters.male')}</option>
-        <option value="mujer">{t('filters.female')}</option>
+        <option value="Masculino">{t('filters.male')}</option>
+        <option value="Femenino">{t('filters.female')}</option>
       </select>
 
       <select
         className="input-field"
-        name="classroom"
-        value={form.classroom}
+        name="classroom_id"
+        value={form.classroom_id}
         onChange={handleChange}
         required
       >
         <option value="">{t('classroom')}</option>
-        <option value="Sala 3">Sala 3</option>
-        <option value="Sala 4">Sala 4</option>
-        <option value="Sala 5">Sala 5</option>
+        {classrooms.map(classroom => (
+          <option key={classroom.id} value={classroom.id}>
+            {classroom.name}
+          </option>
+        ))}
       </select>
 
       <select
@@ -147,10 +133,10 @@ export default function StudentForm({ onSubmit, onCancel, initialData }) {
 
       <input
         className="input-field"
-        name="birth_date"
+        name="birthdate"
         type="date"
         placeholder={t('birthDate')}
-        value={form.birth_date}
+        value={form.birthdate}
         onChange={handleChange}
         required
       />

@@ -1,237 +1,190 @@
 import React, { useState } from 'react';
-import DetailModal from '../molecules/DetailModal';
-import Button from '../atoms/Button';
-import formatDate from '../../utils/formatDate';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import Icon from '../atoms/Icon';
+import Button from '@/components/atoms/Button';
+import DetailModal from '@/components/molecules/DetailModal';
+import EntityForm from '@/components/organisms/EntityForm'; // Usamos el genérico
+import api from '@/services/api/api.js';
+import formatDate from '@/utils/formatDate';
+import '@/styles/components/organisms/entity-grid.css';
 
-export default function EntityGridTemplate({ 
-  title, 
-  entities, 
-  onAdd, 
-  onEdit, 
-  onDelete, 
-  onViewDetails,
-  isLoading,
-  error,
-  entityType = 'entity',
-  renderEntityCard,
-  addButtonText,
-  emptyMessage,
-  detailFields = []
-}) {
+const EntityGrid = ({
+  entities,
+  entityType,
+  onEntityCreated,
+  onEntityUpdated,
+  onEntityDeleted,
+  classrooms,
+  cardConfig,
+  detailConfig,
+  formConfig, // Nueva prop
+}) => {
   const { t } = useTranslation();
   const [selectedEntity, setSelectedEntity] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
-  const handleViewDetails = (entity) => {
+  const getDisplayValue = (entity, fieldConfig) => {
+    if (fieldConfig.type === 'date') {
+      return formatDate(entity[fieldConfig.key]);
+    }
+    if (fieldConfig.getValue) {
+      return fieldConfig.getValue(entity);
+    }
+    return entity[fieldConfig.key] || t('notAssigned');
+  };
+
+  const handleCardClick = (entity) => {
     setSelectedEntity(entity);
-    setIsModalOpen(true);
+    setDetailModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const openEditModal = (entity) => {
+    setSelectedEntity(entity);
+    setDetailModalOpen(false);
+    setEditModalOpen(true);
+  };
+
+  const openCreateModal = () => {
     setSelectedEntity(null);
+    setCreateModalOpen(true);
   };
 
-  if (isLoading) {
-    return (
-      <div className="loading-spinner-container">
-        <div className="spinner"></div>
-        <p className="loading-text">{t('common.loading')}</p>
-      </div>
-    );
-  }
+  const handleCreate = async (formData) => {
+    try {
+      const response = await api.persons.create(entityType, formData);
+      onEntityCreated(response.data);
+      setCreateModalOpen(false);
+    } catch (error) {
+      console.error(`Error creating ${entityType}:`, error);
+    }
+  };
 
-  if (error) {
-    return (
-      <div className="error-message">
-        {error}
-      </div>
-    );
-  }
+  const handleUpdate = async (formData) => {
+    try {
+      const response = await api.persons.update(selectedEntity.id, entityType, formData);
+      onEntityUpdated(response.data);
+      setEditModalOpen(false);
+      setSelectedEntity(null);
+    } catch (error) {
+      console.error(`Error updating ${entityType}:`, error);
+    }
+  };
+
+  const handleDelete = async (entityId) => {
+    if (window.confirm(t('confirmDelete'))) {
+      try {
+        await api.persons.delete(entityId, entityType);
+        onEntityDeleted(entityId);
+        setDetailModalOpen(false);
+        setSelectedEntity(null);
+      } catch (error) {
+        console.error(`Error deleting ${entityType}:`, error);
+      }
+    }
+  };
+
+  const renderCardContent = (entity) => (
+    <div className="card-content-wrapper">
+      <h4>{cardConfig.title(entity)}</h4>
+      <p>{cardConfig.subtitle(entity)}</p>
+      <span>{cardConfig.detail(entity)}</span>
+    </div>
+  );
 
   return (
     <div className="entity-grid-container">
       <div className="entity-grid-header">
-        <h2 className="entity-grid-title">{title}</h2>
-        {onAdd && (
-          <Button onClick={onAdd} variant="primary">
-            <Icon name="Plus" size={16} />
-            {addButtonText || t('common.add')}
-          </Button>
-        )}
+        <h2>{t(`${entityType}sManagement`)}</h2>
+        <Button onClick={openCreateModal} className="button--primary">
+          {`${t('addNew')} ${t(entityType)}`}
+        </Button>
       </div>
 
       {entities.length === 0 ? (
-        <div className="empty-state">
-          <Icon name="Inbox" size={48} />
-          <p>{emptyMessage || t('common.noData')}</p>
-        </div>
+        <p className="no-results-message">{t('no_results')}</p>
       ) : (
         <div className="entity-grid">
           {entities.map((entity) => (
-            <div 
-              key={entity.id} 
+            <div
+              key={entity.id}
               className="card"
-              onClick={() => handleViewDetails(entity)}
-              style={{ cursor: 'pointer' }}
+              onClick={() => handleCardClick(entity)}
             >
-              <div className="card-header">
-                <div className="card-title">
-                  <div className="student-firstname">{entity.firstname}</div>
-                  <div className="student-lastnames">
-                    {entity.lastname_father} {entity.lastname_mother}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="card-content">
-                {renderEntityCard ? (
-                  renderEntityCard(entity)
-                ) : (
-                  <div>
-                    {entity.description && <p>{entity.description}</p>}
-                    {entity.email && <p>Email: {entity.email}</p>}
-                    {entity.phone && <p>Teléfono: {entity.phone}</p>}
-                    {entity.created_at && (
-                      <p>Creado: {formatDate(entity.created_at)}</p>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <div className="card-footer">
-                {entity.updated_at && (
-                  <span className="card-date">
-                    Actualizado: {formatDate(entity.updated_at)}
-                  </span>
-                )}
-              </div>
+              {renderCardContent(entity)}
             </div>
           ))}
         </div>
       )}
 
-      {selectedEntity && (
-        <DetailModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          title={
-            selectedEntity.firstname 
-              ? `${selectedEntity.firstname} ${selectedEntity.lastname_father || ''} ${selectedEntity.lastname_mother || ''}`.trim()
-              : selectedEntity.name || `Detalles de ${entityType}`
-          }
-        >
-          <div className="modal-actions">
-            {onEdit && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  onEdit(selectedEntity);
-                  handleCloseModal();
-                }}
-              >
-                <Icon name="Edit" size={16} />
-                Editar
-              </Button>
-            )}
-            {onDelete && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => {
-                  onDelete(selectedEntity.id);
-                  handleCloseModal();
-                }}
-              >
-                <Icon name="Trash2" size={16} />
-                Eliminar
-              </Button>
-            )}
+      <DetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        title={t('detailsOf', { entityName: selectedEntity ? cardConfig.title(selectedEntity) : '' })}
+      >
+        {selectedEntity && (
+          <div className="entity-details">
+            <ul>
+              {detailConfig.map((field) => (
+                <li key={field.key}>
+                  <strong>{field.label}:</strong> {getDisplayValue(selectedEntity, field)}
+                </li>
+              ))}
+            </ul>
+            <div className="entity-details__actions">
+              <Button onClick={() => openEditModal(selectedEntity)} className="button--secondary">{t('edit')}</Button>
+              <Button onClick={() => handleDelete(selectedEntity.id)} className="button--danger">{t('delete')}</Button>
+            </div>
           </div>
-          
-          {/* Información Personal */}
-          <div className="detail-section">
-            <h3 className="detail-section-title">Información Personal</h3>
-            {detailFields.filter(field => 
-              ['firstname', 'lastname_father', 'lastname_mother', 'dni', 'gender', 'birth_date', 'age'].includes(field.key)
-            ).map((field) => {
-              let value = 'N/A';
-              
-              if (field.type === 'date') {
-                value = selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A';
-              } else if (field.type === 'calculated' && field.key === 'age') {
-                // Calcular edad para el modal
-                const today = new Date();
-                const birth = new Date(selectedEntity.birth_date);
-                let age = today.getFullYear() - birth.getFullYear();
-                const monthDiff = today.getMonth() - birth.getMonth();
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-                  age--;
-                }
-                value = `${age} años`;
-              } else {
-                value = selectedEntity[field.key] || 'N/A';
-              }
-              
-              return (
-                <div key={field.key} className="detail-field">
-                  <strong>{field.label}:</strong>
-                  <span>{value}</span>
-                </div>
-              );
-            })}
-          </div>
+        )}
+      </DetailModal>
 
-          {/* Información Académica */}
-          <div className="detail-section">
-            <h3 className="detail-section-title">Información Académica</h3>
-            {detailFields.filter(field => 
-              ['classroom', 'shift'].includes(field.key)
-            ).map((field) => (
-              <div key={field.key} className="detail-field">
-                <strong>{field.label}:</strong>
-                <span>{selectedEntity[field.key] || 'N/A'}</span>
-              </div>
-            ))}
-          </div>
+      <DetailModal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
+        <EntityForm
+          formConfig={formConfig}
+          initialData={selectedEntity}
+          onSubmit={handleUpdate}
+          onCancel={() => setEditModalOpen(false)}
+        />
+      </DetailModal>
 
-          {/* Información de Contacto */}
-          <div className="detail-section">
-            <h3 className="detail-section-title">Información de Contacto</h3>
-            {detailFields.filter(field => 
-              ['address'].includes(field.key)
-            ).map((field) => (
-              <div key={field.key} className="detail-field">
-                <strong>{field.label}:</strong>
-                <span>{selectedEntity[field.key] || 'N/A'}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Información del Sistema */}
-          <div className="detail-section">
-            <h3 className="detail-section-title">Información del Sistema</h3>
-            {detailFields.filter(field => 
-              ['created_at', 'updated_at'].includes(field.key)
-            ).map((field) => {
-              const value = field.type === 'date' 
-                ? (selectedEntity[field.key] ? formatDate(selectedEntity[field.key]) : 'N/A')
-                : (selectedEntity[field.key] || 'N/A');
-              
-              return (
-                <div key={field.key} className="detail-field">
-                  <strong>{field.label}:</strong>
-                  <span>{value}</span>
-                </div>
-              );
-            })}
-          </div>
-        </DetailModal>
-      )}
+      <DetailModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)}>
+        <EntityForm
+          formConfig={formConfig}
+          onSubmit={handleCreate}
+          onCancel={() => setCreateModalOpen(false)}
+        />
+      </DetailModal>
     </div>
   );
-} 
+};
+
+EntityGrid.propTypes = {
+  entities: PropTypes.array.isRequired,
+  entityType: PropTypes.string.isRequired,
+  onEntityCreated: PropTypes.func.isRequired,
+  onEntityUpdated: PropTypes.func.isRequired,
+  onEntityDeleted: PropTypes.func.isRequired,
+  classrooms: PropTypes.array,
+  cardConfig: PropTypes.shape({
+    title: PropTypes.func.isRequired,
+    subtitle: PropTypes.func.isRequired,
+    detail: PropTypes.func.isRequired,
+  }).isRequired,
+  detailConfig: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      getValue: PropTypes.func,
+    })
+  ).isRequired,
+  formConfig: PropTypes.object.isRequired,
+};
+
+EntityGrid.defaultProps = {
+  classrooms: [],
+};
+
+export default EntityGrid; 

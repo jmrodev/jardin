@@ -1,86 +1,24 @@
-/* Students List */
-.students-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: var(--space-xs);
-  padding: var(--space-xs);
+/* frontend/src/styles/pages/students.css */
+
+/*
+  Estilos para el layout principal de la página de estudiantes.
+  La estructura de dos columnas (filtros y contenido) se ha movido a
+  /styles/templates/list-page-layout.css para ser reutilizable.
+  Aquí solo quedan los estilos específicos del contenido de esta página.
+*/
+
+.students-page-content {
+  /* Si se necesitan estilos específicos para el contenedor del contenido, van aquí. */
+  width: 100%;
 }
 
-/* Student-specific card overrides */
-.students-list .card-content {
+.error-message {
+  color: var(--color-danger);
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: var(--spacing-medium);
 }
 
-.student-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-}
-
-.student-details {
-  margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  line-height: 1.1;
-}
-
-.student-age {
-  margin: 0;
-  font-size: 0.7em;
-  color: var(--text-tertiary);
-  line-height: 1.1;
-}
-
-/* Student-specific card content styles */
-.student-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-}
-
-.student-details {
-  margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  line-height: 1.1;
-}
-
-.student-age {
-  margin: 0;
-  font-size: 0.7em;
-  color: var(--text-tertiary);
-  line-height: 1.1;
-}
-
-.student-name {
-  margin: 0;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  line-height: 1.2;
-  text-align: center;
-  word-break: break-word;
-}
-
-.student-details {
-  margin: 0;
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  line-height: 1.2;
-}
-
-.student-age {
-  margin: 0;
-  font-size: 0.7em;
-  color: var(--text-tertiary);
-  line-height: 1.2;
-}
-
-/* Actions in student cards are now handled by generic .card-actions */
-
-/* El resto de los estilos de filtros se han movido a components/molecules/student-filters.css */ 
+/* Mantener estilos relacionados con la responsividad si son específicos */
+@media (max-width: 768px) {
+  /* ... */
+} 

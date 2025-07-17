@@ -142,6 +142,7 @@ const resources = {
       'common.no': 'No',
       'common.ok': 'OK',
       'common.noData': 'No hay datos disponibles',
+      'detailsOf': 'Detalles de {{entityName}}',
       
       // Roles
       'roles.admin': 'Administrador',
@@ -342,6 +343,7 @@ const resources = {
       'common.no': 'No',
       'common.ok': 'OK',
       'common.noData': 'No data available',
+      'detailsOf': 'Details of {{entityName}}',
       
       // Roles
       'roles.admin': 'Administrator',

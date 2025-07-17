@@ -8,7 +8,7 @@ export const login = async (req, res) => {
     const pool = getConnection();
     
     const [users] = await pool.execute(
-      'SELECT * FROM staff WHERE username = ?',
+      'SELECT * FROM persons WHERE username = ?',
       [username]
     );
     
@@ -31,7 +31,7 @@ export const login = async (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        role: user.role,
+        role: user.person_type,
         name: user.name
       }
     });

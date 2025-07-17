@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { configureRoutes } from './config/routes.js';
+import apiRouter from './config/routes.js'; // Importar el enrutador por defecto
 import { connectDatabase } from './config/database.js';
 import { configureMiddleware } from './config/middleware.js';
 
@@ -18,7 +18,7 @@ configureMiddleware(app);
 app.use(cors());
 
 // Configure routes
-configureRoutes(app);
+app.use('/api', apiRouter); // Usar el enrutador principal bajo /api
 
 // Test route
 app.get('/', (req, res) => {

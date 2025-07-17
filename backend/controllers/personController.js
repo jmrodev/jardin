@@ -2,7 +2,8 @@ import personService from '../services/personService.js';
 
 const getPersons = (personType) => async (req, res) => {
   try {
-    const persons = await personService.getPersons(personType);
+    const filters = req.query;
+    const persons = await personService.getPersons(personType, filters);
     res.json(persons);
   } catch (error) {
     res.status(500).json({ message: error.message });

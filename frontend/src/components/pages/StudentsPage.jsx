@@ -1,201 +1,202 @@
-import React, { useEffect, useState } from 'react';
-import { getPersons, createPerson, deletePerson, updatePerson } from '../../services/api/person';
-import EntityGrid from '../organisms/EntityGrid';
-import StudentForm from '../organisms/StudentForm';
-import StudentFilters from '../molecules/StudentFilters/StudentFilters';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../molecules/DetailModal';
-import formatDate from '../../utils/formatDate';
+import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
+import EntityGrid from '@/components/organisms/EntityGrid';
+import LoadingSpinner from '@/components/molecules/LoadingSpinner';
+import ListPageLayout from '@/components/templates/ListPageLayout';
+import api from '@/services/api/api.js';
+import '@/styles/pages/students.css';
 
-export default function StudentsPage() {
+const StudentsPage = () => {
   const [students, setStudents] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
-  const [filters, setFilters] = useState({
-    classroom: '',
-    shift: '',
-    age: '',
-    gender: ''
-  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filters, setFilters] = useState({});
+  const [classrooms, setClassrooms] = useState([]);
   const { t } = useTranslation();
+
+  const calculateAge = (birthdate) => {
+    if (!birthdate) return '';
+    const age = new Date().getFullYear() - new Date(birthdate).getFullYear();
+    return `${age} ${t('years_old')}`;
+  };
+
+  const studentCardConfig = {
+    title: (student) => `${student.name} ${student.lastname_father}`,
+    subtitle: (student) => student.classroom_name || t('no_classroom'),
+    detail: (student) => calculateAge(student.birthdate),
+  };
+
+  const studentDetailConfig = [
+    { key: 'name', label: t('name') },
+    { key: 'lastname_father', label: t('lastnameFather') },
+    { key: 'lastname_mother', label: t('lastnameMother') },
+    { key: 'dni', label: t('dni') },
+    { key: 'birthdate', label: t('birthdate'), type: 'date' },
+    { 
+      key: 'age', 
+      label: t('age'), 
+      getValue: (student) => calculateAge(student.birthdate) 
+    },
+    { key: 'classroom_name', label: t('classroom') },
+    { key: 'shift', label: t('shift') },
+    { key: 'gender', label: t('gender') },
+    { key: 'address', label: t('address') },
+    { key: 'phone', label: t('phone') },
+    { key: 'email', label: t('email') },
+  ];
+
+  const studentFilterConfig = [
+    {
+      name: 'classroom_id',
+      label: t('filters.classroom'),
+      type: 'select',
+      placeholder: t('filters.allClassrooms'),
+      options: classrooms.map((c) => ({ value: c.id, label: c.name })),
+    },
+    {
+      name: 'age',
+      label: t('filters.age'),
+      type: 'select',
+      placeholder: t('filters.allAges'),
+      options: [
+        { value: '3', label: t('filters.age3') },
+        { value: '4', label: t('filters.age4') },
+        { value: '5', label: t('filters.age5') },
+        { value: '6', label: t('filters.age6') },
+      ],
+    },
+    {
+      name: 'shift',
+      label: t('filters.shift'),
+      type: 'select',
+      placeholder: t('filters.allShifts'),
+      options: [
+        { value: 'Mañana', label: t('filters.morning') },
+        { value: 'Tarde', label: t('filters.afternoon') },
+      ],
+    },
+    {
+      name: 'gender',
+      label: t('filters.gender'),
+      type: 'select',
+      placeholder: t('filters.allGenders'),
+      options: [
+        { value: 'Masculino', label: t('filters.male') },
+        { value: 'Femenino', label: t('filters.female') },
+      ],
+    },
+  ];
+
+  const studentFormConfig = {
+    createTitle: t('addStudent'),
+    editTitle: t('editStudent'),
+    sections: [
+      {
+        title: t('personal_information'),
+        fields: [
+          { name: 'name', label: t('name'), type: 'text', placeholder: t('name_placeholder') },
+          { name: 'lastname_father', label: t('lastnameFather'), type: 'text', placeholder: t('lastname_father_placeholder') },
+          { name: 'lastname_mother', label: t('lastnameMother'), type: 'text', placeholder: t('lastname_mother_placeholder') },
+          { name: 'dni', label: t('dni'), type: 'text', placeholder: t('dni_placeholder') },
+          { name: 'birthdate', label: t('birthdate'), type: 'date' },
+          { name: 'gender', label: t('gender'), type: 'select', options: [ {value: 'Masculino', label: t('male')}, {value: 'Femenino', label: t('female')} ] },
+        ]
+      },
+      {
+        title: t('contact_information'),
+        fields: [
+          { name: 'address', label: t('address'), type: 'text', placeholder: t('address_placeholder') },
+          { name: 'phone', label: t('phone'), type: 'tel', placeholder: t('phone_placeholder') },
+          { name: 'email', label: t('email'), type: 'email', placeholder: t('email_placeholder') },
+        ]
+      },
+      {
+        title: t('academic_information'),
+        fields: [
+          { name: 'classroom_id', label: t('classroom'), type: 'select', options: classrooms.map(c => ({ value: c.id, label: c.name })) },
+          { name: 'shift', label: t('shift'), type: 'select', options: [ {value: 'Mañana', label: t('morning')}, {value: 'Tarde', label: t('afternoon')} ] },
+        ]
+      }
+    ]
+  };
+
+  const fetchStudents = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.persons.list('student', filters);
+      setStudents(response.data);
+      setError(null);
+    } catch (err) {
+      setError(err.message || t('fetchError'));
+      setStudents([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [filters, t]);
 
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [fetchStudents]);
 
   useEffect(() => {
-    applyFilters();
-  }, [students, filters]);
-
-  const fetchStudents = async () => {
-    try {
-      const data = await getPersons('student');
-      setStudents(data);
-    } catch (error) {
-      alert(t('fetchStudentsError'));
-    }
-  };
-
-  // Función para calcular la edad basada en la fecha de nacimiento
-  const calculateAge = (birthDate) => {
-    const today = new Date();
-    const birth = new Date(birthDate);
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-    
-    return age;
-  };
-
-  // Función para aplicar filtros
-  const applyFilters = () => {
-    let filtered = [...students];
-
-    // Filtro por sala
-    if (filters.classroom) {
-      filtered = filtered.filter(student => student.classroom === filters.classroom);
-    }
-
-    // Filtro por turno
-    if (filters.shift) {
-      filtered = filtered.filter(student => student.shift === filters.shift);
-    }
-
-    // Filtro por edad
-    if (filters.age) {
-      filtered = filtered.filter(student => {
-        const age = calculateAge(student.birth_date);
-        return age === parseInt(filters.age);
-      });
-    }
-
-    // Filtro por género
-    if (filters.gender) {
-      filtered = filtered.filter(student => student.gender === filters.gender);
-    }
-
-    setFilteredStudents(filtered);
-  };
+    const fetchClassrooms = async () => {
+      try {
+        const response = await api.classrooms.list();
+        setClassrooms(response.data);
+      } catch (error) {
+        console.error("Error fetching classrooms:", error);
+      }
+    };
+    fetchClassrooms();
+  }, []);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
-  const handleClearFilters = () => {
-    setFilters({
-      classroom: '',
-      shift: '',
-      age: '',
-      gender: ''
-    });
+  const handleEntityCreated = (newEntity) => {
+    setStudents((prev) => [newEntity, ...prev]);
   };
 
-  const handleAddStudent = async (studentData) => {
-    try {
-      await createPerson(studentData, 'student');
-      await fetchStudents();
-      setShowForm(false);
-      alert(t('studentAdded'));
-    } catch (error) {
-      alert(t('addStudentError'));
-    }
+  const handleEntityUpdated = (updatedEntity) => {
+    setStudents((prev) =>
+      prev.map((e) => (e.id === updatedEntity.id ? updatedEntity : e))
+    );
   };
 
-  const handleEdit = (student) => {
-    setEditData(student);
-    setEditModalOpen(true);
+  const handleEntityDeleted = (entityId) => {
+    setStudents((prev) => prev.filter((e) => e.id !== entityId));
   };
-
-  const handleEditSave = async (studentData) => {
-    try {
-      await updatePerson(studentData.id, studentData, 'student');
-      await fetchStudents();
-      setEditModalOpen(false);
-      setEditData(null);
-      alert(t('studentUpdated'));
-    } catch (error) {
-      alert(t('editStudentError'));
-    }
-  };
-
-  const handleEditCancel = () => {
-    setEditModalOpen(false);
-    setEditData(null);
-  };
-
-  const handleDelete = async (studentId) => {
-    if (window.confirm(t('confirmDelete'))) {
-      try {
-        await deletePerson(studentId, 'student');
-        setStudents(students.filter(s => s.id !== studentId));
-        alert(t('studentDeleted'));
-      } catch (error) {
-        alert(t('deleteError'));
-      }
-    }
-  };
-
-  // Función para renderizar el contenido de cada card de estudiante
-  const renderStudentCard = (student) => (
-    <div className="card-content">
-      <div className="student-info">
-        <p className="student-details">{student.classroom} • {student.shift}</p>
-        <p className="student-age">{calculateAge(student.birth_date)} {t('filters.years')} • {student.gender}</p>
-      </div>
-    </div>
-  );
 
   return (
-    <div className="students-page">
-      {/* Componente de filtros */}
-      <StudentFilters
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        onClearFilters={handleClearFilters}
-      />
-
-      <EntityGrid
-        title={t('studentsManagement')}
-        entities={filteredStudents}
-        onAdd={() => setShowForm(true)}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        entityType="estudiante"
-        renderEntityCard={renderStudentCard}
-        addButtonText={t('addStudent')}
-        emptyMessage={filteredStudents.length === 0 && students.length > 0 ? t('filters.noResults') : t('noStudents')}
-        detailFields={[
-          { key: 'firstname', label: t('name') },
-          { key: 'lastname_father', label: t('lastnameFather') },
-          { key: 'lastname_mother', label: t('lastnameMother') },
-          { key: 'dni', label: t('dni') },
-          { key: 'address', label: 'Dirección' },
-          { key: 'classroom', label: t('classroom') },
-          { key: 'shift', label: t('filters.shift') },
-          { key: 'gender', label: t('filters.gender') },
-          { key: 'birth_date', label: t('birthDate'), type: 'date' },
-          { key: 'age', label: t('filters.age'), type: 'calculated' },
-          { key: 'created_at', label: 'Fecha de registro', type: 'date' },
-          { key: 'updated_at', label: 'Última actualización', type: 'date' }
-        ]}
-      />
-
-      {/* Modal para agregar nuevo estudiante */}
-      {showForm && (
-        <DetailModal isOpen={showForm} onClose={() => setShowForm(false)}>
-          <StudentForm onSubmit={handleAddStudent} onCancel={() => setShowForm(false)} />
-        </DetailModal>
-      )}
-
-      {/* Modal para editar estudiante */}
-      <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
-        <StudentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
-      </DetailModal>
-    </div>
+    <ListPageLayout
+      filters={
+        <FilterPanel
+          filterConfig={studentFilterConfig}
+          onFilterChange={handleFilterChange}
+        />
+      }
+    >
+      <div className="students-page-content">
+        {loading && <LoadingSpinner />}
+        {error && <p className="error-message">{error}</p>}
+        {!loading && !error && (
+          <EntityGrid
+            entities={students}
+            entityType="student"
+            onEntityCreated={handleEntityCreated}
+            onEntityUpdated={handleEntityUpdated}
+            onEntityDeleted={handleEntityDeleted}
+            classrooms={classrooms}
+            cardConfig={studentCardConfig}
+            detailConfig={studentDetailConfig}
+            formConfig={studentFormConfig}
+          />
+        )}
+      </div>
+    </ListPageLayout>
   );
-} 
+};
+
+export default StudentsPage; 
