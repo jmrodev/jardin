@@ -21,13 +21,13 @@ const resources = {
       'dashboard.attendanceBtn': 'Asistencia',
       'dashboard.logout': 'Cerrar Sesión',
       'dashboard.students': 'Estudiantes',
-      'dashboard.studentsDescription': 'Gestionar información de estudiantes',
+      'dashboard.studentsDescription': '',
       'dashboard.teachers': 'Maestros',
-      'dashboard.teachersDescription': 'Gestionar personal docente',
+      'dashboard.teachersDescription': '',
       'dashboard.parents': 'Padres',
-      'dashboard.parentsDescription': 'Gestionar padres y tutores',
+      'dashboard.parentsDescription': '',
       'dashboard.attendance': 'Asistencia',
-      'dashboard.attendanceDescription': 'Control de asistencia diaria',
+      'dashboard.attendanceDescription': '',
       'dashboard.viewMore': 'Ver más',
       
       // Students Page
@@ -164,7 +164,7 @@ const resources = {
 
       // Parents Page
       'parents.title': 'Gestión de Padres/Tutores',
-      'parentsManagement': 'Gestión de Padres/Tutores',
+      'parentsManagement': '',
       'parents.backToDashboard': 'Volver al Dashboard',
       'parents.addParent': 'Agregar Padre/Tutor',
       'parents.searchPlaceholder': 'Buscar padres/tutores...',
@@ -241,13 +241,13 @@ const resources = {
       'dashboard.attendanceBtn': 'Attendance',
       'dashboard.logout': 'Logout',
       'dashboard.students': 'Students',
-      'dashboard.studentsDescription': 'Manage student information',
+      'dashboard.studentsDescription': '',
       'dashboard.teachers': 'Teachers',
-      'dashboard.teachersDescription': 'Manage teaching staff',
+      'dashboard.teachersDescription': '',
       'dashboard.parents': 'Parents',
-      'dashboard.parentsDescription': 'Manage parents and guardians',
+      'dashboard.parentsDescription': '',
       'dashboard.attendance': 'Attendance',
-      'dashboard.attendanceDescription': 'Daily attendance control',
+      'dashboard.attendanceDescription': '',
       'dashboard.viewMore': 'View more',
       
       // Students Page

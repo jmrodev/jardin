@@ -1,0 +1,60 @@
+/* Global Input Styles */
+.input-container {
+  display: var(--input-container-display);
+  flex-direction: var(--input-container-flex-direction);
+  gap: var(--input-container-gap);
+}
+
+.input-label{ font-size: var(--input-label-font-size);
+  font-weight: var(--input-label-font-weight);
+  color: var(--input-label-color);
+}
+
+.input-required{color: var(--input-required-color);
+  margin-left: var(--input-required-margin-left);
+}
+
+input,
+.input {
+  padding: var(--input-padding);
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  font-size: var(--input-font-size);
+  background-color: var(--input-bg-color);
+  color: var(--input-color);
+  transition: var(--input-transition);
+  min-height: var(--input-min-height);
+}
+
+input:focus,
+.input:focus {
+  outline: var(--input-focus-outline);
+  border-color: var(--input-focus-border-color);
+  box-shadow: var(--input-focus-box-shadow);
+}
+
+input:disabled,
+.input:disabled {
+  background-color: var(--input-disabled-bg);
+  color: var(--input-disabled-color);
+  cursor: var(--input-disabled-cursor);
+}
+
+input::placeholder,
+.input::placeholder{color: var(--input-placeholder-color);
+}
+
+/* Input Error States */
+input.error,
+.input.error{ border-color: var(--input-error-border-color);
+}
+
+input.error:focus,
+.input.error:focus{ border-color: var(--input-error-border-color);
+  box-shadow: var(--input-error-focus-box-shadow);
+}
+
+.input-error-message{ font-size: var(--input-error-message-font-size);
+  color: var(--input-error-message-color);
+  margin-top: var(--input-error-message-margin-top);
+} 

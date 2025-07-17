@@ -6,7 +6,6 @@ export default function AttendancePage() {
   const { t } = useTranslation();
 
   return (
-    <MainLayout>
       <div className="attendance-page">
         <div className="attendance-header">
           <h2 className="attendance-title">{t('attendance.title')}</h2>
@@ -42,6 +41,5 @@ export default function AttendancePage() {
           </div>
         </div>
       </div>
-    </MainLayout>
   );
 } 

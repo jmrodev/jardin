@@ -72,7 +72,15 @@ export default function DashboardPage() {
 
       <div className="dashboard-grid">
         {dashboardCards.map((card) => (
-          <div key={card.id} className="dashboard-card">
+          <div 
+            key={card.id} 
+            className="dashboard-card"
+            onClick={() => handleViewMore(card.link)}
+            style={{ cursor: 'pointer' }}
+            tabIndex={0}
+            role="button"
+            onKeyPress={e => { if (e.key === 'Enter') handleViewMore(card.link); }}
+          >
             <div className="dashboard-card-header">
               <div className={`dashboard-card-icon ${card.color}`}>
                 <Icon name={card.icon} size={24} />
@@ -80,16 +88,6 @@ export default function DashboardPage() {
               <h3 className="dashboard-card-title">{card.title}</h3>
             </div>
             <div className="dashboard-card-count">{card.count}</div>
-            <p className="dashboard-card-description">{card.description}</p>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="dashboard-card-button"
-              onClick={() => handleViewMore(card.link)}
-            >
-              <Icon name="ArrowRight" size={16} />
-              {t('dashboard.viewMore')}
-            </Button>
           </div>
         ))}
       </div>

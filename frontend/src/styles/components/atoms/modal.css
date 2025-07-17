@@ -1,0 +1,47 @@
+/* Global Modal Styles */
+.modal-overlay{  position: var(--modal-overlay-position);
+  inset: var(--modal-overlay-inset);
+  background: var(--modal-overlay-bg);
+  display: var(--modal-overlay-display);
+  align-items: var(--modal-overlay-align-items);
+  justify-content: var(--modal-overlay-justify-content);
+  z-index: var(--modal-overlay-z-index);
+  opacity: var(--modal-overlay-opacity);
+  pointer-events: var(--modal-overlay-pointer-events);
+  transition: var(--modal-overlay-transition);
+}
+
+.modal {
+  background: var(--modal-bg);
+  border-radius: var(--modal-border-radius);
+  box-shadow: var(--modal-box-shadow);
+  min-width: var(--modal-min-width);
+  max-width: var(--modal-max-width);
+  max-height: var(--modal-max-height);
+  padding: var(--modal-padding);
+  display: var(--modal-display);
+  flex-direction: var(--modal-flex-direction);
+  animation: var(--modal-animation);
+}
+
+@keyframes modalIn {
+  from{   opacity:0ansform: translateY(40px) scale(0.98  to{   opacity:1ansform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: var(--modal-header-display);
+  align-items: var(--modal-header-align-items);
+  justify-content: var(--modal-header-justify-content);
+  margin-bottom: var(--modal-header-margin-bottom);
+}
+
+.modal-title{ font-size: var(--modal-title-font-size);
+  font-weight: var(--modal-title-font-weight);
+  color: var(--modal-title-color);
+}
+
+.modal-content {
+  overflow-y: var(--modal-content-overflow-y);
+  color: var(--modal-content-color);
+} 
