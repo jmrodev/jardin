@@ -56,11 +56,32 @@ const getParentsByStudentId = async (req, res) => {
   }
 };
 
+const createAndLinkParent = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const parentData = req.body;
+    const newParent = await personService.createAndLinkParent(studentId, parentData);
+    res.status(201).json(newParent);
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      const message = error.sqlMessage.includes('email') 
+        ? 'El correo electrónico ingresado ya existe.' 
+        : error.sqlMessage.includes('dni')
+        ? 'El DNI ingresado ya está registrado.'
+        : 'Los datos ingresados contienen un valor duplicado que debe ser único.';
+      return res.status(409).json({ message });
+    }
+    console.error('Error in createAndLinkParent controller:', error);
+    res.status(500).json({ message: 'Error interno del servidor al crear el responsable.', stack: process.env.NODE_ENV === 'development' ? error.stack : undefined });
+  }
+};
+
 export default {
   getPersons,
   getPerson,
   createPerson,
   updatePerson,
   deletePerson,
-  getParentsByStudentId
+  getParentsByStudentId,
+  createAndLinkParent
 };

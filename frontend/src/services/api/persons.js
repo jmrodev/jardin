@@ -24,6 +24,10 @@ const personService = {
   getParentsByStudentId(studentId) {
     return api.get(`/students/${studentId}/parents`);
   },
+
+  createAndLinkParent(studentId, parentData) {
+    return api.post(`/students/${studentId}/parents`, parentData);
+  },
 };
 
 export default personService;

@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Toast Notification System
+   ========================================================================== */
+
+/* Container for all toasts, positioned top-right */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1050; /* High z-index to appear on top of other elements */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Base style for a single toast notification */
+.toast {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--shadow-medium);
+  min-width: 300px;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- Toast Types --- */
+
+/* Success */
+.toast--success {
+  background-color: var(--color-success-light);
+  border-left: 5px solid var(--color-success);
+  color: var(--color-success-dark);
+}
+
+/* Error */
+.toast--error {
+  background-color: var(--color-error-light);
+  border-left: 5px solid var(--color-error);
+  color: var(--color-error-dark);
+}
+
+/* Info */
+.toast--info {
+  background-color: var(--color-info-light);
+  border-left: 5px solid var(--color-info);
+  color: var(--color-info-dark);
+}
+
+/* --- Toast Content --- */
+
+.toast__icon {
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.toast__message {
+  flex-grow: 1;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.toast__close-button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  margin-left: 1rem;
+  padding: 0.25rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.toast__close-button:hover {
+  opacity: 1;
+} 

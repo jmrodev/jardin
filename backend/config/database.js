@@ -30,5 +30,5 @@ export const getConnection = () => {
   if (!pool) {
     throw new Error('Database not connected');
   }
-  return pool;
+  return pool.getConnection();
 }; 

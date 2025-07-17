@@ -212,6 +212,7 @@ const resources = {
       'personal_information': 'Información Personal',
       'contact_information': 'Información de Contacto',
       'academic_information': 'Información Académica',
+      'relationship_information': 'Información de la Relación',
       'first_name_placeholder': 'Escriba el primer nombre',
       'middle_name_placeholder': 'Escriba el segundo nombre (opcional)',
       'paternal_lastname_placeholder': 'Escriba el apellido paterno',

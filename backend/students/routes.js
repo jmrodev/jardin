@@ -13,6 +13,10 @@ router.post('/', requireDirector, personController.createPerson('student'));
 router.get('/', requireTeacher, personController.getPersons('student'));
 router.get('/:id', requireTeacher, personController.getPerson);
 router.get('/:studentId/parents', requireTeacher, personController.getParentsByStudentId);
+
+// Vincular un nuevo padre a un estudiante
+router.post('/:studentId/parents', requireDirector, personController.createAndLinkParent);
+
 router.put('/:id', requireDirector, personController.updatePerson);
 router.delete('/:id', requireAdmin, personController.deletePerson);
 

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Button from '@/components/atoms/Button';
 import DetailModal from '@/components/molecules/DetailModal';
 import EntityForm from '@/components/organisms/EntityForm'; // Usamos el genérico
-import api from '@/services/api/api.js';
+import personService from '@/services/api/persons'; // Única fuente para la API de personas
 import formatDate from '@/utils/formatDate';
 import '@/styles/components/organisms/entity-grid.css';
+import { useToast } from '@/contexts/ToastContext'; // Importar useToast
 
 const EntityGrid = ({
   entities,
@@ -26,6 +27,8 @@ const EntityGrid = ({
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [selectedParent, setSelectedParent] = useState(null);
   const [isParentDetailModalOpen, setParentDetailModalOpen] = useState(false);
+  const [isCreateParentModalOpen, setCreateParentModalOpen] = useState(false);
+  const { showToast } = useToast(); // Usar el hook de toast
 
   const calculateAge = (birthdate) => {
     if (!birthdate) return '';
@@ -42,6 +45,56 @@ const EntityGrid = ({
   const handleParentClick = (parent) => {
     setSelectedParent(parent);
     setParentDetailModalOpen(true);
+  };
+
+  const handleCreateParent = async (parentData) => {
+    if (!selectedEntity) {
+      showToast('Error: No se ha seleccionado un estudiante.', 'error');
+      return;
+    }
+
+    try {
+      const newParent = await personService.createAndLinkParent(selectedEntity.id, parentData);
+      showToast('Responsable creado y vinculado con éxito', 'success');
+      // Actualizar el estado local para reflejar el cambio en la UI
+      setSelectedEntity(prev => ({
+        ...prev,
+        parents: [...(prev.parents || []), newParent.data]
+      }));
+      setCreateParentModalOpen(false);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Error al crear y vincular el responsable.';
+      showToast(errorMessage, 'error');
+      console.error("Error creating and linking parent:", error);
+    }
+  };
+
+  const parentFormConfig = {
+    createTitle: t('addParent'),
+    sections: [
+      {
+        title: t('personal_information'),
+        fields: [
+          { name: 'first_name', label: t('firstName'), type: 'text' },
+          { name: 'middle_name', label: t('middleName'), type: 'text' },
+          { name: 'paternal_lastname', label: t('paternalLastname'), type: 'text' },
+          { name: 'maternal_lastname', label: t('maternalLastname'), type: 'text' },
+          { name: 'dni', label: t('dni'), type: 'text' },
+          { name: 'phone', label: t('phone'), type: 'tel' },
+          { name: 'email', label: t('email'), type: 'email' },
+          { name: 'birthdate', label: t('birthdate'), type: 'date' },
+        ]
+      },
+      {
+        title: t('relationship_information'),
+        fields: [
+          { name: 'relationship', label: t('relationship'), type: 'text', defaultValue: 'Tutor Legal' },
+          { name: 'can_pickup', label: t('can_pickup'), type: 'checkbox', defaultValue: true },
+          { name: 'can_change_diapers', label: t('can_change_diapers'), type: 'checkbox', defaultValue: false },
+          { name: 'is_emergency_contact', label: t('is_emergency_contact'), type: 'checkbox', defaultValue: false },
+        ]
+      }
+    ]
   };
 
   const getDisplayValue = (entity, fieldConfig) => {
@@ -75,21 +128,27 @@ const EntityGrid = ({
 
   const handleCreate = async (formData) => {
     try {
-      const response = await api.persons.create(entityType, formData);
+      const response = await personService.create(entityType, formData);
       onEntityCreated(response.data);
       setCreateModalOpen(false);
+      showToast(`${t(entityType)} ${t('created_successfully')}`, 'success');
     } catch (error) {
+      const errorMessage = error.response?.data?.message || `Error creating ${entityType}`;
+      showToast(errorMessage, 'error');
       console.error(`Error creating ${entityType}:`, error);
     }
   };
 
   const handleUpdate = async (formData) => {
     try {
-      const response = await api.persons.update(selectedEntity.id, entityType, formData);
+      const response = await personService.update(selectedEntity.id, entityType, formData);
       onEntityUpdated(response.data);
       setEditModalOpen(false);
       setSelectedEntity(null);
+      showToast(`${t(entityType)} ${t('updated_successfully')}`, 'success');
     } catch (error) {
+      const errorMessage = error.response?.data?.message || `Error updating ${entityType}`;
+      showToast(errorMessage, 'error');
       console.error(`Error updating ${entityType}:`, error);
     }
   };
@@ -97,11 +156,14 @@ const EntityGrid = ({
   const handleDelete = async (entityId) => {
     if (window.confirm(t('confirmDelete'))) {
       try {
-        await api.persons.delete(entityId, entityType);
+        await personService.delete(entityId, entityType);
         onEntityDeleted(entityId);
         setDetailModalOpen(false);
         setSelectedEntity(null);
+        showToast(`${t(entityType)} ${t('deleted_successfully')}`, 'success');
       } catch (error) {
+        const errorMessage = error.response?.data?.message || `Error deleting ${entityType}`;
+        showToast(errorMessage, 'error');
         console.error(`Error deleting ${entityType}:`, error);
       }
     }
@@ -175,6 +237,7 @@ const EntityGrid = ({
                     <li>{t('no_parents_found')}</li>
                   )}
                 </ul>
+                <Button onClick={() => setCreateParentModalOpen(true)} className="button--primary button--small">{t('addParent')}</Button>
               </div>
             )}
             
@@ -184,6 +247,15 @@ const EntityGrid = ({
             </div>
           </div>
         )}
+      </DetailModal>
+
+      {/* Modal para CREAR un nuevo responsable */}
+      <DetailModal isOpen={isCreateParentModalOpen} onClose={() => setCreateParentModalOpen(false)}>
+        <EntityForm
+          formConfig={parentFormConfig}
+          onSubmit={handleCreateParent}
+          onCancel={() => setCreateParentModalOpen(false)}
+        />
       </DetailModal>
 
       {selectedParent && (
