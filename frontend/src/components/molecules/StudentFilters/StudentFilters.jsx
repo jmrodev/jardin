@@ -109,45 +109,53 @@ export default function StudentFilters({ filters, onFilterChange, onClearFilters
             {filters.classroom && (
               <span className="filter-tag">
                 {t('filters.classroom')}: {filters.classroom}
-                <button 
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleFilterChange('classroom', '')}
                   className="filter-tag-remove"
                 >
                   <Icon name="X" size={12} />
-                </button>
+                </Button>
               </span>
             )}
             {filters.shift && (
               <span className="filter-tag">
                 {t('filters.shift')}: {filters.shift}
-                <button 
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleFilterChange('shift', '')}
                   className="filter-tag-remove"
                 >
                   <Icon name="X" size={12} />
-                </button>
+                </Button>
               </span>
             )}
             {filters.age && (
               <span className="filter-tag">
                 {t('filters.age')}: {filters.age} {t('filters.years')}
-                <button 
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleFilterChange('age', '')}
                   className="filter-tag-remove"
                 >
                   <Icon name="X" size={12} />
-                </button>
+                </Button>
               </span>
             )}
             {filters.gender && (
               <span className="filter-tag">
                 {t('filters.gender')}: {filters.gender}
-                <button 
+                <Button 
+                  variant="ghost"
+                  size="sm"
                   onClick={() => handleFilterChange('gender', '')}
                   className="filter-tag-remove"
                 >
                   <Icon name="X" size={12} />
-                </button>
+                </Button>
               </span>
             )}
           </div>

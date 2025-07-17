@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DetailModal from '../atoms/DetailModal';
+import DetailModal from '../molecules/DetailModal';
 import Button from '../atoms/Button';
 import formatDate from '../../utils/formatDate';
 import { useTranslation } from 'react-i18next';
@@ -74,12 +74,12 @@ export default function EntityGridTemplate({
           {entities.map((entity) => (
             <div 
               key={entity.id} 
-              className="entity-card"
+              className="card"
               onClick={() => handleViewDetails(entity)}
               style={{ cursor: 'pointer' }}
             >
-              <div className="entity-card-header">
-                <div className="entity-card-title">
+              <div className="card-header">
+                <div className="card-title">
                   <div className="student-firstname">{entity.firstname}</div>
                   <div className="student-lastnames">
                     {entity.lastname_father} {entity.lastname_mother}
@@ -87,7 +87,7 @@ export default function EntityGridTemplate({
                 </div>
               </div>
               
-              <div className="entity-card-content">
+              <div className="card-content">
                 {renderEntityCard ? (
                   renderEntityCard(entity)
                 ) : (
@@ -102,9 +102,9 @@ export default function EntityGridTemplate({
                 )}
               </div>
 
-              <div className="entity-card-footer">
+              <div className="card-footer">
                 {entity.updated_at && (
-                  <span className="entity-card-date">
+                  <span className="card-date">
                     Actualizado: {formatDate(entity.updated_at)}
                   </span>
                 )}

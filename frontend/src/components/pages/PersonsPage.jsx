@@ -1,8 +1,8 @@
 import { getPersons, createPerson, updatePerson, deletePerson } from '../../services/api/persons';
 import React, { useState, useEffect } from 'react';
-import PersonForm from './PersonForm';
-import MainLayout from '../templates/MainLayout';
-import Button from '../atoms/Button';
+import PersonForm from '../organisms/PersonForm';
+import EntityGrid from '../organisms/EntityGrid';
+import DetailModal from '../molecules/DetailModal';
 import { useTranslation } from 'react-i18next';
 
 export default function PersonsPage() {
@@ -69,70 +69,41 @@ export default function PersonsPage() {
     setEditingPerson(null);
   };
 
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="loading-spinner-container">
-          <div className="spinner"></div>
-          <p className="loading-text">{t('common.loading')}</p>
-        </div>
-      </MainLayout>
-    );
-  }
-
   return (
-    <MainLayout>
-      <div className="persons-page">
-        <div className="persons-header">
-          <h2 className="persons-title">{t('persons.title')}</h2>
-          <Button onClick={handleAdd} variant="primary">
-            {t('persons.add')}
-          </Button>
-        </div>
-
-        {showForm && (
-          <div className="form-overlay">
-            <PersonForm
-              onSubmit={handleSubmit}
-              onCancel={handleCancel}
-              initialData={editingPerson}
-            />
+    <>
+      <EntityGrid
+        title={t('persons.title')}
+        entities={persons}
+        onAdd={handleAdd}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        isLoading={loading}
+        entityType="persona"
+        addButtonText={t('persons.add')}
+        emptyMessage={t('persons.noPersons')}
+        detailFields={[
+          { key: 'firstname', label: t('name') },
+          { key: 'lastname_father', label: t('lastnameFather') },
+          { key: 'lastname_mother', label: t('lastnameMother') },
+          { key: 'dni', label: t('dni') },
+          { key: 'phone', label: t('phone') },
+          { key: 'email', label: 'Email' }
+        ]}
+        renderEntityCard={(person) => (
+          <div className="card-content">
+            <p><strong>DNI:</strong> {person.dni}</p>
+            <p><strong>Teléfono:</strong> {person.phone}</p>
+            <p><strong>Email:</strong> {person.email}</p>
           </div>
         )}
-
-        <div className="persons-grid">
-          {persons.map((person) => (
-            <div key={person.id} className="person-card">
-              <div className="person-card-header">
-                <h3 className="person-card-title">
-                  {person.firstname} {person.lastname_father}
-                </h3>
-                <div className="person-card-actions">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleEdit(person)}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(person.id)}
-                  >
-                    Eliminar
-                  </Button>
-                </div>
-              </div>
-              <div className="person-card-content">
-                <p>DNI: {person.dni}</p>
-                <p>Teléfono: {person.phone}</p>
-                <p>Email: {person.email}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </MainLayout>
+      />
+      <DetailModal isOpen={showForm} onClose={handleCancel}>
+        <PersonForm
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          initialData={editingPerson}
+        />
+      </DetailModal>
+    </>
   );
 } 

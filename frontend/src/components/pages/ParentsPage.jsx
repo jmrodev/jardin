@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getParents, deleteParent } from '../../services/api/parents';
-import EntityGridTemplate from '../templates/EntityGridTemplate';
+import EntityGrid from '../organisms/EntityGrid';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../atoms/DetailModal';
-import ParentForm from './ParentForm';
+import DetailModal from '../molecules/DetailModal';
+import ParentForm from '../organisms/ParentForm';
 import { updateParent } from '../../services/api/parents';
 
 const ParentsPage = () => {
@@ -49,7 +49,7 @@ const ParentsPage = () => {
   };
 
   return (
-    <EntityGridTemplate
+    <EntityGrid
       title={t('parentsManagement')}
       entities={parents}
       fields={[
@@ -76,7 +76,7 @@ const ParentsPage = () => {
       <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <ParentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>
-    </EntityGridTemplate>
+    </EntityGrid>
   );
 };
 

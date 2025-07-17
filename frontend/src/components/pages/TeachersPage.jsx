@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getTeachers, deleteTeacher } from '../../services/api/teachers';
-import EntityGridTemplate from '../templates/EntityGridTemplate';
+import EntityGrid from '../organisms/EntityGrid';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../atoms/DetailModal';
-import TeacherForm from './TeacherForm';
+import DetailModal from '../molecules/DetailModal';
+import TeacherForm from '../organisms/TeacherForm';
 import { updateTeacher } from '../../services/api/teachers';
 
 const TeachersPage = () => {
@@ -49,7 +49,7 @@ const TeachersPage = () => {
   };
 
   return (
-    <EntityGridTemplate
+    <EntityGrid
       title={t('teachersManagement')}
       entities={teachers}
       fields={[
@@ -76,7 +76,7 @@ const TeachersPage = () => {
       <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <TeacherForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>
-    </EntityGridTemplate>
+    </EntityGrid>
   );
 };
 

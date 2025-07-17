@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../templates/MainLayout';
+import Button from '../atoms/Button';
 
 export default function AttendancePage() {
   const { t } = useTranslation();
@@ -13,8 +14,8 @@ export default function AttendancePage() {
         </div>
 
         <div className="attendance-content">
-          <div className="attendance-card">
-            <h3 className="attendance-card-title">{t('attendance.today')}</h3>
+          <div className="card">
+            <h3 className="card-title">{t('attendance.today')}</h3>
             <div className="attendance-stats">
               <div className="attendance-stat">
                 <span className="attendance-stat-label">{t('attendance.present')}</span>
@@ -32,12 +33,12 @@ export default function AttendancePage() {
           </div>
 
           <div className="attendance-actions">
-            <button className="attendance-action-button">
+            <Button variant="primary">
               {t('attendance.registerAttendance')}
-            </button>
-            <button className="attendance-action-button">
+            </Button>
+            <Button variant="secondary">
               {t('attendance.viewReport')}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

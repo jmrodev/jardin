@@ -1,47 +1,20 @@
 /* Students List */
-.students-list{
+.students-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(1101r));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: var(--space-xs);
   padding: var(--space-xs);
 }
 
-.student-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-md);
-  padding: var(--space-xs);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-primary);
-  transition: var(--transition-normal);
-  font-size: var(--font-size-xs);
-}
-
-.student-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1;
-}
-
-.student-card-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-xs);
-  gap: 2px;
-}
-
-.student-card-title{ font-size: var(--font-size-xs);
-}
-
-.student-card-content{padding: 0;
+/* Student-specific card overrides */
+.students-list .card-content {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  font-size: var(--font-size-xs);
 }
 
-.student-info{
+.student-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -52,43 +25,36 @@
   margin: 0;
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
-  line-height: 1.1}
+  line-height: 1.1;
+}
 
 .student-age {
   margin: 0;
-  font-size: 00.7m;
+  font-size: 0.7em;
   color: var(--text-tertiary);
   line-height: 1.1;
 }
 
-.student-card-footer {
-  margin-top: var(--space-2xs);
-  padding-top: var(--space-2xs);
-  border-top: 1px solid var(--border-primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--font-size-xs);
-}
-
-.student-card-date{  font-size: 00.7m;
-  color: var(--text-tertiary);
-}
-
-/* Student Card Specific Styles */
-.student-card-content{padding: 0;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.student-info{
+/* Student-specific card content styles */
+.student-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
   align-items: center;
+}
+
+.student-details {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.1;
+}
+
+.student-age {
+  margin: 0;
+  font-size: 0.7em;
+  color: var(--text-tertiary);
+  line-height: 1.1;
 }
 
 .student-name {
@@ -96,7 +62,8 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
-  line-height: 1.2text-align: center;
+  line-height: 1.2;
+  text-align: center;
   word-break: break-word;
 }
 
@@ -104,147 +71,16 @@
   margin: 0;
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
-  line-height: 1.2}
+  line-height: 1.2;
+}
 
 .student-age {
   margin: 0;
-  font-size: 00.7m;
+  font-size: 0.7em;
   color: var(--text-tertiary);
   line-height: 1.2;
 }
 
-/* Botones de acción en cards de estudiantes */
-.student-card-actions{
-  display: none;
-}
+/* Actions in student cards are now handled by generic .card-actions */
 
-/* Student Filters Styles */
-.student-filters {
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  margin-bottom: var(--space-md);
-  box-shadow: var(--shadow-sm);
-}
-
-.filters-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-sm);
-}
-
-.filters-title{
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.filters-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(1501r));
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
-}
-
-.filter-group{
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.filter-label{ font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
-}
-
-.filter-select {
-  padding: var(--space-xs) var(--space-sm);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-sm);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-size: var(--font-size-xs);
-  transition: border-color var(--transition-fast);
-  min-height: 32px;
-}
-
-.filter-select:focus{
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 00ar(--color-primary-alpha);
-}
-
-.active-filters{
-  border-top: 1px solid var(--border-primary);
-  padding-top: var(--space-sm);
-}
-
-.active-filters-label{ font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-  display: block;
-}
-
-.active-filters-tags{
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.filter-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: 2 var(--space-xs);
-  background: var(--color-primary-alpha);
-  color: var(--color-primary);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-}
-
-.filter-tag-remove{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  border: none;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-  border-radius: 50sition: background-color var(--transition-fast);
-}
-
-.filter-tag-remove:hover {
-  background: var(--color-primary);
-  color: var(--text-inverse);
-}
-
-/* Responsive filters */
-@media (max-width: 768px) {
-  .student-filters{   padding: var(--space-sm);
-  }
-  
-  .filters-grid {
-    grid-template-columns: repeat(2, 1);
-    gap: var(--space-xs);
-  }
-  
-  .filters-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-xs);
-  }
-  
-  .active-filters-tags {
-    flex-direction: column;
-  }
-} 
+/* El resto de los estilos de filtros se han movido a components/molecules/student-filters.css */ 

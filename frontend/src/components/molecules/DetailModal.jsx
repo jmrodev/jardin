@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import Icon from './Icon';
-import Button from './Button';
+import Icon from '../atoms/Icon';
+import Button from '../atoms/Button';
 
 export default function DetailModal({ isOpen, onClose, title, children }) {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export default function DetailModal({ isOpen, onClose, title, children }) {
             size="sm"
             onClick={onClose}
           >
-            <Icon name="close" size={18} />
+            <Icon name="X" size={18} />
             <span>{t('close')}</span>
           </Button>
         </div>

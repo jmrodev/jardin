@@ -89,7 +89,7 @@ const LoginPage = () => {
         </Button>
       </div>
       
-      <div className="login-card">
+      <div className="card">
         <div className="login-header">
           <Icon name="GraduationCap" size={48} className="login-logo" />
           <h1 className="login-title">{t('login.title')}</h1>

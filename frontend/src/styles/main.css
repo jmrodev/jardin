@@ -4,7 +4,13 @@
 @import './utilities/grid.css';
 @import './utilities/spacing.css';
 @import './components/atoms/button.css';
+@import './components/atoms/card.css';
 @import './components/atoms/input.css';
 @import './components/atoms/modal.css';
+@import './components/molecules/loading-spinner.css';
+@import './components/molecules/student-filters.css';
+@import './components/templates/layout.css';
 @import './pages/dashboard.css';
+@import './pages/login.css';
+@import './pages/attendance.css';
 @import './pages/students.css'; 

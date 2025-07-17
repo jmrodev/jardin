@@ -1,0 +1,59 @@
+/* Attendance Page Styles */
+.attendance-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.attendance-header {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.attendance-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+}
+
+.attendance-subtitle {
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+}
+
+.attendance-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.attendance-stats {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  padding: var(--space-md) 0;
+}
+
+.attendance-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.attendance-stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.attendance-stat-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.attendance-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  justify-content: center;
+}

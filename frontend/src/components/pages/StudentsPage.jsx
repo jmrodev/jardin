@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getStudents, createStudent, deleteStudent } from '../../services/api/students';
-import EntityGridTemplate from '../templates/EntityGridTemplate';
-import StudentForm from './StudentForm';
+import EntityGrid from '../organisms/EntityGrid';
+import StudentForm from '../organisms/StudentForm';
 import StudentFilters from '../molecules/StudentFilters/StudentFilters';
 import { useTranslation } from 'react-i18next';
-import DetailModal from '../atoms/DetailModal';
+import DetailModal from '../molecules/DetailModal';
 import formatDate from '../../utils/formatDate';
 
 export default function StudentsPage() {
@@ -143,7 +143,7 @@ export default function StudentsPage() {
 
   // Función para renderizar el contenido de cada card de estudiante
   const renderStudentCard = (student) => (
-    <div className="student-card-content">
+    <div className="card-content">
       <div className="student-info">
         <p className="student-details">{student.classroom} • {student.shift}</p>
         <p className="student-age">{calculateAge(student.birth_date)} {t('filters.years')} • {student.gender}</p>
@@ -160,7 +160,7 @@ export default function StudentsPage() {
         onClearFilters={handleClearFilters}
       />
 
-      <EntityGridTemplate
+      <EntityGrid
         title={t('studentsManagement')}
         entities={filteredStudents}
         onAdd={() => setShowForm(true)}

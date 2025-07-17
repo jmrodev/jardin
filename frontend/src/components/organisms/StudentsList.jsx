@@ -19,12 +19,12 @@ export default function StudentsList({ students, onEdit, onDelete, onViewDetails
   return (
     <div className="students-list">
       {students.map((student) => (
-        <div key={student.id} className="student-card">
-          <div className="student-card-header">
-            <h3 className="student-card-title">
+        <div key={student.id} className="card">
+          <div className="card-header">
+            <h3 className="card-title">
               {student.firstname} {student.lastname_father}
             </h3>
-            <div className="student-card-actions">
+            <div className="card-actions">
               {onViewDetails && (
                 <Button
                   variant="ghost"
@@ -55,7 +55,7 @@ export default function StudentsList({ students, onEdit, onDelete, onViewDetails
             </div>
           </div>
           
-          <div className="student-card-content">
+          <div className="card-content">
             <p>DNI: {student.dni}</p>
             <p>Sala: {student.classroom}</p>
             {student.birth_date && (
@@ -63,9 +63,9 @@ export default function StudentsList({ students, onEdit, onDelete, onViewDetails
             )}
           </div>
 
-          <div className="student-card-footer">
+          <div className="card-footer">
             {student.created_at && (
-              <span className="student-card-date">
+              <span className="card-date">
                 Creado: {formatDate(student.created_at)}
               </span>
             )}
