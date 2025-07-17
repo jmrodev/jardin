@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getTeachers, deleteTeacher } from '../../services/api/teachers';
+import { getPersons, deletePerson, updatePerson } from '../../services/api/person';
 import EntityGrid from '../organisms/EntityGrid';
 import { useTranslation } from 'react-i18next';
 import DetailModal from '../molecules/DetailModal';
 import TeacherForm from '../organisms/TeacherForm';
-import { updateTeacher } from '../../services/api/teachers';
-
 const TeachersPage = () => {
   const [teachers, setTeachers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -14,7 +12,7 @@ const TeachersPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getTeachers().then(setTeachers);
+    getPersons('teacher').then(setTeachers);
   }, []);
 
   const handleEdit = (teacher) => {
@@ -24,10 +22,10 @@ const TeachersPage = () => {
 
   const handleEditSave = async (teacherData) => {
     try {
-      await updateTeacher(teacherData);
+      await updatePerson(teacherData.id, teacherData, 'teacher');
       setEditModalOpen(false);
       setEditData(null);
-      getTeachers().then(setTeachers);
+      getPersons('teacher').then(setTeachers);
       alert(t('teacherUpdated'));
     } catch (error) {
       alert(t('editTeacherError'));
@@ -41,7 +39,7 @@ const TeachersPage = () => {
 
   const handleDelete = async (teacher) => {
     try {
-      await deleteTeacher(teacher.id);
+      await deletePerson(teacher.id, 'teacher');
       setTeachers(teachers.filter(t => t.id !== teacher.id));
     } catch (error) {
       alert(t('deleteError'));

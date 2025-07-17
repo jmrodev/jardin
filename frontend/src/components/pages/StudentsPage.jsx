@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getStudents, createStudent, deleteStudent } from '../../services/api/students';
+import { getPersons, createPerson, deletePerson, updatePerson } from '../../services/api/person';
 import EntityGrid from '../organisms/EntityGrid';
 import StudentForm from '../organisms/StudentForm';
 import StudentFilters from '../molecules/StudentFilters/StudentFilters';
@@ -31,7 +31,7 @@ export default function StudentsPage() {
 
   const fetchStudents = async () => {
     try {
-      const data = await getStudents();
+      const data = await getPersons('student');
       setStudents(data);
     } catch (error) {
       alert(t('fetchStudentsError'));
@@ -97,7 +97,7 @@ export default function StudentsPage() {
 
   const handleAddStudent = async (studentData) => {
     try {
-      await createStudent(studentData);
+      await createPerson(studentData, 'student');
       await fetchStudents();
       setShowForm(false);
       alert(t('studentAdded'));
@@ -113,8 +113,7 @@ export default function StudentsPage() {
 
   const handleEditSave = async (studentData) => {
     try {
-      // Asume que existe updateStudent en api/students.js
-      await import('../../services/api/students').then(mod => mod.updateStudent(studentData));
+      await updatePerson(studentData.id, studentData, 'student');
       await fetchStudents();
       setEditModalOpen(false);
       setEditData(null);
@@ -132,7 +131,7 @@ export default function StudentsPage() {
   const handleDelete = async (studentId) => {
     if (window.confirm(t('confirmDelete'))) {
       try {
-        await deleteStudent(studentId);
+        await deletePerson(studentId, 'student');
         setStudents(students.filter(s => s.id !== studentId));
         alert(t('studentDeleted'));
       } catch (error) {

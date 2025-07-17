@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getParents, deleteParent } from '../../services/api/parents';
+import { getPersons, deletePerson, updatePerson } from '../../services/api/person';
 import EntityGrid from '../organisms/EntityGrid';
 import { useTranslation } from 'react-i18next';
 import DetailModal from '../molecules/DetailModal';
 import ParentForm from '../organisms/ParentForm';
-import { updateParent } from '../../services/api/parents';
-
 const ParentsPage = () => {
   const [parents, setParents] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -14,7 +12,7 @@ const ParentsPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getParents().then(setParents);
+    getPersons('parent').then(setParents);
   }, []);
 
   const handleEdit = (parent) => {
@@ -24,10 +22,10 @@ const ParentsPage = () => {
 
   const handleEditSave = async (parentData) => {
     try {
-      await updateParent(parentData);
+      await updatePerson(parentData.id, parentData, 'parent');
       setEditModalOpen(false);
       setEditData(null);
-      getParents().then(setParents);
+      getPersons('parent').then(setParents);
       alert(t('parentUpdated'));
     } catch (error) {
       alert(t('editParentError'));
@@ -41,7 +39,7 @@ const ParentsPage = () => {
 
   const handleDelete = async (parent) => {
     try {
-      await deleteParent(parent.id);
+      await deletePerson(parent.id, 'parent');
       setParents(parents.filter(p => p.id !== parent.id));
     } catch (error) {
       alert(t('deleteError'));
