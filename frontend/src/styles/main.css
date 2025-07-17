@@ -9,6 +9,7 @@
 @import './components/atoms/modal.css';
 @import './components/molecules/loading-spinner.css';
 @import './components/molecules/student-filters.css';
+@import './components/organisms/entity-grid.css';
 @import './components/templates/layout.css';
 @import './pages/dashboard.css';
 @import './pages/login.css';

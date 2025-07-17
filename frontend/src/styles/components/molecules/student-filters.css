@@ -6,6 +6,9 @@
   padding: var(--space-md);
   margin-bottom: var(--space-md);
   box-shadow: var(--shadow-sm);
+  max-width: 960px; /* Limita el ancho en pantallas grandes */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filters-header {
@@ -26,7 +29,8 @@
 
 .filters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* Por defecto (escritorio), 4 columnas */
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-md);
 }
 
@@ -88,7 +92,14 @@
   border: 1px solid var(--border-primary);
 }
 
-/* Responsive filters */
+/* Media Query para Tablets */
+@media (max-width: 992px) {
+  .filters-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Media Query para Móviles (ya existente y modificada) */
 @media (max-width: 768px) {
   .student-filters {
     padding: var(--space-sm);
