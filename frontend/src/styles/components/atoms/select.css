@@ -47,20 +47,20 @@
    ========================================================================== */
 
 [data-theme="dark"] .select-element {
-  background-color: var(--color-background-input-dark);
-  color: var(--color-text-primary-dark);
-  border-color: var(--color-border-dark);
+  background-color: var(--input-bg-color);
+  color: var(--text-primary);
+  border-color: var(--border-primary);
   /* El SVG del icono ya está definido para ser oscuro, pero podemos redefinirlo si es necesario */
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d1d1d6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 }
 
 /* Estilos específicos para las opciones en modo oscuro */
 [data-theme="dark"] .select-element option {
-  background-color: var(--color-background-dark); /* Un fondo oscuro para las opciones */
-  color: var(--color-text-primary-dark); /* Texto claro para las opciones */
+  background-color: var(--bg-primary); /* Un fondo oscuro para las opciones */
+  color: var(--text-primary); /* Texto claro para las opciones */
 }
 
 [data-theme="dark"] .select-element:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-light-transparent-dark);
+  box-shadow: 0 0 0 2px var(--color-primary-alpha);
 } 

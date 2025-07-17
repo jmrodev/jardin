@@ -311,25 +311,15 @@
   --text-secondary: #8e8e93;
   --text-tertiary: #48484a;
   --text-inverse: #000000;
-  
-  /* Redefinimos estas variables para que sean más explícitas y las usamos en select.css */
-  --color-background-dark: var(--bg-primary);
-  --color-text-primary-dark: var(--text-primary);
-  --color-border-dark: var(--border-primary);
 
   /* Input Base Styles */
   --input-bg-color: #2c2c2e;
   --input-color: #f2f2f7;
   --input-border: 1px solid #3a3a3c;
-  
-  /* Esto es para el estilo del select.css */
-  --color-background-input-dark: var(--input-bg-color);
-  --color-primary-light-transparent-dark: rgba(0, 122, 255, 0.2);
 
   /* Border Colors */
   --border-primary: #38383a;
   --border-secondary: #48484a;
-  --border-focus: #0a84ff;
 
   /* Button Base Styles */
   --button-display: inline-flex;
