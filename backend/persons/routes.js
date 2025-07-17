@@ -1,14 +1,12 @@
 import { Router } from 'express';
-import { getPersons } from './getPersons.js';
-import { createPerson } from './createPerson.js';
-import { updatePerson } from './updatePerson.js';
-import { deletePerson } from './deletePerson.js';
+import personController from '../controllers/personController.js';
+import { validatePersonData } from './validatePersonData.js';
 
 const router = Router();
 
-router.get('/', getPersons);
-router.post('/', createPerson);
-router.put('/:id', updatePerson);
-router.delete('/:id', deletePerson);
+router.get('/', personController.getPersons);
+router.post('/', validatePersonData, personController.createPerson);
+router.put('/:id', validatePersonData, personController.updatePerson);
+router.delete('/:id', personController.deletePerson);
 
 export default router; 
