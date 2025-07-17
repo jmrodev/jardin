@@ -64,15 +64,31 @@ const getPersons = async (personType, filters = {}) => {
     query += ' AND p.gender = ?';
     params.push(filters.gender);
   }
+
   if (filters.age) {
     const age = parseInt(filters.age, 10);
     if (!isNaN(age)) {
       const today = new Date();
-      const latestBirthDate = new Date(today.getFullYear() - age, today.getMonth(), today.getDate() + 1);
-      const earliestBirthDate = new Date(today.getFullYear() - age - 1, today.getMonth(), today.getDate() + 1);
+      
+      // La fecha más tardía para tener la edad 'age' es hoy mismo, hace 'age' años.
+      const latestBirthDate = new Date(
+        today.getFullYear() - age,
+        today.getMonth(),
+        today.getDate()
+      );
+      
+      // La fecha más temprana es justo un año antes de la más tardía.
+      const earliestBirthDate = new Date(
+        today.getFullYear() - age - 1,
+        today.getMonth(),
+        today.getDate() + 1
+      );
 
       query += ' AND p.birthdate BETWEEN ? AND ?';
-      params.push(earliestBirthDate.toISOString().split('T')[0], latestBirthDate.toISOString().split('T')[0]);
+      params.push(
+        earliestBirthDate.toISOString().split('T')[0], 
+        latestBirthDate.toISOString().split('T')[0]
+      );
     }
   }
 

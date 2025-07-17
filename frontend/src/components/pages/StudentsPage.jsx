@@ -17,7 +17,13 @@ const StudentsPage = () => {
 
   const calculateAge = (birthdate) => {
     if (!birthdate) return '';
-    const age = new Date().getFullYear() - new Date(birthdate).getFullYear();
+    const today = new Date();
+    const birthDateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
     return `${age} ${t('years_old')}`;
   };
 
