@@ -1,7 +1,7 @@
 import express from 'express';
 import { validateToken } from '../auth/validateToken.js';
 import { requireAdmin, requireDirector, requireTeacher } from '../auth/authorizeRoles.js';
-import studentController from '../controllers/studentController.js';
+import personController from '../controllers/personController.js';
 
 const router = express.Router();
 
@@ -9,10 +9,10 @@ const router = express.Router();
 router.use(validateToken);
 
 // CRUD operations with role-based access
-router.post('/', requireDirector, studentController.createStudent);           // Admin, Director
-router.get('/', requireTeacher, studentController.getStudents);               // Admin, Director, Teacher
-router.get('/:id', requireTeacher, studentController.getStudent);             // Admin, Director, Teacher
-router.put('/:id', requireDirector, studentController.updateStudent);         // Admin, Director
-router.delete('/:id', requireAdmin, studentController.deleteStudent);         // Admin only
+router.post('/', requireDirector, personController.createPerson('student'));
+router.get('/', requireTeacher, personController.getPersons('student'));
+router.get('/:id', requireTeacher, personController.getPerson);
+router.put('/:id', requireDirector, personController.updatePerson);
+router.delete('/:id', requireAdmin, personController.deletePerson);
 
 export const studentRoutes = router; 

@@ -1,17 +1,17 @@
 import express from 'express';
 import { validateToken } from '../auth/validateToken.js';
 import { requireAdmin, requireDirector } from '../auth/authorizeRoles.js';
-import teacherController from '../controllers/teacherController.js';
+import personController from '../controllers/personController.js';
 
 const router = express.Router();
 
 router.use(validateToken);
 
 // Teacher management with role-based access
-router.post('/', requireAdmin, teacherController.createTeacher);              // Admin only
-router.get('/', requireDirector, teacherController.getTeachers);              // Admin, Director
-router.get('/:id', requireDirector, teacherController.getTeacher);            // Admin, Director
-router.put('/:id', requireAdmin, teacherController.updateTeacher);            // Admin only
-router.delete('/:id', requireAdmin, teacherController.deleteTeacher);         // Admin only
+router.post('/', requireAdmin, personController.createPerson('teacher'));
+router.get('/', requireDirector, personController.getPersons('teacher'));
+router.get('/:id', requireDirector, personController.getPerson);
+router.put('/:id', requireAdmin, personController.updatePerson);
+router.delete('/:id', requireAdmin, personController.deletePerson);
 
 export const teacherRoutes = router; 

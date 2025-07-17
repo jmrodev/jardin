@@ -1,18 +1,18 @@
 import express from 'express';
 import { validateToken } from '../auth/validateToken.js';
 import { requireAdmin } from '../auth/authorizeRoles.js';
-import directorController from '../controllers/directorController.js';
+import personController from '../controllers/personController.js';
 
 const router = express.Router();
 
 router.use(validateToken);
 
 // Director management with role-based access
-router.get('/', requireAdmin, directorController.getDirectors);
-router.get('/:id', requireAdmin, directorController.getDirector);
-router.post('/', requireAdmin, directorController.createDirector);
-router.put('/:id', requireAdmin, directorController.updateDirector);
-router.delete('/:id', requireAdmin, directorController.deleteDirector);
+router.get('/', requireAdmin, personController.getPersons('director'));
+router.get('/:id', requireAdmin, personController.getPerson);
+router.post('/', requireAdmin, personController.createPerson('director'));
+router.put('/:id', requireAdmin, personController.updatePerson);
+router.delete('/:id', requireAdmin, personController.deletePerson);
 
 
 export const directorRoutes = router; 

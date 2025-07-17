@@ -1,8 +1,8 @@
 import Person from './Person.js';
 
 class Parent extends Person {
-  constructor(id, name, lastname, birthdate, dni, address, phone, email, occupation) {
-    super(id, name, lastname, birthdate, dni, address, phone, email);
+  constructor(id, name, lastname, dni, address, phone, email, birthdate, occupation) {
+    super(id, 'parent', name, lastname, dni, address, phone, email, birthdate);
     this.occupation = occupation;
   }
 }
