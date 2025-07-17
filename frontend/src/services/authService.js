@@ -1,11 +1,12 @@
-import api from './api/api';
+import api from './api/base.js'; // Corregir la ruta de importación
 
 export const loginUser = async (username, password) => {
   try {
     const response = await api.post('/auth/login', { username, password });
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Login failed');
+    // Propagar el error original para que el contexto pueda analizarlo
+    throw error;
   }
 };
 

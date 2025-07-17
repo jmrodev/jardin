@@ -52,9 +52,10 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true };
     } catch (error) {
+      console.error('Login error in AuthContext:', error); // Añadir este log
       return { 
         success: false, 
-        error: error.message || 'Login failed' 
+        error: error.response?.data?.message || error.message || 'Login failed' 
       };
     }
   };

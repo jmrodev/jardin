@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import Select from '@/components/atoms/Select'; // Importar el nuevo átomo
+import Select from '@/components/atoms/Select';
+import Button from '@/components/atoms/Button'; // Importar Button
 import '@/styles/components/molecules/filter-panel.css';
 
-const FilterPanel = ({ filterConfig, onFilterChange }) => {
+const FilterPanel = ({ filterConfig, onFilterChange, activeFilters, onClearFilters }) => {
   const { t } = useTranslation();
 
   const handleChange = (e) => {
@@ -14,7 +15,12 @@ const FilterPanel = ({ filterConfig, onFilterChange }) => {
 
   return (
     <div className="filter-panel">
-      <h3 className="filter-panel__title">{t('filters.title')}</h3>
+      <div className="filter-panel-header">
+        <h3 className="filter-panel__title">{t('filters.title')}</h3>
+        <Button onClick={onClearFilters} className="button--secondary button--small">
+          {t('filters.clear')}
+        </Button>
+      </div>
       <div className="filter-panel__filters">
         {filterConfig.map((filter) => {
           if (filter.type === 'select') {
@@ -26,11 +32,10 @@ const FilterPanel = ({ filterConfig, onFilterChange }) => {
                 options={filter.options}
                 onChange={handleChange}
                 placeholder={filter.placeholder}
-                value={filter.value || ''} // Asegurar que el valor esté controlado
+                value={activeFilters[filter.name] || ''} // Usar el filtro activo
               />
             );
           }
-          // Se podrían añadir otros tipos de filtro aquí (e.g., input de texto)
           return null;
         })}
       </div>
@@ -49,6 +54,8 @@ FilterPanel.propTypes = {
     })
   ).isRequired,
   onFilterChange: PropTypes.func.isRequired,
+  activeFilters: PropTypes.object.isRequired, // Nueva prop
+  onClearFilters: PropTypes.func.isRequired, // Nueva prop
 };
 
 export default FilterPanel; 

@@ -179,8 +179,22 @@ const StudentsPage = () => {
     fetchClassrooms();
   }, []);
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+  const handleFilterChange = (newFilter) => {
+    setFilters(prevFilters => {
+      const updatedFilters = { ...prevFilters, ...newFilter };
+      // Si el valor de un filtro es una cadena vacía, lo eliminamos del objeto
+      // para no enviar parámetros de consulta innecesarios.
+      Object.keys(updatedFilters).forEach(key => {
+        if (updatedFilters[key] === '') {
+          delete updatedFilters[key];
+        }
+      });
+      return updatedFilters;
+    });
+  };
+
+  const handleClearFilters = () => {
+    setFilters({});
   };
 
   const handleEntityCreated = (newEntity) => {
@@ -203,6 +217,8 @@ const StudentsPage = () => {
         <FilterPanel
           filterConfig={studentFilterConfig}
           onFilterChange={handleFilterChange}
+          activeFilters={filters}
+          onClearFilters={handleClearFilters}
         />
       }
     >
