@@ -94,15 +94,15 @@ export default function PersonsPage() {
             <p><strong>DNI:</strong> {person.dni}</p>
             <p><strong>Teléfono:</strong> {person.phone}</p>
             <p><strong>Email:</strong> {person.email}</p>
-          </div>
+        </div>
         )}
       />
       <DetailModal isOpen={showForm} onClose={handleCancel}>
-        <PersonForm
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
-          initialData={editingPerson}
-        />
+            <PersonForm
+              onSubmit={handleSubmit}
+              onCancel={handleCancel}
+              initialData={editingPerson}
+            />
       </DetailModal>
     </>
   );
