@@ -19,21 +19,35 @@ const getAge = (birthdate) => {
 
 const personFactory = (row) => {
   let person;
+  // Mapeo de campos de DB a constructor
+  const args = [
+    row.id, 
+    row.first_name, 
+    row.middle_name, 
+    row.paternal_lastname, 
+    row.maternal_lastname, 
+    row.preferred_name, 
+    row.nationality,
+    row.dni, 
+    row.address, 
+    row.phone, 
+    row.email, 
+    row.birthdate
+  ];
+
   switch (row.person_type) {
     case 'student':
-      person = new Student(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.registration_date, row.status, row.classroom_id, row.shift, row.gender);
-      // Adjuntar el nombre de la sala obtenido del JOIN
-      person.classroom_name = row.classroom_name;
+      person = new Student(...args, row.registration_date, row.status, row.classroom_id, row.shift, row.gender);
+      person.classroom_name = row.classroom_name; // Adjuntar nombre de la sala
       return person;
     case 'teacher':
-      return new Teacher(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.hire_date, row.specialization);
+      return new Teacher(...args, row.hire_date, row.specialization);
     case 'parent':
-      return new Parent(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.occupation);
+      return new Parent(...args, row.occupation);
     case 'director':
-      return new Director(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.hire_date, row.administrative_role);
+      return new Director(...args, row.hire_date, row.administrative_role);
     default:
-      person = new Person(row.id, row.person_type, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate);
-      // Adjuntar el nombre de la sala si existe, para ser consistentes
+      person = new Person(row.id, row.person_type, ...args.slice(1));
       if (row.classroom_name) {
         person.classroom_name = row.classroom_name;
       }
@@ -52,7 +66,7 @@ const getPersons = async (personType, filters = {}) => {
   }
 
   // Apply filters
-  if (filters.classroom_id) { // Corregido de 'classroom' a 'classroom_id'
+  if (filters.classroom_id) {
     query += ' AND p.classroom_id = ?';
     params.push(filters.classroom_id);
   }
@@ -63,6 +77,10 @@ const getPersons = async (personType, filters = {}) => {
   if (filters.gender) {
     query += ' AND p.gender = ?';
     params.push(filters.gender);
+  }
+  if (filters.nationality) {
+    query += ' AND p.nationality = ?';
+    params.push(filters.nationality);
   }
 
   if (filters.age) {
@@ -93,8 +111,45 @@ const getPersons = async (personType, filters = {}) => {
   }
 
   const [rows] = await connection.query(query, params);
-  const result = rows.map(personFactory)
-  return result;
+  const persons = rows.map(personFactory);
+
+  // Si estamos pidiendo estudiantes, vamos a buscar y adjuntar a sus padres.
+  if (personType === 'student' && persons.length > 0) {
+    const studentIds = persons.map(p => p.id);
+    const parentsQuery = `
+      SELECT 
+        p.*, 
+        sp.student_id, 
+        sp.relationship, 
+        sp.can_pickup, 
+        sp.is_emergency_contact, 
+        sp.can_change_diapers
+      FROM persons p
+      JOIN student_parents sp ON p.id = sp.parent_id
+      WHERE sp.student_id IN (?) AND p.person_type = 'parent'
+    `;
+    const [parentRows] = await connection.query(parentsQuery, [studentIds]);
+
+    const parentsByStudentId = parentRows.reduce((acc, row) => {
+      const parent = personFactory(row);
+      parent.relationship = row.relationship;
+      parent.can_pickup = row.can_pickup;
+      parent.is_emergency_contact = row.is_emergency_contact;
+      parent.can_change_diapers = row.can_change_diapers;
+      
+      if (!acc[row.student_id]) {
+        acc[row.student_id] = [];
+      }
+      acc[row.student_id].push(parent);
+      return acc;
+    }, {});
+
+    persons.forEach(student => {
+      student.parents = parentsByStudentId[student.id] || [];
+    });
+  }
+
+  return persons;
 };
 
 const getPerson = async (id) => {
@@ -103,26 +158,27 @@ const getPerson = async (id) => {
   if (rows.length === 0) {
     throw new Error('Person not found');
   }
-  // La corrección en personFactory soluciona esto para getPerson también
   return personFactory(rows[0]);
 };
 
 const createPerson = async (personData) => {
   const connection = getConnection();
-  const { person_type, name, lastname_father, lastname_mother, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+  const { person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+  
   const [result] = await connection.query(
-    'INSERT INTO persons (person_type, name, lastname_father, lastname_mother, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [person_type, name, lastname_father, lastname_mother, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender]
+    'INSERT INTO persons (person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender]
   );
   return { id: result.insertId, ...personData };
 };
 
 const updatePerson = async (id, personData) => {
   const connection = getConnection();
-  const { name, lastname_father, lastname_mother, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+  const { first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+  
   await connection.query(
-    'UPDATE persons SET name = ?, lastname_father = ?, lastname_mother = ?, dni = ?, address = ?, phone = ?, email = ?, birthdate = ?, registration_date = ?, status = ?, hire_date = ?, specialization = ?, occupation = ?, administrative_role = ?, username = ?, password = ?, classroom_id = ?, shift = ?, gender = ? WHERE id = ?',
-    [name, lastname_father, lastname_mother, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender, id]
+    'UPDATE persons SET first_name = ?, middle_name = ?, paternal_lastname = ?, maternal_lastname = ?, preferred_name = ?, nationality = ?, dni = ?, address = ?, phone = ?, email = ?, birthdate = ?, registration_date = ?, status = ?, hire_date = ?, specialization = ?, occupation = ?, administrative_role = ?, username = ?, password = ?, classroom_id = ?, shift = ?, gender = ? WHERE id = ?',
+    [first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender, id]
   );
   return { id, ...personData };
 };
@@ -133,10 +189,35 @@ const deletePerson = async (id) => {
   return { id };
 };
 
+const getParentsByStudentId = async (studentId) => {
+  const connection = getConnection();
+  const query = `
+    SELECT p.*, sp.relationship, sp.can_pickup, sp.is_emergency_contact, sp.can_change_diapers
+    FROM persons p
+    JOIN student_parents sp ON p.id = sp.parent_id
+    WHERE sp.student_id = ? AND p.person_type = 'parent'
+  `;
+  
+  const [rows] = await connection.query(query, [studentId]);
+
+  // Modificamos el factory temporalmente aquí para añadir los campos de la relación
+  const parentsWithRelationship = rows.map(row => {
+    const parent = personFactory(row);
+    parent.relationship = row.relationship;
+    parent.can_pickup = row.can_pickup;
+    parent.is_emergency_contact = row.is_emergency_contact;
+    parent.can_change_diapers = row.can_change_diapers;
+    return parent;
+  });
+
+  return parentsWithRelationship;
+};
+
 export default {
   getPersons,
   getPerson,
   createPerson,
   updatePerson,
-  deletePerson
+  deletePerson,
+  getParentsByStudentId
 };

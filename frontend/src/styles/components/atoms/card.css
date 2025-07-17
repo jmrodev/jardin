@@ -7,7 +7,7 @@
   border: 1px solid var(--border-primary);
   transition: var(--transition-normal);
   font-size: var(--font-size-xs);
-  max-width: 220px;
+  min-width: 11rem;
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   min-height: 0;

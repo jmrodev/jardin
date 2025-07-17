@@ -46,12 +46,27 @@ const resources = {
       'students.totalStudents': 'Total de Estudiantes',
       'students.filteredResults': 'Resultados Filtrados',
       'students.classrooms': 'Salas',
-      'name': 'Nombre',
-      'lastnameFather': 'Apellido paterno',
-      'lastnameMother': 'Apellido materno',
+      
+      // Campos comunes / de formulario
+      'firstName': 'Primer Nombre',
+      'middleName': 'Segundo Nombre',
+      'paternalLastname': 'Apellido Paterno',
+      'maternalLastname': 'Apellido Materno',
+      'preferredName': 'Nombre Preferido',
+      'nationality': 'Nacionalidad',
       'dni': 'DNI',
+      'birthdate': 'Fecha de nacimiento',
+      'gender': 'Género',
+      'address': 'Dirección',
+      'phone': 'Teléfono',
+      'email': 'Email',
       'classroom': 'Sala',
-      'birthDate': 'Fecha de nacimiento',
+      'shift': 'Turno',
+      'male': 'Masculino',
+      'female': 'Femenino',
+      'morning': 'Mañana',
+      'afternoon': 'Tarde',
+
       'studentDetails': 'Detalles del estudiante',
       'fetchStudentsError': 'Error al obtener estudiantes',
       'studentAdded': 'Estudiante agregado',
@@ -177,6 +192,15 @@ const resources = {
       'filters.male': 'Masculino',
       'filters.female': 'Femenino',
       'search_by_name': 'Buscar por nombre...',
+      'filters.nationality': 'Nacionalidad',
+      'filters.allNationalities': 'Todas las nacionalidades',
+      'nationality.spanish': 'Española',
+      'nationality.argentine': 'Argentina',
+      'nationality.mexican': 'Mexicana',
+      'nationality.colombian': 'Colombiana',
+      'nationality.chilean': 'Chilena',
+      'nationality.peruvian': 'Peruana',
+      'nationality.venezuelan': 'Venezolana',
 
       // Formularios
       'addStudent': 'Añadir nuevo Alumno',
@@ -188,9 +212,12 @@ const resources = {
       'personal_information': 'Información Personal',
       'contact_information': 'Información de Contacto',
       'academic_information': 'Información Académica',
-      'name_placeholder': 'Escriba el/los nombre(s)',
-      'lastname_father_placeholder': 'Escriba el apellido paterno',
-      'lastname_mother_placeholder': 'Escriba el apellido materno',
+      'first_name_placeholder': 'Escriba el primer nombre',
+      'middle_name_placeholder': 'Escriba el segundo nombre (opcional)',
+      'paternal_lastname_placeholder': 'Escriba el apellido paterno',
+      'maternal_lastname_placeholder': 'Escriba el apellido materno (opcional)',
+      'preferred_name_placeholder': 'Escriba el nombre con el que prefiere que le llamen',
+      'nationality_placeholder': 'Escriba la nacionalidad',
       'dni_placeholder': 'Escriba el DNI sin puntos',
       'address_placeholder': 'Escriba la dirección',
       'phone_placeholder': 'Escriba el número de teléfono',
@@ -251,7 +278,22 @@ const resources = {
       'persons.dni': 'DNI',
       'persons.phone': 'Teléfono',
       'persons.email': 'Email',
-    }
+
+      'parents': 'Padres / Responsables',
+      'loading_parents': 'Cargando responsables...',
+      'no_parents_found': 'No se encontraron responsables asociados.',
+
+      relationship: 'Relación',
+      can_pickup: 'Puede retirar',
+      can_change_diapers: 'Puede cambiar pañales',
+      is_emergency_contact: 'Contacto de emergencia',
+      yes: 'Sí',
+      no: 'No',
+
+      student: 'Estudiante',
+      teacher: 'Profesor',
+      parent: 'Padre/Madre',
+    },
   },
   en: {
     translation: {
@@ -428,6 +470,17 @@ const resources = {
       'persons.dni': 'DNI',
       'persons.phone': 'Phone',
       'persons.email': 'Email',
+
+      relationship: 'Relationship',
+      can_pickup: 'Can pick up',
+      can_change_diapers: 'Can change diapers',
+      is_emergency_contact: 'Emergency contact',
+      yes: 'Yes',
+      no: 'No',
+
+      student: 'Student',
+      teacher: 'Teacher',
+      parent: 'Parent',
     }
   }
 };

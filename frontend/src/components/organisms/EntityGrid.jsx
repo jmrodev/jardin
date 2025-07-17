@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Button from '@/components/atoms/Button';
@@ -24,6 +24,25 @@ const EntityGrid = ({
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [selectedParent, setSelectedParent] = useState(null);
+  const [isParentDetailModalOpen, setParentDetailModalOpen] = useState(false);
+
+  const calculateAge = (birthdate) => {
+    if (!birthdate) return '';
+    const today = new Date();
+    const birthDateObj = new Date(birthdate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return `${age} ${t('years_old')}`;
+  };
+
+  const handleParentClick = (parent) => {
+    setSelectedParent(parent);
+    setParentDetailModalOpen(true);
+  };
 
   const getDisplayValue = (entity, fieldConfig) => {
     const value = entity[fieldConfig.key];
@@ -136,6 +155,29 @@ const EntityGrid = ({
                 </li>
               ))}
             </ul>
+
+            {selectedEntity.personType === 'student' && (
+              <div className="parent-details">
+                <h4>{t('parents')}</h4>
+                <ul className="parent-list">
+                  {selectedEntity.parents && selectedEntity.parents.length > 0 ? (
+                    selectedEntity.parents.map((parent) => (
+                      <li key={parent.id}>
+                        <Button
+                          onClick={() => handleParentClick(parent)}
+                          className="button--link"
+                        >
+                          {parent.relationship}: {parent.first_name} {parent.paternal_lastname}
+                        </Button>
+                      </li>
+                    ))
+                  ) : (
+                    <li>{t('no_parents_found')}</li>
+                  )}
+                </ul>
+              </div>
+            )}
+            
             <div className="entity-details__actions">
               <Button onClick={() => openEditModal(selectedEntity)} className="button--secondary">{t('edit')}</Button>
               <Button onClick={() => handleDelete(selectedEntity.id)} className="button--danger">{t('delete')}</Button>
@@ -143,6 +185,30 @@ const EntityGrid = ({
           </div>
         )}
       </DetailModal>
+
+      {selectedParent && (
+        <DetailModal
+          isOpen={isParentDetailModalOpen}
+          onClose={() => setParentDetailModalOpen(false)}
+          title={t('detailsOf', { entityName: selectedParent.preferred_name || selectedParent.first_name })}
+        >
+          <div className="entity-details">
+            <ul>
+              <li><strong>{t('firstName')}:</strong> {selectedParent.first_name}</li>
+              {selectedParent.middle_name && <li><strong>{t('middleName')}:</strong> {selectedParent.middle_name}</li>}
+              <li><strong>{t('preferredName')}:</strong> {selectedParent.preferred_name || 'N/A'}</li>
+              <li><strong>{t('age')}:</strong> {calculateAge(selectedParent.birthdate)}</li>
+              <li><strong>{t('dni')}:</strong> {selectedParent.dni}</li>
+              <li><strong>{t('phone')}:</strong> {selectedParent.phone}</li>
+              <li><strong>{t('email')}:</strong> {selectedParent.email}</li>
+              <li><strong>{t('relationship')}:</strong> {selectedParent.relationship}</li>
+              <li><strong>{t('can_pickup')}:</strong> {selectedParent.can_pickup ? t('yes') : t('no')}</li>
+              <li><strong>{t('can_change_diapers')}:</strong> {selectedParent.can_change_diapers ? t('yes') : t('no')}</li>
+              <li><strong>{t('is_emergency_contact')}:</strong> {selectedParent.is_emergency_contact ? t('yes') : t('no')}</li>
+            </ul>
+          </div>
+        </DetailModal>
+      )}
 
       <DetailModal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
         <EntityForm

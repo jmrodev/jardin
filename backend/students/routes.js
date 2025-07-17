@@ -12,6 +12,7 @@ router.use(validateToken);
 router.post('/', requireDirector, personController.createPerson('student'));
 router.get('/', requireTeacher, personController.getPersons('student'));
 router.get('/:id', requireTeacher, personController.getPerson);
+router.get('/:studentId/parents', requireTeacher, personController.getParentsByStudentId);
 router.put('/:id', requireDirector, personController.updatePerson);
 router.delete('/:id', requireAdmin, personController.deletePerson);
 

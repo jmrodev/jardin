@@ -47,10 +47,20 @@ const deletePerson = async (req, res) => {
   }
 };
 
+const getParentsByStudentId = async (req, res) => {
+  try {
+    const parents = await personService.getParentsByStudentId(req.params.studentId);
+    res.json(parents);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export default {
   getPersons,
   getPerson,
   createPerson,
   updatePerson,
-  deletePerson
+  deletePerson,
+  getParentsByStudentId
 };

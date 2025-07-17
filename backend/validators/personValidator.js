@@ -1,15 +1,17 @@
-export function validatePersonData(data) {
-  const { name, lastname, birth_date, classroom, dni } = data;
-  if (!name || !lastname || !birth_date || !classroom || !dni) {
-    return { valid: false, message: 'Todos los campos son obligatorios.' };
-  }
-  // Validar formato de fecha (YYYY-MM-DD)
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(birth_date)) {
-    return { valid: false, message: 'El formato de la fecha de nacimiento debe ser YYYY-MM-DD.' };
-  }
-  // Validar longitud de DNI
-  if (dni.length < 6 || dni.length > 12) {
-    return { valid: false, message: 'El DNI debe tener entre 6 y 12 caracteres.' };
-  }
-  return { valid: true };
-} 
+import { body } from 'express-validator';
+
+export const personValidationRules = () => {
+  return [
+    body('first_name').isString().notEmpty().withMessage('El primer nombre es obligatorio.'),
+    body('middle_name').isString().optional({ checkFalsy: true }),
+    body('paternal_lastname').isString().notEmpty().withMessage('El apellido paterno es obligatorio.'),
+    body('maternal_lastname').isString().optional({ checkFalsy: true }),
+    body('preferred_name').isString().trim().escape().optional(),
+    body('nationality').isString().optional({ checkFalsy: true }),
+    body('dni').isString().notEmpty().withMessage('El DNI es obligatorio.').isLength({ min: 6, max: 12 }).withMessage('El DNI debe tener entre 6 y 12 caracteres.'),
+    body('address').isString().optional(),
+    body('phone').isString().optional(),
+    body('email').isEmail().withMessage('Debe ser un correo electrónico válido.').optional({ checkFalsy: true }),
+    body('birthdate').isISO8601().toDate().withMessage('La fecha de nacimiento debe ser una fecha válida.').optional(),
+  ];
+}; 

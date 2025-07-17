@@ -28,15 +28,18 @@ const StudentsPage = () => {
   };
 
   const studentCardConfig = {
-    title: (student) => `${student.name} ${student.lastname_father}`,
+    title: (student) => student.preferred_name || `${student.first_name} ${student.paternal_lastname}`,
     subtitle: (student) => student.classroom_name || t('no_classroom'),
     detail: (student) => calculateAge(student.birthdate),
   };
 
   const studentDetailConfig = [
-    { key: 'name', label: t('name') },
-    { key: 'lastname_father', label: t('lastnameFather') },
-    { key: 'lastname_mother', label: t('lastnameMother') },
+    { key: 'first_name', label: t('firstName') },
+    { key: 'middle_name', label: t('middleName') },
+    { key: 'paternal_lastname', label: t('paternalLastname') },
+    { key: 'maternal_lastname', label: t('maternalLastname') },
+    { key: 'preferred_name', label: t('preferredName') },
+    { key: 'nationality', label: t('nationality') },
     { key: 'dni', label: t('dni') },
     { key: 'birthdate', label: t('birthdate'), type: 'date' },
     { 
@@ -92,6 +95,21 @@ const StudentsPage = () => {
         { value: 'Femenino', label: t('filters.female') },
       ],
     },
+    {
+      name: 'nationality',
+      label: t('filters.nationality'),
+      type: 'select',
+      placeholder: t('filters.allNationalities'),
+      options: [
+        { value: 'Española', label: t('nationality.spanish') },
+        { value: 'Argentina', label: t('nationality.argentine') },
+        { value: 'Mexicana', label: t('nationality.mexican') },
+        { value: 'Colombiana', label: t('nationality.colombian') },
+        { value: 'Chilena', label: t('nationality.chilean') },
+        { value: 'Peruana', label: t('nationality.peruvian') },
+        { value: 'Venezolana', label: t('nationality.venezuelan') },
+      ],
+    },
   ];
 
   const studentFormConfig = {
@@ -101,9 +119,12 @@ const StudentsPage = () => {
       {
         title: t('personal_information'),
         fields: [
-          { name: 'name', label: t('name'), type: 'text', placeholder: t('name_placeholder') },
-          { name: 'lastname_father', label: t('lastnameFather'), type: 'text', placeholder: t('lastname_father_placeholder') },
-          { name: 'lastname_mother', label: t('lastnameMother'), type: 'text', placeholder: t('lastname_mother_placeholder') },
+          { name: 'first_name', label: t('firstName'), type: 'text', placeholder: t('first_name_placeholder') },
+          { name: 'middle_name', label: t('middleName'), type: 'text', placeholder: t('middle_name_placeholder') },
+          { name: 'paternal_lastname', label: t('paternalLastname'), type: 'text', placeholder: t('paternal_lastname_placeholder') },
+          { name: 'maternal_lastname', label: t('maternalLastname'), type: 'text', placeholder: t('maternal_lastname_placeholder') },
+          { name: 'preferred_name', label: t('preferredName'), type: 'text', placeholder: t('preferred_name_placeholder') },
+          { name: 'nationality', label: t('nationality'), type: 'text', placeholder: t('nationality_placeholder') },
           { name: 'dni', label: t('dni'), type: 'text', placeholder: t('dni_placeholder') },
           { name: 'birthdate', label: t('birthdate'), type: 'date' },
           { name: 'gender', label: t('gender'), type: 'select', options: [ {value: 'Masculino', label: t('male')}, {value: 'Femenino', label: t('female')} ] },

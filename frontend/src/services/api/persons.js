@@ -20,6 +20,10 @@ const personService = {
   delete(id, personType) {
     return api.delete(`/${personType}s/${id}`);
   },
+
+  getParentsByStudentId(studentId) {
+    return api.get(`/students/${studentId}/parents`);
+  },
 };
 
 export default personService;
