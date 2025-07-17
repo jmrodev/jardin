@@ -26,13 +26,16 @@ const EntityGrid = ({
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 
   const getDisplayValue = (entity, fieldConfig) => {
+    const value = entity[fieldConfig.key];
+
     if (fieldConfig.type === 'date') {
-      return formatDate(entity[fieldConfig.key]);
+      return value ? formatDate(value) : '';
     }
     if (fieldConfig.getValue) {
       return fieldConfig.getValue(entity);
     }
-    return entity[fieldConfig.key] || t('notAssigned');
+    // Si el valor es null o undefined, devolver cadena vacía en lugar de 'notAssigned'
+    return value || '';
   };
 
   const handleCardClick = (entity) => {
@@ -88,7 +91,8 @@ const EntityGrid = ({
   const renderCardContent = (entity) => (
     <div className="card-content-wrapper">
       <h4>{cardConfig.title(entity)}</h4>
-      <p>{cardConfig.subtitle(entity)}</p>
+      {/* Para el subtítulo (la sala), mantenemos la lógica de 'Sin sala' si no existe */}
+      <p>{cardConfig.subtitle(entity) || t('no_classroom')}</p>
       <span>{cardConfig.detail(entity)}</span>
     </div>
   );

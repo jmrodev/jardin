@@ -32,11 +32,29 @@
 .filter-panel__field input,
 .filter-panel__field select {
   width: 100%;
-  padding: var(--spacing-small);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-  background-color: var(--color-background-primary);
-  color: var(--color-text-primary);
+  padding: var(--input-padding, var(--spacing-small)); /* Usar variable de input con fallback */
+  border: var(--input-border, 1px solid var(--border-primary));
+  border-radius: var(--input-border-radius, var(--border-radius));
+  background-color: var(--input-bg-color, var(--bg-primary));
+  color: var(--input-color, var(--text-primary));
+  font-size: var(--input-font-size, var(--font-size-base));
+  transition: var(--input-transition, border-color 0.2s, box-shadow 0.2s);
+}
+
+.filter-panel__field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.filter-panel__field input:focus,
+.filter-panel__field select:focus {
+  outline: var(--input-focus-outline, none);
+  border-color: var(--input-focus-border-color, var(--color-primary));
+  box-shadow: var(--input-focus-box-shadow, 0 0 0 2px var(--color-primary-alpha));
 }
 
 .filter-panel__actions {

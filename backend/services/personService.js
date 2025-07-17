@@ -17,17 +17,14 @@ const getAge = (birthdate) => {
   return age;
 };
 
-const getClassroomByAge = (age) => {
-  if (age === 3) return 'Sala de 3';
-  if (age === 4) return 'Sala de 4';
-  if (age === 5) return 'Sala de 5';
-  return 'Sin sala asignada'; // O alguna otra sala por defecto
-};
-
 const personFactory = (row) => {
+  let person;
   switch (row.person_type) {
     case 'student':
-      return new Student(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.registration_date, row.status, row.classroom_id, row.shift, row.gender);
+      person = new Student(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.registration_date, row.status, row.classroom_id, row.shift, row.gender);
+      // Adjuntar el nombre de la sala obtenido del JOIN
+      person.classroom_name = row.classroom_name;
+      return person;
     case 'teacher':
       return new Teacher(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.hire_date, row.specialization);
     case 'parent':
@@ -35,7 +32,12 @@ const personFactory = (row) => {
     case 'director':
       return new Director(row.id, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate, row.hire_date, row.administrative_role);
     default:
-      return new Person(row.id, row.person_type, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate);
+      person = new Person(row.id, row.person_type, row.name, row.lastname_father, row.lastname_mother, row.dni, row.address, row.phone, row.email, row.birthdate);
+      // Adjuntar el nombre de la sala si existe, para ser consistentes
+      if (row.classroom_name) {
+        person.classroom_name = row.classroom_name;
+      }
+      return person;
   }
 };
 
@@ -48,11 +50,11 @@ const getPersons = async (personType, filters = {}) => {
     query += ' AND p.person_type = ?';
     params.push(personType);
   }
-  
+
   // Apply filters
-  if (filters.classroom) {
+  if (filters.classroom_id) { // Corregido de 'classroom' a 'classroom_id'
     query += ' AND p.classroom_id = ?';
-    params.push(filters.classroom);
+    params.push(filters.classroom_id);
   }
   if (filters.shift) {
     query += ' AND p.shift = ?';
@@ -64,16 +66,14 @@ const getPersons = async (personType, filters = {}) => {
   }
   if (filters.age) {
     const age = parseInt(filters.age, 10);
-    const today = new Date();
-    
-    // Calcular la fecha de nacimiento más tardía para tener la edad requerida
-    const latestBirthDate = new Date(today.getFullYear() - age, today.getMonth(), today.getDate());
-    
-    // Calcular la fecha de nacimiento más temprana para tener la edad requerida
-    const earliestBirthDate = new Date(today.getFullYear() - age - 1, today.getMonth(), today.getDate() + 1);
+    if (!isNaN(age)) {
+      const today = new Date();
+      const latestBirthDate = new Date(today.getFullYear() - age, today.getMonth(), today.getDate() + 1);
+      const earliestBirthDate = new Date(today.getFullYear() - age - 1, today.getMonth(), today.getDate() + 1);
 
-    query += ' AND p.birthdate BETWEEN ? AND ?';
-    params.push(earliestBirthDate.toISOString().split('T')[0], latestBirthDate.toISOString().split('T')[0]);
+      query += ' AND p.birthdate BETWEEN ? AND ?';
+      params.push(earliestBirthDate.toISOString().split('T')[0], latestBirthDate.toISOString().split('T')[0]);
+    }
   }
 
   const [rows] = await connection.query(query, params);
@@ -87,6 +87,7 @@ const getPerson = async (id) => {
   if (rows.length === 0) {
     throw new Error('Person not found');
   }
+  // La corrección en personFactory soluciona esto para getPerson también
   return personFactory(rows[0]);
 };
 
