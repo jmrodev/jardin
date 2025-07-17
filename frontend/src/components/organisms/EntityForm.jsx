@@ -40,7 +40,9 @@ const EntityForm = ({ formConfig, initialData, onSubmit, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit} className="entity-form">
-      <h3>{initialData ? formConfig.editTitle : formConfig.createTitle}</h3>
+      <h2 className="entity-form__title">
+        {initialData ? formConfig.editTitle : formConfig.createTitle}
+      </h2>
       {formConfig.sections.map(section => (
         <div key={section.title} className="form-section">
           <h4>{section.title}</h4>

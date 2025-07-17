@@ -1,52 +1,39 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import Icon from '../atoms/Icon';
-import Button from '../atoms/Button';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
+import Icon from '@/components/atoms/Icon';
+import '@/styles/components/atoms/modal.css';
 
-export default function DetailModal({ isOpen, onClose, title, children }) {
-  const { t } = useTranslation();
-  const overlayRef = useRef(null);
-
-  // Cerrar con Escape
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
-
-  // Cerrar al hacer click fuera del modal
-  const handleOverlayClick = (e) => {
-    if (e.target === overlayRef.current) onClose();
-  };
-
+const DetailModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
-  return (
-    <div
-      className="modal-overlay"
-      ref={overlayRef}
-      onClick={handleOverlayClick}
-      aria-modal="true"
-      role="dialog"
-      tabIndex={-1}
-    >
-      <div className="modal" tabIndex={0}>
+  return ReactDOM.createPortal(
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-          >
-            <Icon name="X" size={18} />
-            <span>{t('close')}</span>
-          </Button>
+          <button onClick={onClose} className="modal-close-button">
+            <Icon name="X" size={24} />
+          </button>
         </div>
-        <div className="modal-content">{children}</div>
+        <div className="modal-body">
+          {children}
+        </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById('modal-root')
   );
-} 
+};
+
+DetailModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
+DetailModal.defaultProps = {
+  title: '',
+};
+
+export default DetailModal; 
