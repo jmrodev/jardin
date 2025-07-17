@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Atom: Select
+   ========================================================================== */
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.select-container label {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.select-element {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-medium);
+  background-color: var(--color-background-input);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none; /* Removes default browser styling */
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+.select-element:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light-transparent);
+}
+
+.select-element::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* ==========================================================================
+   Dark Mode Styles for Select
+   ========================================================================== */
+
+[data-theme="dark"] .select-element {
+  background-color: var(--color-background-input-dark);
+  color: var(--color-text-primary-dark);
+  border-color: var(--color-border-dark);
+  /* El SVG del icono ya está definido para ser oscuro, pero podemos redefinirlo si es necesario */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d1d1d6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Estilos específicos para las opciones en modo oscuro */
+[data-theme="dark"] .select-element option {
+  background-color: var(--color-background-dark); /* Un fondo oscuro para las opciones */
+  color: var(--color-text-primary-dark); /* Texto claro para las opciones */
+}
+
+[data-theme="dark"] .select-element:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light-transparent-dark);
+} 
