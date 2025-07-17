@@ -4,7 +4,17 @@ export const getStudents = async (req, res) => {
   try {
     const pool = getConnection();
     const [rows] = await pool.execute(
-      'SELECT id, firstname, lastname_father, lastname_mother, address, dni, birth_date, gender, classroom, shift, special_education, needs_assistant, special_diet, celiac, diabetic, takes_dairy, care_diseases, medication, diapers, diaper_responsible, authorized_pickups, created_at, updated_at FROM students'
+      `SELECT 
+        s.id, s.firstname, s.lastname_father, s.lastname_mother, s.address, s.dni, 
+        s.birth_date, s.gender, s.classroom, s.shift, s.special_education, 
+        s.needs_assistant, s.special_diet, s.celiac, s.diabetic, s.takes_dairy, 
+        s.care_diseases, s.medication, s.diapers, s.diaper_responsible, 
+        s.authorized_pickups, s.created_at, s.updated_at,
+        COALESCE(CONCAT(creator.name, ' ', creator.lastname), 'Sistema') as created_by_name,
+        COALESCE(CONCAT(updater.name, ' ', updater.lastname), 'Sistema') as updated_by_name
+      FROM students s
+      LEFT JOIN staff creator ON s.created_by = creator.id
+      LEFT JOIN staff updater ON s.updated_by = updater.id`
     );
     const students = rows.map(student => ({
       ...student,
