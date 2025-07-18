@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '@/styles/components/atoms/select.css';
 
-const Select = ({ name, value, onChange, options, placeholder, required, ...props }) => {
+const Select = ({ label, name, value, onChange, options, placeholder, required, ...props }) => {
   return (
-    <div className="select-wrapper">
+    <div className="select-container">
+      {label && <label htmlFor={name} className="select-label">{label}{required && ' *'}</label>}
       <select
         id={name}
         name={name}
@@ -26,6 +27,7 @@ const Select = ({ name, value, onChange, options, placeholder, required, ...prop
 };
 
 Select.propTypes = {
+  label: PropTypes.string,
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onChange: PropTypes.func.isRequired,
@@ -40,6 +42,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
+  label: '',
   placeholder: '',
   required: false,
 };
