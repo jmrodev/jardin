@@ -1,16 +1,16 @@
-import api from './api';
+import axios from 'axios';
+import apiClient from './base'; // Asegurarnos de usar el apiClient configurado
 
-export async function fetchResource(endpoint, method = 'GET', data) {
-  try {
-    const config = {
-      url: endpoint,
-      method,
-    };
-    if (data) config.data = data;
-    const response = await api(config);
-    return response.data;
-  } catch (error) {
-    // Axios ya maneja los errores globales con los interceptores
-    throw error;
-  }
-} 
+function createResource(resource) {
+  const resourceURL = `/${resource}`;
+
+  return {
+    list: (params) => apiClient.get(resourceURL, { params }),
+    get: (id) => apiClient.get(`${resourceURL}/${id}`),
+    create: (data) => apiClient.post(resourceURL, data),
+    update: (id, data) => apiClient.put(`${resourceURL}/${id}`, data),
+    delete: (id) => apiClient.delete(`${resourceURL}/${id}`),
+  };
+}
+
+export default createResource; 
