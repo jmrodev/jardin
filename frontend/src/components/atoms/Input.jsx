@@ -8,29 +8,23 @@ const Input = ({
   disabled = false,
   required = false,
   error,
-  label,
   id,
   name,
   className = '',
+  as: Component = 'input',
   ...props
 }) => {
   const inputId = id || name;
   const inputClasses = [
-    'input',
+    'input-element', // Usar una clase más genérica
     error && 'error',
     disabled && 'disabled',
     className
   ].filter(Boolean).join(' ');
 
   return (
-    <div className="input-container">
-      {label && (
-        <label htmlFor={inputId} className="input-label">
-          {label}
-          {required && <span className="input-required">*</span>}
-        </label>
-      )}
-      <input
+    <div className="input-wrapper">
+      <Component
         id={inputId}
         name={name}
         type={type}

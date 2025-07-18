@@ -56,3 +56,27 @@
   margin-top: var(--space-lg);
   border-top: 1px solid var(--border-primary);
 } 
+
+.entity-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md) var(--space-xl);
+}
+
+.entity-form .form-field {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.entity-form .form-label {
+  text-align: right;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.entity-form .required-indicator {
+  color: var(--color-danger);
+  margin-left: var(--space-xs);
+} 
