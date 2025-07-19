@@ -28,7 +28,7 @@ const ListPageLayout = ({ filters, children, entityType, onAddNew }) => {
     <div className="list-page-layout">
       <aside className="list-page-layout__sidebar">
         <div className="sidebar-navigation">
-          <h3 className="sidebar-title">{t('navigation')}</h3>
+          <h3 className="sidebar-title" data-separator="navigation">{t('navigation')}</h3>
           <nav className="sidebar-nav">
             {navigationItems.map((item) => (
               <Button
@@ -58,7 +58,7 @@ const ListPageLayout = ({ filters, children, entityType, onAddNew }) => {
         )}
 
         <div className="sidebar-filters">
-          <h3 className="sidebar-title">{t('filters.title')}</h3>
+          <h3 className="sidebar-title" data-separator="filters">{t('filters.title')}</h3>
           {filters}
         </div>
       </aside>

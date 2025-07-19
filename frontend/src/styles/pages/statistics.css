@@ -135,25 +135,33 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-sm);
 }
 
 .stat-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-md);
+  gap: var(--space-xs);
+  padding: var(--space-sm);
   background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  border: 3px solid var(--color-primary);
   border-radius: var(--radius-md);
+  min-height: 80px;
+  transition: all var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   background-color: var(--color-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,6 +169,40 @@
   flex-shrink: 0;
 }
 
+/* Vivid colored borders for stat cards */
+.stat-card[data-color="skyblue"] {
+  border-color: #00bfff;
+}
+
+.stat-card[data-color="orange"] {
+  border-color: #ff8c00;
+}
+
+.stat-card[data-color="lime"] {
+  border-color: #32cd32;
+}
+
+.stat-card[data-color="pink"] {
+  border-color: #ff69b4;
+}
+
+.stat-icon-skyblue {
+  background-color: #00bfff;
+}
+
+.stat-icon-orange {
+  background-color: #ff8c00;
+}
+
+.stat-icon-lime {
+  background-color: #32cd32;
+}
+
+.stat-icon-pink {
+  background-color: #ff69b4;
+}
+
+/* Keep original colors for backward compatibility */
 .stat-icon-primary {
   background-color: var(--color-primary);
 }
@@ -184,19 +226,23 @@
 .stat-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  align-items: center;
+  gap: var(--space-2xs);
+  text-align: center;
 }
 
 .stat-label {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
 }
 
 .stat-value {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
+  line-height: 1.2;
 }
 
 /* Stats Details */
@@ -395,7 +441,8 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--space-xs);
   }
   
   .statistics-title {

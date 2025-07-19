@@ -18,25 +18,25 @@ export default function StatisticsOverview({ stats }) {
       icon: 'Users',
       label: t('statistics.totalStudents'),
       value: formatNumber(stats.totalStudents || 0),
-      color: 'primary'
+      color: 'skyblue'
     },
     {
       icon: 'GraduationCap',
       label: t('statistics.totalTeachers'),
       value: formatNumber(stats.totalTeachers || 0),
-      color: 'secondary'
+      color: 'orange'
     },
     {
       icon: 'UserCheck',
       label: t('statistics.totalParents'),
       value: formatNumber(stats.totalParents || 0),
-      color: 'success'
+      color: 'lime'
     },
     {
       icon: 'CalendarCheck',
       label: t('statistics.attendanceRate'),
       value: formatPercentage(stats.attendanceRate || 0),
-      color: 'warning'
+      color: 'pink'
     }
   ];
 

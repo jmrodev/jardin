@@ -18,7 +18,8 @@ export default function DashboardGrid() {
       title: t('dashboard.manageStudents'),
       description: t('dashboard.studentsDescription'),
       icon: 'Users',
-      colorClass: 'dashboard-card-icon--primary',
+      colorClass: 'dashboard-card-icon--skyblue',
+      borderColor: 'skyblue',
       link: '/students',
       action: t('dashboard.viewStudents')
     },
@@ -27,7 +28,8 @@ export default function DashboardGrid() {
       title: t('dashboard.manageTeachers'),
       description: t('dashboard.teachersDescription'),
       icon: 'GraduationCap',
-      colorClass: 'dashboard-card-icon--success',
+      colorClass: 'dashboard-card-icon--orange',
+      borderColor: 'orange',
       link: '/teachers',
       action: t('dashboard.viewTeachers')
     },
@@ -36,7 +38,8 @@ export default function DashboardGrid() {
       title: t('dashboard.manageParents'),
       description: t('dashboard.parentsDescription'),
       icon: 'UserCheck',
-      colorClass: 'dashboard-card-icon--warning',
+      colorClass: 'dashboard-card-icon--lime',
+      borderColor: 'lime',
       link: '/parents',
       action: t('dashboard.viewParents')
     },
@@ -45,7 +48,8 @@ export default function DashboardGrid() {
       title: t('dashboard.manageAttendance'),
       description: t('dashboard.attendanceDescription'),
       icon: 'CalendarCheck',
-      colorClass: 'dashboard-card-icon--info',
+      colorClass: 'dashboard-card-icon--pink',
+      borderColor: 'pink',
       link: '/attendance',
       action: t('dashboard.viewAttendance')
     },
@@ -54,7 +58,8 @@ export default function DashboardGrid() {
       title: t('dashboard.viewStatistics'),
       description: t('dashboard.statisticsDescription'),
       icon: 'BarChart3',
-      colorClass: 'dashboard-card-icon--secondary',
+      colorClass: 'dashboard-card-icon--purple',
+      borderColor: 'purple',
       link: '/statistics',
       action: t('dashboard.viewStatistics')
     }
@@ -66,6 +71,7 @@ export default function DashboardGrid() {
         <div 
           key={card.id} 
           className="dashboard-card"
+          data-border-color={card.borderColor}
         >
           <div className="dashboard-card-header">
             <div 

@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: var(--space-lg);
-  padding: var(--space-lg);
+  padding: var(--space-lg) 0;
   min-height: calc(100vh - var(--header-height, 60px) - var(--space-lg) * 2);
 }
 
@@ -25,7 +25,21 @@
   color: var(--text-primary);
   margin: 0 0 var(--space-md) 0;
   padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--border-primary);
+  border-bottom: 3px solid var(--border-primary);
+  position: relative;
+}
+
+/* Colores vívidos para los separadores del sidebar */
+.sidebar-title[data-separator="navigation"] {
+  border-bottom-color: #00bfff; /* Celeste */
+}
+
+.sidebar-title[data-separator="filters"] {
+  border-bottom-color: #ff8c00; /* Naranja */
+}
+
+.sidebar-title[data-separator="actions"] {
+  border-bottom-color: #32cd32; /* Lima */
 }
 
 .sidebar-navigation {
@@ -96,7 +110,7 @@
   .list-page-layout {
     grid-template-columns: 240px 1fr;
     gap: var(--space-md);
-    padding: var(--space-md);
+    padding: var(--space-md) 0;
   }
   
   .list-page-layout__sidebar {
@@ -110,7 +124,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     gap: var(--space-md);
-    padding: var(--space-md);
+    padding: var(--space-md) 0;
   }
 
   .list-page-layout__sidebar {
