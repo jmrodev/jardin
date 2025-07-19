@@ -65,6 +65,27 @@
   flex-shrink: 0;
 }
 
+/* Dashboard card icon color variants */
+.dashboard-card-icon--primary {
+  background-color: var(--color-primary);
+}
+
+.dashboard-card-icon--success {
+  background-color: var(--color-success);
+}
+
+.dashboard-card-icon--warning {
+  background-color: var(--color-warning);
+}
+
+.dashboard-card-icon--info {
+  background-color: var(--color-info);
+}
+
+.dashboard-card-icon--secondary {
+  background-color: var(--color-secondary);
+}
+
 .dashboard-card-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);

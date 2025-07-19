@@ -1,0 +1,149 @@
+/* Demographic Analysis Component Styles */
+.demographic-analysis {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.demographic-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.demographic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.demographic-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem;
+  border: 1px solid var(--border-primary);
+}
+
+.demographic-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.demographic-stats {
+  margin-bottom: 0.75rem;
+}
+
+.demographic-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.15rem 0;
+  border-bottom: 1px solid var(--border-primary);
+  font-size: 0.8rem;
+}
+
+.demographic-stat:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.stat-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.stat-attendance {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.chart-container {
+  height: 80px;
+  margin-top: 0.5rem;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.chart-container canvas {
+  max-height: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  z-index: 1;
+}
+
+.chart-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+}
+
+.chart-placeholder p {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .demographic-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .demographic-card {
+    padding: 0.5rem;
+  }
+  
+  .chart-container {
+    height: 60px;
+  }
+  
+  .demographic-title {
+    font-size: 0.9rem;
+  }
+  
+  .demographic-card-title {
+    font-size: 0.8rem;
+  }
+  
+  .demographic-stat {
+    font-size: 0.75rem;
+  }
+} 

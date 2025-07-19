@@ -1,0 +1,30 @@
+/* Attendance Chart Component Styles */
+.attendance-chart {
+  width: 100%;
+  position: relative;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  border: 1px solid var(--border-primary);
+}
+
+.attendance-chart canvas {
+  max-height: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Dynamic height classes */
+.attendance-chart--height-200 { height: 200px; }
+.attendance-chart--height-250 { height: 250px; }
+.attendance-chart--height-300 { height: 300px; }
+.attendance-chart--height-350 { height: 350px; }
+.attendance-chart--height-400 { height: 400px; }
+.attendance-chart--height-450 { height: 450px; }
+.attendance-chart--height-500 { height: 500px; }
+
+/* Chart container responsive */
+@media (max-width: 768px) {
+  .attendance-chart {
+    padding: var(--space-sm);
+  }
+} 

@@ -1,0 +1,4 @@
+### Test Demographic Stats
+GET http://localhost:3000/api/dashboard/stats/demographic
+Authorization: Bearer {{authToken}}
+Content-Type: application/json 

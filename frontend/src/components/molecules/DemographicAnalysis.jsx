@@ -17,8 +17,12 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
       setError(null);
       try {
         const response = await dashboardService.getDemographicStats();
+        console.log('📊 Respuesta completa del servidor:', response);
         console.log('📊 Datos demográficos obtenidos:', response.data);
-        setDemographicData(response.data);
+        // Los datos están en response.data.data, no en response.data
+        console.log('📊 Estructura de datos demográficos:', response.data);
+        console.log('📊 Datos demográficos reales:', response.data.data);
+        setDemographicData(response.data.data);
       } catch (err) {
         console.error('❌ Error fetching demographic data:', err);
         setError('Error al cargar datos demográficos');
@@ -76,7 +80,26 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
 
   // Preparar datos para gráficos
   const prepareShiftChartData = () => {
+    console.log('🔍 Preparando datos de gráfico por turno...');
+    console.log('📊 demographicData:', demographicData);
+    
+    if (!demographicData || !demographicData.byShift) {
+      console.log('⚠️ No hay datos de turno disponibles');
+      return {
+        labels: [],
+        datasets: [{
+          label: t('statistics.attendanceRate'),
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 2
+        }]
+      };
+    }
+
     const data = demographicData.byShift;
+    console.log('📊 Datos de turno:', data);
+    
     const labels = [];
     const attendanceData = [];
     const colors = ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0'];
@@ -86,23 +109,47 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
                         shift === 'tarde' ? t('statistics.afternoonShift') : 
                         shift.charAt(0).toUpperCase() + shift.slice(1);
       labels.push(shiftLabel);
-      attendanceData.push(stats.attendance);
+      attendanceData.push(stats.students); // Cambiar a número de estudiantes
+      console.log(`📊 ${shiftLabel}: ${stats.students} estudiantes`);
     });
 
-    return {
+    const chartData = {
       labels,
       datasets: [{
-        label: t('statistics.attendanceRate'),
+        label: t('statistics.students'),
         data: attendanceData,
         backgroundColor: colors.slice(0, labels.length),
         borderColor: colors.slice(0, labels.length).map(color => color.replace('0.8', '1')),
-        borderWidth: 2
+        borderWidth: 1,
+        borderRadius: 2,
+        borderSkipped: false
       }]
     };
+    
+    console.log('📊 Datos del gráfico por turno:', chartData);
+    return chartData;
   };
 
   const prepareGenderChartData = () => {
+    console.log('🔍 Preparando datos de gráfico por género...');
+    
+    if (!demographicData || !demographicData.byGender) {
+      console.log('⚠️ No hay datos de género disponibles');
+      return {
+        labels: [],
+        datasets: [{
+          label: t('statistics.students'),
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 2
+        }]
+      };
+    }
+
     const data = demographicData.byGender;
+    console.log('📊 Datos de género:', data);
+    
     const labels = [];
     const studentData = [];
     const colors = ['#FF9800', '#E91E63', '#9C27B0'];
@@ -113,22 +160,46 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
                          gender.charAt(0).toUpperCase() + gender.slice(1);
       labels.push(genderLabel);
       studentData.push(stats.students);
+      console.log(`📊 ${genderLabel}: ${stats.students} estudiantes`);
     });
 
-    return {
+    const chartData = {
       labels,
       datasets: [{
         label: t('statistics.students'),
         data: studentData,
         backgroundColor: colors.slice(0, labels.length),
         borderColor: colors.slice(0, labels.length).map(color => color.replace('0.8', '1')),
-        borderWidth: 2
+        borderWidth: 1,
+        borderRadius: 2,
+        borderSkipped: false
       }]
     };
+    
+    console.log('📊 Datos del gráfico por género:', chartData);
+    return chartData;
   };
 
   const prepareAgeChartData = () => {
+    console.log('🔍 Preparando datos de gráfico por edad...');
+    
+    if (!demographicData || !demographicData.byAge) {
+      console.log('⚠️ No hay datos de edad disponibles');
+      return {
+        labels: [],
+        datasets: [{
+          label: t('statistics.attendanceRate'),
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 2
+        }]
+      };
+    }
+
     const data = demographicData.byAge;
+    console.log('📊 Datos de edad:', data);
+    
     const labels = [];
     const attendanceData = [];
     const colors = ['#9C27B0', '#3F51B5', '#009688', '#4CAF50'];
@@ -137,23 +208,34 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
       const age = ageKey.replace('age', '');
       const ageLabel = t(`statistics.age${age}`);
       labels.push(ageLabel);
-      attendanceData.push(stats.attendance);
+      attendanceData.push(stats.students); // Cambiar a número de estudiantes
+      console.log(`📊 ${ageLabel}: ${stats.students} estudiantes`);
     });
 
-    return {
+    const chartData = {
       labels,
       datasets: [{
-        label: t('statistics.attendanceRate'),
+        label: t('statistics.students'),
         data: attendanceData,
         backgroundColor: colors.slice(0, labels.length),
         borderColor: colors.slice(0, labels.length).map(color => color.replace('0.8', '1')),
-        borderWidth: 2
+        borderWidth: 1,
+        borderRadius: 2,
+        borderSkipped: false
       }]
     };
+    
+    console.log('📊 Datos del gráfico por edad:', chartData);
+    return chartData;
   };
 
   // Generar insights demográficos
   const generateDemographicInsights = () => {
+    // Verificar que demographicData existe y tiene las propiedades necesarias
+    if (!demographicData || !demographicData.byShift || !demographicData.byGender || !demographicData.byAge) {
+      return [];
+    }
+
     const shiftData = demographicData.byShift;
     const genderData = demographicData.byGender;
     const ageData = demographicData.byAge;
@@ -161,55 +243,61 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
     const insights = [];
 
     // Insights por turno
-    const shifts = Object.entries(shiftData);
-    if (shifts.length > 1) {
-      const bestShift = shifts.reduce((best, current) => 
-        current[1].attendance > best[1].attendance ? current : best
-      );
-      const worstShift = shifts.reduce((worst, current) => 
-        current[1].attendance < worst[1].attendance ? current : worst
-      );
+    if (shiftData && Object.keys(shiftData).length > 0) {
+      const shifts = Object.entries(shiftData);
+      if (shifts.length > 1) {
+        const bestShift = shifts.reduce((best, current) => 
+          current[1].attendance > best[1].attendance ? current : best
+        );
+        const worstShift = shifts.reduce((worst, current) => 
+          current[1].attendance < worst[1].attendance ? current : worst
+        );
 
-      if (bestShift[1].attendance > worstShift[1].attendance + 5) {
-        const bestShiftLabel = bestShift[0] === 'mañana' ? t('statistics.morningShift') : 
-                              bestShift[0] === 'tarde' ? t('statistics.afternoonShift') : 
-                              bestShift[0].charAt(0).toUpperCase() + bestShift[0].slice(1);
-        
-        insights.push({
-          type: 'positive',
-          category: 'shift',
-          message: `${bestShiftLabel} tiene mejor asistencia (${bestShift[1].attendance}%)`
-        });
+        if (bestShift[1].attendance > worstShift[1].attendance + 5) {
+          const bestShiftLabel = bestShift[0] === 'mañana' ? t('statistics.morningShift') : 
+                                bestShift[0] === 'tarde' ? t('statistics.afternoonShift') : 
+                                bestShift[0].charAt(0).toUpperCase() + bestShift[0].slice(1);
+          
+          insights.push({
+            type: 'positive',
+            category: 'shift',
+            message: `${bestShiftLabel} tiene mejor asistencia (${bestShift[1].attendance}%)`
+          });
+        }
       }
     }
 
     // Insights por género
-    const genders = Object.entries(genderData);
-    if (genders.length > 1) {
-      const genderDiff = Math.abs(genders[0][1].attendance - genders[1][1].attendance);
-      if (genderDiff > 5) {
-        insights.push({
-          type: 'info',
-          category: 'gender',
-          message: 'Hay una diferencia significativa en asistencia entre géneros'
-        });
+    if (genderData && Object.keys(genderData).length > 0) {
+      const genders = Object.entries(genderData);
+      if (genders.length > 1) {
+        const genderDiff = Math.abs(genders[0][1].attendance - genders[1][1].attendance);
+        if (genderDiff > 5) {
+          insights.push({
+            type: 'info',
+            category: 'gender',
+            message: 'Hay una diferencia significativa en asistencia entre géneros'
+          });
+        }
       }
     }
 
     // Insights por edad
-    const ages = Object.entries(ageData);
-    if (ages.length > 0) {
-      const bestAge = ages.reduce((best, current) => 
-        current[1].attendance > best[1].attendance ? current : best
-      );
-      const age = bestAge[0].replace('age', '');
-      const ageLabel = t(`statistics.age${age}`);
-      
-      insights.push({
-        type: 'positive',
-        category: 'age',
-        message: `Los estudiantes de ${ageLabel} tienen la mejor asistencia (${bestAge[1].attendance}%)`
-      });
+    if (ageData && Object.keys(ageData).length > 0) {
+      const ages = Object.entries(ageData);
+      if (ages.length > 0) {
+        const bestAge = ages.reduce((best, current) => 
+          current[1].attendance > best[1].attendance ? current : best
+        );
+        const age = bestAge[0].replace('age', '');
+        const ageLabel = t(`statistics.age${age}`);
+        
+        insights.push({
+          type: 'positive',
+          category: 'age',
+          message: `Los estudiantes de ${ageLabel} tienen la mejor asistencia (${bestAge[1].attendance}%)`
+        });
+      }
     }
 
     return insights;
@@ -232,7 +320,7 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             {t('statistics.shiftAnalysis')}
           </h4>
           <div className="demographic-stats">
-            {Object.entries(demographicData.byShift).map(([shift, stats]) => {
+            {demographicData.byShift && Object.entries(demographicData.byShift).map(([shift, stats]) => {
               const shiftLabel = shift === 'mañana' ? t('statistics.morningShift') : 
                                 shift === 'tarde' ? t('statistics.afternoonShift') : 
                                 shift.charAt(0).toUpperCase() + shift.slice(1);
@@ -246,18 +334,62 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             })}
           </div>
           <div className="chart-container">
-            <AttendanceChart
-              data={prepareShiftChartData()}
-              type="doughnut"
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'bottom'
-                  }
-                }
-              }}
-            />
+            {(() => {
+              const chartData = prepareShiftChartData();
+              console.log('🎨 Renderizando gráfico de turno con datos:', chartData);
+              
+              // Verificar si hay datos para mostrar
+              if (!chartData.labels || chartData.labels.length === 0) {
+                return (
+                  <div className="chart-placeholder">
+                    <Icon name="bar-chart-3" size={16} />
+                    <p>No hay datos de turno disponibles</p>
+                  </div>
+                );
+              }
+              
+              // Mostrar gráfico incluso si la asistencia es 0%
+              
+              return (
+                <AttendanceChart
+                  data={chartData}
+                  type="bar"
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false
+                      }
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      },
+                      x: {
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      }
+                    },
+                    elements: {
+                      bar: {
+                        borderWidth: 1,
+                        borderRadius: 2,
+                        borderSkipped: false
+                      }
+                    }
+                  }}
+                />
+              );
+            })()}
           </div>
         </div>
 
@@ -268,7 +400,7 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             {t('statistics.genderAnalysis')}
           </h4>
           <div className="demographic-stats">
-            {Object.entries(demographicData.byGender).map(([gender, stats]) => {
+            {demographicData.byGender && Object.entries(demographicData.byGender).map(([gender, stats]) => {
               const genderLabel = gender === 'masculino' ? t('statistics.male') : 
                                  gender === 'femenino' ? t('statistics.female') : 
                                  gender.charAt(0).toUpperCase() + gender.slice(1);
@@ -282,18 +414,60 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             })}
           </div>
           <div className="chart-container">
-            <AttendanceChart
-              data={prepareGenderChartData()}
-              type="doughnut"
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    position: 'bottom'
-                  }
-                }
-              }}
-            />
+            {(() => {
+              const chartData = prepareGenderChartData();
+              console.log('🎨 Renderizando gráfico de género con datos:', chartData);
+              
+              // Verificar si hay datos para mostrar
+              if (!chartData.labels || chartData.labels.length === 0) {
+                return (
+                  <div className="chart-placeholder">
+                    <Icon name="pie-chart" size={16} />
+                    <p>No hay datos de género disponibles</p>
+                  </div>
+                );
+              }
+              
+              return (
+                <AttendanceChart
+                  data={chartData}
+                  type="bar"
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false
+                      }
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      },
+                      x: {
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      }
+                    },
+                    elements: {
+                      bar: {
+                        borderWidth: 1,
+                        borderRadius: 2,
+                        borderSkipped: false
+                      }
+                    }
+                  }}
+                />
+              );
+            })()}
           </div>
         </div>
 
@@ -304,7 +478,7 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             {t('statistics.ageAnalysis')}
           </h4>
           <div className="demographic-stats">
-            {Object.entries(demographicData.byAge).map(([ageKey, stats]) => {
+            {demographicData.byAge && Object.entries(demographicData.byAge).map(([ageKey, stats]) => {
               const age = ageKey.replace('age', '');
               const ageLabel = t(`statistics.age${age}`);
               return (
@@ -317,24 +491,60 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
             })}
           </div>
           <div className="chart-container">
-            <AttendanceChart
-              data={prepareAgeChartData()}
-              type="bar"
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    display: false
-                  }
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    max: 100
-                  }
-                }
-              }}
-            />
+            {(() => {
+              const chartData = prepareAgeChartData();
+              console.log('🎨 Renderizando gráfico de edad con datos:', chartData);
+              
+              // Verificar si hay datos para mostrar
+              if (!chartData.labels || chartData.labels.length === 0) {
+                return (
+                  <div className="chart-placeholder">
+                    <Icon name="bar-chart" size={16} />
+                    <p>No hay datos de edad disponibles</p>
+                  </div>
+                );
+              }
+              
+              return (
+                <AttendanceChart
+                  data={chartData}
+                  type="bar"
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false
+                      }
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      },
+                      x: {
+                        ticks: {
+                          font: {
+                            size: 8
+                          }
+                        }
+                      }
+                    },
+                    elements: {
+                      bar: {
+                        borderWidth: 1,
+                        borderRadius: 2,
+                        borderSkipped: false
+                      }
+                    }
+                  }}
+                />
+              );
+            })()}
           </div>
         </div>
       </div>

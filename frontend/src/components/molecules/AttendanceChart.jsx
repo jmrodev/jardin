@@ -25,7 +25,10 @@ ChartJS.register(
   ArcElement
 );
 
-const AttendanceChart = ({ data, type = 'bar', title, height = 300 }) => {
+const AttendanceChart = ({ data, type = 'bar', title, height = 300, options = {} }) => {
+  console.log('🎨 AttendanceChart recibió datos:', data);
+  console.log('🎨 AttendanceChart tipo:', type);
+  
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -48,7 +51,8 @@ const AttendanceChart = ({ data, type = 'bar', title, height = 300 }) => {
           }
         }
       }
-    }
+    },
+    ...options
   };
 
   const renderChart = () => {
@@ -63,7 +67,7 @@ const AttendanceChart = ({ data, type = 'bar', title, height = 300 }) => {
   };
 
   return (
-    <div className="attendance-chart" style={{ height: `${height}px` }}>
+    <div className={`attendance-chart attendance-chart--height-${height}`}>
       {renderChart()}
     </div>
   );

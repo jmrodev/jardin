@@ -114,6 +114,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
+  position: relative;
+  z-index: 1;
 }
 
 /* Stats Overview */
@@ -159,6 +161,26 @@
   flex-shrink: 0;
 }
 
+.stat-icon-primary {
+  background-color: var(--color-primary);
+}
+
+.stat-icon-secondary {
+  background-color: var(--color-secondary);
+}
+
+.stat-icon-success {
+  background-color: var(--color-success);
+}
+
+.stat-icon-warning {
+  background-color: var(--color-warning);
+}
+
+.stat-icon-danger {
+  background-color: var(--color-danger);
+}
+
 .stat-info {
   display: flex;
   flex-direction: column;
@@ -183,6 +205,9 @@
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 /* Chart Placeholders */
@@ -300,6 +325,9 @@
   background: var(--card-bg);
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .analysis-title {
@@ -415,6 +443,9 @@
   background: var(--card-bg);
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .comparison-title {
@@ -522,6 +553,31 @@
   font-size: 0.875rem;
 }
 
+.action-button-export {
+  background: var(--primary-color);
+  color: white;
+}
+
+.action-button-export:hover:not(:disabled) {
+  background: var(--primary-color-dark);
+  transform: translateY(-1px);
+}
+
+.action-button-export:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.action-button-prediction {
+  background: var(--accent-color);
+  color: white;
+}
+
+.action-button-prediction:hover {
+  background: var(--accent-color-dark);
+  transform: translateY(-1px);
+}
+
 .export-button {
   background: var(--primary-color);
   color: white;
@@ -554,6 +610,9 @@
   background: var(--card-bg);
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .alerts-title {
@@ -654,6 +713,9 @@
   background: var(--card-bg);
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .predictions-title {
@@ -773,15 +835,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  height: 80px;
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
   color: var(--text-secondary);
 }
 
 .chart-placeholder p {
-  margin-top: 1rem;
-  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
 }
 
 /* Responsive para nuevas funcionalidades */
@@ -818,57 +880,61 @@
 
 /* Análisis Demográfico */
 .demographic-analysis {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
-  box-shadow: var(--card-shadow);
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .demographic-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   color: var(--text-primary);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .demographic-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .demographic-card {
   background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem;
+  border: 1px solid var(--border-primary);
 }
 
 .demographic-card-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: var(--text-primary);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
 }
 
 .demographic-stats {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .demographic-stat {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.15rem 0;
+  border-bottom: 1px solid var(--border-primary);
+  font-size: 0.8rem;
 }
 
 .demographic-stat:last-child {
@@ -878,30 +944,69 @@
 .stat-label {
   color: var(--text-secondary);
   font-weight: 500;
+  font-size: 0.8rem;
 }
 
 .stat-value {
   color: var(--text-primary);
   font-weight: 600;
-}
-
-.stat-attendance {
-  color: var(--accent-color);
-  font-weight: 600;
   font-size: 0.9rem;
 }
 
+.stat-attendance {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
 .chart-container {
-  height: 200px;
-  margin-top: 1rem;
+  height: 80px;
+  margin-top: 0.5rem;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Hacer las barras más finas */
+.chart-container canvas {
+  max-height: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Configuración específica para barras finas */
+.chart-container .chartjs-bar {
+  border-radius: 2px !important;
+}
+
+/* Asegurar que los gráficos no se superpongan */
+.demographic-card {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.demographic-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.chart-container canvas {
+  max-height: 100% !important;
+  max-width: 100% !important;
 }
 
 /* Insights Demográficos */
 .demographic-insights {
   background: var(--bg-secondary);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-primary);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .insights-title {
@@ -925,7 +1030,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem;
-  border-radius: var(--border-radius);
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
 }
 
@@ -950,14 +1055,30 @@
 /* Responsive */
 @media (max-width: 768px) {
   .demographic-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
   }
   
   .demographic-card {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
   .chart-container {
-    height: 150px;
+    height: 60px;
+  }
+  
+  .demographic-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .demographic-card-title {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .demographic-stat {
+    font-size: 0.7rem;
+    padding: 0.1rem 0;
   }
 } 

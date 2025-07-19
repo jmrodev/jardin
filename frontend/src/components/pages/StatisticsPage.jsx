@@ -5,6 +5,11 @@ import LoadingSpinner from '../molecules/LoadingSpinner';
 import Icon from '../atoms/Icon';
 import AttendanceChart from '../molecules/AttendanceChart';
 import DemographicAnalysis from '../molecules/DemographicAnalysis';
+import StatisticsFilters from '../molecules/StatisticsFilters';
+import StatisticsOverview from '../molecules/StatisticsOverview';
+import StatisticsActions from '../molecules/StatisticsActions';
+import StatisticsAnalysis from '../organisms/StatisticsAnalysis';
+import AlertsSection from '../organisms/AlertsSection';
 import { generateStatisticsReport } from '../../utils/reportGenerator';
 import { alertSystem } from '../../utils/alertSystem';
 import { predictiveAnalysis } from '../../utils/predictiveAnalysis';
@@ -30,6 +35,8 @@ export default function StatisticsPage() {
   const [showPredictions, setShowPredictions] = useState(false);
   const [exporting, setExporting] = useState(false);
   const chartRef = useRef(null);
+
+
 
   // Función para obtener estadísticas detalladas
   const fetchDetailedStats = async () => {
@@ -417,40 +424,13 @@ export default function StatisticsPage() {
     <ListPageLayout
       entityType="statistics"
       filters={
-        <div className="statistics-filters">
-          <h4>{t('statistics.filters')}</h4>
-          
-          <div className="filter-group">
-            <label className="filter-label">{t('statistics.period')}</label>
-            <div className="period-selector">
-              {periods.map((period) => (
-                <button
-                  key={period.key}
-                  className={`period-button ${selectedPeriod === period.key ? 'active' : ''}`}
-                  onClick={() => setSelectedPeriod(period.key)}
-                >
-                  <Icon name={period.icon} size={16} />
-                  {period.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {(selectedPeriod === 'yearly' || selectedPeriod === 'monthly') && (
-            <div className="filter-group">
-              <label className="filter-label">{t('statistics.year')}</label>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                className="year-selector"
-              >
-                {generateYearOptions().map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
+        <StatisticsFilters
+          selectedPeriod={selectedPeriod}
+          selectedYear={selectedYear}
+          onPeriodChange={setSelectedPeriod}
+          onYearChange={setSelectedYear}
+          periods={periods}
+        />
       }
     >
       <div className="statistics-page">
@@ -458,50 +438,15 @@ export default function StatisticsPage() {
           <h1 className="statistics-title">{t('statistics.title')}</h1>
           <p className="statistics-subtitle">{t('statistics.subtitle')}</p>
           
-          {/* Botones de acción */}
-          <div className="statistics-actions">
-            <button
-              className="action-button export-button"
-              onClick={handleExportReport}
-              disabled={exporting}
-            >
-              <Icon name={exporting ? 'Loader' : 'Download'} size={16} />
-              {exporting ? t('statistics.exporting') : t('statistics.exportReport')}
-            </button>
-            
-            <button
-              className="action-button prediction-button"
-              onClick={() => setShowPredictions(!showPredictions)}
-            >
-              <Icon name="TrendingUp" size={16} />
-              {showPredictions ? t('statistics.hidePredictions') : t('statistics.showPredictions')}
-            </button>
-          </div>
+          <StatisticsActions
+            onExport={handleExportReport}
+            onTogglePredictions={() => setShowPredictions(!showPredictions)}
+            exporting={exporting}
+            showPredictions={showPredictions}
+          />
         </div>
 
-        {/* Alertas */}
-        {alerts.length > 0 && (
-          <div className="alerts-section">
-            <h3 className="alerts-title">
-              <Icon name="AlertTriangle" size={20} />
-              {t('statistics.alerts')} ({alerts.length})
-            </h3>
-            <div className="alerts-grid">
-              {alerts.map((alert, index) => (
-                <div key={index} className={`alert-card ${alert.type}`}>
-                  <div className="alert-icon">
-                    <Icon name={alert.icon} size={20} />
-                  </div>
-                  <div className="alert-content">
-                    <h4 className="alert-title">{alert.title}</h4>
-                    <p className="alert-message">{alert.message}</p>
-                    <p className="alert-action">{alert.action}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <AlertsSection alerts={alerts} />
 
         {loading ? (
           <div className="statistics-loading">
@@ -514,51 +459,7 @@ export default function StatisticsPage() {
           </div>
         ) : (
           <div className="statistics-content">
-            {/* Estadísticas Generales */}
-            <div className="stats-overview">
-              <h2 className="stats-section-title">{t('statistics.overview')}</h2>
-              <div className="stats-grid">
-                <div className="stat-card">
-                  <div className="stat-icon">
-                    <Icon name="Users" size={24} />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-label">{t('statistics.totalStudents')}</span>
-                    <span className="stat-value">{formatNumber(currentStats.totalStudents || 0)}</span>
-                  </div>
-                </div>
-
-                <div className="stat-card">
-                  <div className="stat-icon">
-                    <Icon name="GraduationCap" size={24} />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-label">{t('statistics.totalTeachers')}</span>
-                    <span className="stat-value">{formatNumber(currentStats.totalTeachers || 0)}</span>
-                  </div>
-                </div>
-
-                <div className="stat-card">
-                  <div className="stat-icon">
-                    <Icon name="UserCheck" size={24} />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-label">{t('statistics.totalParents')}</span>
-                    <span className="stat-value">{formatNumber(currentStats.totalParents || 0)}</span>
-                  </div>
-                </div>
-
-                <div className="stat-card">
-                  <div className="stat-icon">
-                    <Icon name="CalendarCheck" size={24} />
-                  </div>
-                  <div className="stat-info">
-                    <span className="stat-label">{t('statistics.attendanceRate')}</span>
-                    <span className="stat-value">{formatPercentage(currentStats.attendanceRate || 0)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <StatisticsOverview stats={currentStats} />
 
             {/* Estadísticas Específicas por Período */}
             <div className="stats-details">
@@ -566,59 +467,7 @@ export default function StatisticsPage() {
                 {t(`statistics.${selectedPeriod}Details`)}
               </h2>
               
-              {/* Análisis y Insights */}
-              <div className="statistics-analysis">
-                <h3 className="analysis-title">{t('statistics.analysis')}</h3>
-                <div className="analysis-grid">
-                  <div className="analysis-card">
-                    <div className="analysis-icon">
-                      <Icon name="TrendingUp" size={20} />
-                    </div>
-                    <div className="analysis-content">
-                      <h4>{t('statistics.attendanceTrend')}</h4>
-                      <p className="analysis-text">
-                        {getAttendanceTrend(currentStats)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="analysis-card">
-                    <div className="analysis-icon">
-                      <Icon name="Target" size={20} />
-                    </div>
-                    <div className="analysis-content">
-                      <h4>{t('statistics.performance')}</h4>
-                      <p className="analysis-text">
-                        {getPerformanceAnalysis(currentStats)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="analysis-card">
-                    <div className="analysis-icon">
-                      <Icon name="Users" size={20} />
-                    </div>
-                    <div className="analysis-content">
-                      <h4>{t('statistics.demographics')}</h4>
-                      <p className="analysis-text">
-                        {getDemographicsAnalysis(currentStats)}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="analysis-card">
-                    <div className="analysis-icon">
-                      <Icon name="AlertCircle" size={20} />
-                    </div>
-                    <div className="analysis-content">
-                      <h4>{t('statistics.recommendations')}</h4>
-                      <p className="analysis-text">
-                        {getRecommendations(currentStats)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <StatisticsAnalysis stats={currentStats} />
               
               {/* Comparación entre Períodos */}
               {selectedPeriod !== 'total' && (

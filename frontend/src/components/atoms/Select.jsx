@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '@/styles/components/atoms/select.css';
+import '../../styles/components/atoms/select.css';
 
 const Select = ({ label, name, value, onChange, options, placeholder, required, ...props }) => {
   return (

@@ -18,7 +18,7 @@ export default function DashboardGrid() {
       title: t('dashboard.manageStudents'),
       description: t('dashboard.studentsDescription'),
       icon: 'Users',
-      color: 'var(--color-primary)',
+      colorClass: 'dashboard-card-icon--primary',
       link: '/students',
       action: t('dashboard.viewStudents')
     },
@@ -27,7 +27,7 @@ export default function DashboardGrid() {
       title: t('dashboard.manageTeachers'),
       description: t('dashboard.teachersDescription'),
       icon: 'GraduationCap',
-      color: 'var(--color-success)',
+      colorClass: 'dashboard-card-icon--success',
       link: '/teachers',
       action: t('dashboard.viewTeachers')
     },
@@ -36,7 +36,7 @@ export default function DashboardGrid() {
       title: t('dashboard.manageParents'),
       description: t('dashboard.parentsDescription'),
       icon: 'UserCheck',
-      color: 'var(--color-warning)',
+      colorClass: 'dashboard-card-icon--warning',
       link: '/parents',
       action: t('dashboard.viewParents')
     },
@@ -45,7 +45,7 @@ export default function DashboardGrid() {
       title: t('dashboard.manageAttendance'),
       description: t('dashboard.attendanceDescription'),
       icon: 'CalendarCheck',
-      color: 'var(--color-info)',
+      colorClass: 'dashboard-card-icon--info',
       link: '/attendance',
       action: t('dashboard.viewAttendance')
     },
@@ -54,7 +54,7 @@ export default function DashboardGrid() {
       title: t('dashboard.viewStatistics'),
       description: t('dashboard.statisticsDescription'),
       icon: 'BarChart3',
-      color: 'var(--color-secondary)',
+      colorClass: 'dashboard-card-icon--secondary',
       link: '/statistics',
       action: t('dashboard.viewStatistics')
     }
@@ -69,8 +69,7 @@ export default function DashboardGrid() {
         >
           <div className="dashboard-card-header">
             <div 
-              className="dashboard-card-icon"
-              style={{ backgroundColor: card.color }}
+              className={`dashboard-card-icon ${card.colorClass}`}
             >
               <Icon name={card.icon} size={24} />
             </div>

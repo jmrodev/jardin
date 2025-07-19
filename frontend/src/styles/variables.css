@@ -299,22 +299,22 @@
   --color-border: #38383a;
   --color-border-light: #2c2c2e;
   --color-text: #ffffff;
-  --color-text-secondary: #8d8d93;
-  --color-text-tertiary: #48484a;
+  --color-text-secondary: #e5e5ea;
+  --color-text-tertiary: #8e8e93;
   --color-shadow: rgba(0, 0, 0, 0.5);
   --color-shadow-light: rgba(0, 0, 0, 0.25);
   --color-primary-alpha: rgba(10, 132, 255, 0.2);
   --color-danger-alpha: rgba(255, 59, 48, 0.2);
 
   /* Text Colors */
-  --text-primary: #f2f2f7;
-  --text-secondary: #8e8e93;
-  --text-tertiary: #48484a;
+  --text-primary: #ffffff;
+  --text-secondary: #e5e5ea;
+  --text-tertiary: #8e8e93;
   --text-inverse: #000000;
 
   /* Input Base Styles */
   --input-bg-color: #2c2c2e;
-  --input-color: #f2f2f7;
+  --input-color: #ffffff;
   --input-border: 1px solid #3a3a3c;
 
   /* Border Colors */
