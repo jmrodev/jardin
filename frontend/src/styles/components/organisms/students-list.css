@@ -6,81 +6,11 @@
   padding: var(--space-md);
 }
 
-.students-list .card {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
-  transition: all var(--transition-fast);
-}
-
-.students-list .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary);
-}
-
-.students-list .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-md);
-}
-
-.students-list .card-title {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin: 0;
-  flex-grow: 1;
-}
-
-.students-list .card-actions {
-  display: flex;
-  gap: var(--space-xs);
-  flex-shrink: 0;
-}
-
-.students-list .card-content {
-  margin-bottom: var(--space-md);
-}
-
-.students-list .card-content p {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  margin: var(--space-xs) 0;
-  line-height: var(--line-height-relaxed);
-}
-
-.students-list .card-footer {
-  border-top: 1px solid var(--border-primary);
-  padding-top: var(--space-sm);
-}
-
-.students-list .card-date {
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-  font-style: italic;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .students-list {
     grid-template-columns: 1fr;
     gap: var(--space-md);
     padding: var(--space-sm);
-  }
-  
-  .students-list .card {
-    padding: var(--space-md);
-  }
-  
-  .students-list .card-header {
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-  
-  .students-list .card-actions {
-    align-self: flex-end;
   }
 } 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import Card from '@/components/atoms/Card';
 import Button from '@/components/atoms/Button';
 import DetailModal from '@/components/molecules/DetailModal';
 import EntityForm from '@/components/organisms/EntityForm'; // Usamos el genérico
@@ -188,11 +189,8 @@ const EntityGrid = ({
   };
 
   const renderCardContent = (entity) => (
-    <div className="card-content-wrapper">
-      <h4>{cardConfig.title(entity)}</h4>
-      {/* Para el subtítulo (la sala), mantenemos la lógica de 'Sin sala' si no existe */}
-      <p>{cardConfig.subtitle(entity) || t('no_classroom')}</p>
-      <span>{cardConfig.detail(entity)}</span>
+    <div>
+      <p>{cardConfig.detail(entity)}</p>
     </div>
   );
 
@@ -207,13 +205,16 @@ const EntityGrid = ({
       ) : (
         <div className="entity-grid">
           {entities.map((entity) => (
-            <div
+            <Card
               key={entity.id}
-              className="card"
+              variant="default"
+              title={cardConfig.title(entity)}
+              subtitle={cardConfig.subtitle(entity) || t('no_classroom')}
               onClick={() => handleCardClick(entity)}
+              hoverable
             >
               {renderCardContent(entity)}
-            </div>
+            </Card>
           ))}
         </div>
       )}

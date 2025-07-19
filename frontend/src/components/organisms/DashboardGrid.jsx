@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import Icon from '../atoms/Icon';
+import Card from '../atoms/Card';
 import Button from '../atoms/Button';
+import Icon from '../atoms/Icon';
 
 export default function DashboardGrid() {
   const { t } = useTranslation();
@@ -15,74 +16,68 @@ export default function DashboardGrid() {
   const dashboardCards = [
     {
       id: 1,
-      title: t('dashboard.manageStudents'),
+      title: t('dashboard.students'),
       description: t('dashboard.studentsDescription'),
       icon: 'Users',
-      colorClass: 'dashboard-card-icon--skyblue',
+      iconColor: 'skyblue',
       borderColor: 'skyblue',
       link: '/students',
-      action: t('dashboard.viewStudents')
+      action: t('dashboard.enter')
     },
     {
       id: 2,
-      title: t('dashboard.manageTeachers'),
+      title: t('dashboard.teachers'),
       description: t('dashboard.teachersDescription'),
       icon: 'GraduationCap',
-      colorClass: 'dashboard-card-icon--orange',
+      iconColor: 'orange',
       borderColor: 'orange',
       link: '/teachers',
-      action: t('dashboard.viewTeachers')
+      action: t('dashboard.enter')
     },
     {
       id: 3,
-      title: t('dashboard.manageParents'),
+      title: t('dashboard.parents'),
       description: t('dashboard.parentsDescription'),
       icon: 'UserCheck',
-      colorClass: 'dashboard-card-icon--lime',
+      iconColor: 'lime',
       borderColor: 'lime',
       link: '/parents',
-      action: t('dashboard.viewParents')
+      action: t('dashboard.enter')
     },
     {
       id: 4,
-      title: t('dashboard.manageAttendance'),
+      title: t('dashboard.attendance'),
       description: t('dashboard.attendanceDescription'),
       icon: 'CalendarCheck',
-      colorClass: 'dashboard-card-icon--pink',
+      iconColor: 'pink',
       borderColor: 'pink',
       link: '/attendance',
-      action: t('dashboard.viewAttendance')
+      action: t('dashboard.enter')
     },
     {
       id: 5,
-      title: t('dashboard.viewStatistics'),
+      title: t('dashboard.statistics'),
       description: t('dashboard.statisticsDescription'),
       icon: 'BarChart3',
-      colorClass: 'dashboard-card-icon--purple',
+      iconColor: 'purple',
       borderColor: 'purple',
       link: '/statistics',
-      action: t('dashboard.viewStatistics')
+      action: t('dashboard.enter')
     }
   ];
 
   return (
     <div className="dashboard-grid">
       {dashboardCards.map((card) => (
-        <div 
-          key={card.id} 
-          className="dashboard-card"
+        <Card
+          key={card.id}
+          variant="dashboard"
+          icon={card.icon}
+          iconColor={card.iconColor}
+          title={card.title}
+          description={card.description}
           data-border-color={card.borderColor}
-        >
-          <div className="dashboard-card-header">
-            <div 
-              className={`dashboard-card-icon ${card.colorClass}`}
-            >
-              <Icon name={card.icon} size={24} />
-            </div>
-            <h3 className="dashboard-card-title">{card.title}</h3>
-          </div>
-          <div className="dashboard-card-content">
-            <p className="dashboard-card-description">{card.description}</p>
+          actions={
             <Button
               variant="primary"
               onClick={() => handleViewMore(card.link)}
@@ -91,8 +86,8 @@ export default function DashboardGrid() {
               {card.action}
               <Icon name="ArrowRight" size={16} />
             </Button>
-          </div>
-        </div>
+          }
+        />
       ))}
     </div>
   );

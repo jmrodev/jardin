@@ -29,129 +29,7 @@
   margin-top: var(--space-xl);
 }
 
-/* Dashboard Cards */
-.dashboard-card {
-  background-color: var(--bg-secondary);
-  border: 3px solid var(--color-primary);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  transition: all var(--transition-fast);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 120px;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary);
-}
-
-.dashboard-card-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
-}
-
-.dashboard-card-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-shrink: 0;
-}
-
-/* Vivid colored borders for dashboard cards */
-.dashboard-card[data-border-color="skyblue"] {
-  border-color: #00bfff;
-}
-
-.dashboard-card[data-border-color="orange"] {
-  border-color: #ff8c00;
-}
-
-.dashboard-card[data-border-color="lime"] {
-  border-color: #32cd32;
-}
-
-.dashboard-card[data-border-color="pink"] {
-  border-color: #ff69b4;
-}
-
-.dashboard-card[data-border-color="purple"] {
-  border-color: #9370db;
-}
-
-/* Dashboard card icon color variants */
-.dashboard-card-icon--skyblue {
-  background-color: #00bfff;
-}
-
-.dashboard-card-icon--orange {
-  background-color: #ff8c00;
-}
-
-.dashboard-card-icon--lime {
-  background-color: #32cd32;
-}
-
-.dashboard-card-icon--pink {
-  background-color: #ff69b4;
-}
-
-.dashboard-card-icon--purple {
-  background-color: #9370db;
-}
-
-/* Keep original colors for backward compatibility */
-.dashboard-card-icon--primary {
-  background-color: var(--color-primary);
-}
-
-.dashboard-card-icon--success {
-  background-color: var(--color-success);
-}
-
-.dashboard-card-icon--warning {
-  background-color: var(--color-warning);
-}
-
-.dashboard-card-icon--info {
-  background-color: var(--color-info);
-}
-
-.dashboard-card-icon--secondary {
-  background-color: var(--color-secondary);
-}
-
-.dashboard-card-title {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--text-primary);
-  margin: 0;
-  line-height: 1.2;
-}
-
-.dashboard-card-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.dashboard-card-description {
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  line-height: 1.3;
-  margin: 0;
-  flex-grow: 1;
-}
-
+/* Dashboard Card Button */
 .dashboard-card-button {
   align-self: flex-start;
   display: flex;
@@ -194,28 +72,6 @@
   gap: var(--space-md);
 }
 
-.quick-stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-sm) var(--space-md);
-  background-color: var(--bg-tertiary);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-primary);
-}
-
-.quick-stat-label {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  font-weight: var(--font-weight-medium);
-}
-
-.quick-stat-value {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-grid {
@@ -229,19 +85,6 @@
   
   .dashboard-subtitle {
     font-size: var(--font-size-md);
-  }
-  
-  .dashboard-card {
-    padding: var(--space-md);
-  }
-  
-  .dashboard-card-header {
-    margin-bottom: var(--space-sm);
-  }
-  
-  .dashboard-card-icon {
-    width: 40px;
-    height: 40px;
   }
 }
 
