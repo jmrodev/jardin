@@ -433,12 +433,8 @@ export const getDemographicStats = async () => {
     const byShift = {};
     shiftStats.forEach(stat => {
       const shift = stat.shift || 'Sin turno';
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byShift[shift.toLowerCase()] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
@@ -451,12 +447,8 @@ export const getDemographicStats = async () => {
     const byGender = {};
     genderStats.forEach(stat => {
       const gender = stat.gender || 'Sin género';
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byGender[gender.toLowerCase()] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
@@ -469,12 +461,8 @@ export const getDemographicStats = async () => {
     const byAge = {};
     ageStats.forEach(stat => {
       const age = stat.age || 0;
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byAge[`age${age}`] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
