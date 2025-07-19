@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -11,14 +11,14 @@ const ListPageLayout = ({ filters, children, entityType, onAddNew }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navigationItems = [
+  const navigationItems = useMemo(() => [
     { path: '/dashboard', label: t('nav.dashboard'), icon: 'Home' },
     { path: '/students', label: t('nav.students'), icon: 'Users' },
     { path: '/teachers', label: t('nav.teachers'), icon: 'GraduationCap' },
     { path: '/parents', label: t('nav.parents'), icon: 'UserCheck' },
     { path: '/attendance', label: t('nav.attendance'), icon: 'CalendarCheck' },
     { path: '/statistics', label: t('nav.statistics'), icon: 'BarChart3' },
-  ];
+  ], [t]);
 
   const isActiveRoute = (path) => {
     return location.pathname === path;

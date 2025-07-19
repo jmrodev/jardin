@@ -1,9 +1,42 @@
 /* Students List Component Styles */
 .students-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-lg);
   padding: var(--space-md);
+}
+
+/* Ajustes específicos para cards de estudiantes tipo dashboard */
+.students-list .card--dashboard {
+  min-height: 160px;
+  height: auto;
+}
+
+.students-list .card-content {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.students-list .card-content p {
+  margin: var(--space-xs) 0;
+  color: var(--text-secondary);
+}
+
+.students-list .card-actions {
+  justify-content: flex-end;
+  gap: var(--space-xs);
+}
+
+.students-list .card-footer {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-primary);
+}
+
+.students-list .card-date {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-style: italic;
 }
 
 /* Responsive Design */
@@ -12,5 +45,15 @@
     grid-template-columns: 1fr;
     gap: var(--space-md);
     padding: var(--space-sm);
+  }
+  
+  .students-list .card--dashboard {
+    min-height: 140px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .students-list {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 } 

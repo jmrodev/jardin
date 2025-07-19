@@ -21,9 +21,9 @@ const TeachersPage = () => {
   };
 
   const teacherDetailConfig = [
-    { key: 'name', label: t('name') },
-    { key: 'lastname_father', label: t('lastnameFather') },
-    { key: 'lastname_mother', label: t('lastnameMother') },
+    { key: 'name', label: t('firstName') },
+    { key: 'lastname_father', label: t('paternalLastname') },
+    { key: 'lastname_mother', label: t('maternalLastname') },
     { key: 'dni', label: t('dni') },
     { key: 'birthdate', label: t('birthdate'), type: 'date' },
     { key: 'address', label: t('address') },

@@ -54,13 +54,13 @@ const EntityGrid = ({
 
   const handleCreateParent = async (parentData) => {
     if (!selectedEntity) {
-      showToast('Error: No se ha seleccionado un estudiante.', 'error');
+      showToast(t('error.noStudentSelected'), 'error');
       return;
     }
 
     try {
       const newParent = await personService.createAndLinkParent(selectedEntity.id, parentData);
-      showToast('Responsable creado y vinculado con éxito', 'success');
+      showToast(t('success.parentCreated'), 'success');
       // Actualizar el estado local para reflejar el cambio en la UI
       setSelectedEntity(prev => ({
         ...prev,
@@ -68,7 +68,7 @@ const EntityGrid = ({
       }));
       setCreateParentModalOpen(false);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Error al crear y vincular el responsable.';
+      const errorMessage = error.response?.data?.message || t('error.createParent');
       showToast(errorMessage, 'error');
       console.error("Error creating and linking parent:", error);
     }
@@ -152,9 +152,9 @@ const EntityGrid = ({
       setCreateModalOpen(false);
       showToast(`${t(entityType)} ${t('created_successfully')}`, 'success');
     } catch (error) {
-      const errorMessage = error.response?.data?.message || `Error creating ${entityType}`;
+      const errorMessage = error.response?.data?.message || `${t('error.creating')} ${t(entityType)}`;
       showToast(errorMessage, 'error');
-      console.error(`Error creating ${entityType}:`, error);
+      console.error(`${t('error.creating')} ${entityType}:`, error);
     }
   };
 
@@ -166,9 +166,9 @@ const EntityGrid = ({
       setSelectedEntity(null);
       showToast(`${t(entityType)} ${t('updated_successfully')}`, 'success');
     } catch (error) {
-      const errorMessage = error.response?.data?.message || `Error updating ${entityType}`;
+      const errorMessage = error.response?.data?.message || `${t('error.updating')} ${t(entityType)}`;
       showToast(errorMessage, 'error');
-      console.error(`Error updating ${entityType}:`, error);
+      console.error(`${t('error.updating')} ${entityType}:`, error);
     }
   };
 
@@ -181,18 +181,28 @@ const EntityGrid = ({
         setSelectedEntity(null);
         showToast(`${t(entityType)} ${t('deleted_successfully')}`, 'success');
       } catch (error) {
-        const errorMessage = error.response?.data?.message || `Error deleting ${entityType}`;
+        const errorMessage = error.response?.data?.message || `${t('error.deleting')} ${t(entityType)}`;
         showToast(errorMessage, 'error');
-        console.error(`Error deleting ${entityType}:`, error);
+        console.error(`${t('error.deleting')} ${entityType}:`, error);
       }
     }
   };
 
   const renderCardContent = (entity) => (
-    <div>
-      <p>{cardConfig.detail(entity)}</p>
-    </div>
+    <p>{cardConfig.detail(entity)}</p>
   );
+
+  // Colores para las cards (igual que en dashboard y students)
+  const cardColors = [
+    { iconColor: 'skyblue', borderColor: 'skyblue' },
+    { iconColor: 'orange', borderColor: 'orange' },
+    { iconColor: 'lime', borderColor: 'lime' },
+    { iconColor: 'pink', borderColor: 'pink' },
+    { iconColor: 'purple', borderColor: 'purple' },
+    { iconColor: 'primary', borderColor: 'primary' },
+    { iconColor: 'success', borderColor: 'success' },
+    { iconColor: 'warning', borderColor: 'warning' }
+  ];
 
   return (
     <div className="entity-grid-container">
@@ -204,18 +214,26 @@ const EntityGrid = ({
         <p className="no-results-message">{t('no_results')}</p>
       ) : (
         <div className="entity-grid">
-          {entities.map((entity) => (
-            <Card
-              key={entity.id}
-              variant="default"
-              title={cardConfig.title(entity)}
-              subtitle={cardConfig.subtitle(entity) || t('no_classroom')}
-              onClick={() => handleCardClick(entity)}
-              hoverable
-            >
-              {renderCardContent(entity)}
-            </Card>
-          ))}
+          {entities.map((entity, index) => {
+            const colorIndex = index % cardColors.length;
+            const colors = cardColors[colorIndex];
+            
+            return (
+              <Card
+                key={entity.id}
+                variant="dashboard"
+                icon="User"
+                iconColor={colors.iconColor}
+                title={cardConfig.title(entity)}
+                subtitle={cardConfig.subtitle(entity) || t('no_classroom')}
+                data-border-color={colors.borderColor}
+                onClick={() => handleCardClick(entity)}
+                hoverable
+              >
+                {renderCardContent(entity)}
+              </Card>
+            );
+          })}
         </div>
       )}
 
@@ -223,6 +241,7 @@ const EntityGrid = ({
         isOpen={isDetailModalOpen}
         onClose={() => setDetailModalOpen(false)}
         title={t('detailsOf', { entityName: selectedEntity ? cardConfig.title(selectedEntity) : '' })}
+        variant="details"
       >
         {selectedEntity && (
           <div className="entity-details">
@@ -270,7 +289,11 @@ const EntityGrid = ({
       </DetailModal>
 
       {/* Modal para CREAR un nuevo responsable */}
-      <DetailModal isOpen={isCreateParentModalOpen} onClose={() => setCreateParentModalOpen(false)}>
+      <DetailModal 
+        isOpen={isCreateParentModalOpen} 
+        onClose={() => setCreateParentModalOpen(false)}
+        variant="form"
+      >
         <EntityForm
           formConfig={parentFormConfig}
           onSubmit={handleCreateParent}
@@ -283,6 +306,7 @@ const EntityGrid = ({
           isOpen={isParentDetailModalOpen}
           onClose={() => setParentDetailModalOpen(false)}
           title={t('detailsOf', { entityName: selectedParent.preferred_name || selectedParent.name })}
+          variant="details"
         >
           <div className="entity-details">
             <div className="entity-details__section">
@@ -344,7 +368,11 @@ const EntityGrid = ({
         </DetailModal>
       )}
 
-      <DetailModal isOpen={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
+      <DetailModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setEditModalOpen(false)}
+        variant="form"
+      >
         <EntityForm
           formConfig={formConfig}
           initialData={selectedEntity}
@@ -353,7 +381,11 @@ const EntityGrid = ({
         />
       </DetailModal>
 
-      <DetailModal isOpen={isCreateModalOpen} onClose={() => setCreateModalOpen(false)}>
+      <DetailModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setCreateModalOpen(false)}
+        variant="form"
+      >
         <EntityForm
           formConfig={formConfig}
           onSubmit={handleCreate}

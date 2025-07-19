@@ -26,6 +26,7 @@
   min-height: 120px;
   height: 100%;
   border-width: 3px;
+  border-style: solid;
   border-color: var(--color-primary);
 }
 
@@ -49,25 +50,43 @@
   border-color: var(--color-primary);
 }
 
-/* Dashboard Card Border Colors */
+/* Dashboard Card Border Colors - Más específicos */
 .card--dashboard[data-border-color="skyblue"] {
-  border-color: #00bfff;
+  border-color: #00bfff !important;
 }
 
 .card--dashboard[data-border-color="orange"] {
-  border-color: #ff8c00;
+  border-color: #ff8c00 !important;
 }
 
 .card--dashboard[data-border-color="lime"] {
-  border-color: #32cd32;
+  border-color: #32cd32 !important;
 }
 
 .card--dashboard[data-border-color="pink"] {
-  border-color: #ff69b4;
+  border-color: #ff69b4 !important;
 }
 
 .card--dashboard[data-border-color="purple"] {
-  border-color: #9370db;
+  border-color: #9370db !important;
+}
+
+.card--dashboard[data-border-color="primary"] {
+  border-color: var(--color-primary) !important;
+}
+
+.card--dashboard[data-border-color="success"] {
+  border-color: var(--color-success) !important;
+}
+
+.card--dashboard[data-border-color="warning"] {
+  border-color: var(--color-warning) !important;
+}
+
+/* Asegurar que los bordes tengan el ancho correcto */
+.card--dashboard {
+  border-width: 3px !important;
+  border-style: solid !important;
 }
 
 /* Card Header */
