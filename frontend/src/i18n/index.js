@@ -104,7 +104,7 @@ const resources = {
       'language.spanish': 'Spanish',
       'language.english': 'English',
       'language.select': 'Select language',
-    }
+    },
   },
   es: {
     translation: {

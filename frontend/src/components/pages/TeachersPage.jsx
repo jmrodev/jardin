@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel.jsx';
 import EntityGrid from '@/components/organisms/EntityGrid';
 import LoadingSpinner from '@/components/molecules/LoadingSpinner';
 import ListPageLayout from '@/components/templates/ListPageLayout';
@@ -42,10 +43,10 @@ const TeachersPage = () => {
       {
         title: t('personal_information'),
         fields: [
-            { name: 'name', label: t('name'), type: 'text' },
-            { name: 'lastname_father', label: t('lastnameFather'), type: 'text' },
-            { name: 'lastname_mother', label: t('lastnameMother'), type: 'text' },
-            { name: 'dni', label: t('dni'), type: 'text' },
+            { name: 'name', label: t('firstName'), type: 'text', placeholder: t('name_placeholder') },
+            { name: 'lastname_father', label: t('paternalLastname'), type: 'text', placeholder: t('lastname_father_placeholder') },
+            { name: 'lastname_mother', label: t('maternalLastname'), type: 'text', placeholder: t('maternal_lastname_placeholder') },
+            { name: 'dni', label: t('dni'), type: 'text', placeholder: t('dni_placeholder') },
             { name: 'birthdate', label: t('birthdate'), type: 'date' },
         ]
       },
@@ -80,6 +81,10 @@ const TeachersPage = () => {
     setFilters(newFilters);
   };
 
+  const handleClearFilters = () => {
+    setFilters({});
+  };
+
   const handleEntityCreated = (newEntity) => {
     setTeachers((prev) => [newEntity, ...prev]);
   };
@@ -100,6 +105,8 @@ const TeachersPage = () => {
         <FilterPanel
           filterConfig={teacherFilterConfig}
           onFilterChange={handleFilterChange}
+          activeFilters={filters}
+          onClearFilters={handleClearFilters}
         />
       }
     >

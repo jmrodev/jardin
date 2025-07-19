@@ -181,11 +181,11 @@ const createPerson = async (personData) => {
   let connection;
   try {
     connection = await getConnection();
-    const { person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+    const { person_type, name, middle_name, lastname_father, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
     
     const [result] = await connection.query(
-      'INSERT INTO persons (person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [person_type, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender]
+      'INSERT INTO persons (person_type, name, middle_name, lastname_father, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [person_type, name, middle_name, lastname_father, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender]
     );
     return { id: result.insertId, ...personData };
   } catch (error) {
@@ -200,11 +200,11 @@ const updatePerson = async (id, personData) => {
   let connection;
   try {
     connection = await getConnection();
-    const { first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
+    const { name, middle_name, lastname_father, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender } = personData;
     
     await connection.query(
-      'UPDATE persons SET first_name = ?, middle_name = ?, paternal_lastname = ?, maternal_lastname = ?, preferred_name = ?, nationality = ?, dni = ?, address = ?, phone = ?, email = ?, birthdate = ?, registration_date = ?, status = ?, hire_date = ?, specialization = ?, occupation = ?, administrative_role = ?, username = ?, password = ?, classroom_id = ?, shift = ?, gender = ? WHERE id = ?',
-      [first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender, id]
+      'UPDATE persons SET name = ?, middle_name = ?, lastname_father = ?, maternal_lastname = ?, preferred_name = ?, nationality = ?, dni = ?, address = ?, phone = ?, email = ?, birthdate = ?, registration_date = ?, status = ?, hire_date = ?, specialization = ?, occupation = ?, administrative_role = ?, username = ?, password = ?, classroom_id = ?, shift = ?, gender = ? WHERE id = ?',
+      [name, middle_name, lastname_father, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate, registration_date, status, hire_date, specialization, occupation, administrative_role, username, password, classroom_id, shift, gender, id]
     );
     return { id, ...personData };
   } catch (error) {

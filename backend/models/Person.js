@@ -1,11 +1,20 @@
+const fields = [
+  'id', 'person_type', 'name', 'middle_name', 'lastname_father', 'lastname_mother', 
+  'preferred_name', 'nationality', 'dni', 'address', 'phone', 'email', 
+  'birthdate', 'username', 'password', 'hire_date', 'active', 
+  'registration_date', 'status', 'classroom', 'shift', 'gender', 
+  'occupation', 'specialization', 'administrative_role', 
+  'created_at', 'updated_at', 'created_by', 'updated_by'
+];
+
 class Person {
-  constructor(id, personType, first_name, middle_name, paternal_lastname, maternal_lastname, preferred_name, nationality, dni, address, phone, email, birthdate) {
+  constructor(id, personType, name, lastname_father, lastname_mother, middle_name, preferred_name, nationality, dni, address, phone, email, birthdate) {
     this.id = id;
     this.personType = personType;
-    this.first_name = first_name;
+    this.name = name;
+    this.lastname_father = lastname_father;
+    this.lastname_mother = lastname_mother;
     this.middle_name = middle_name;
-    this.paternal_lastname = paternal_lastname;
-    this.maternal_lastname = maternal_lastname;
     this.preferred_name = preferred_name;
     this.nationality = nationality;
     this.dni = dni;

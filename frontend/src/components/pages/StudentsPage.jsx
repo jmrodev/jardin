@@ -29,15 +29,15 @@ const StudentsPage = () => {
   };
 
   const studentCardConfig = {
-    title: (student) => student.preferred_name || `${student.first_name} ${student.paternal_lastname}`,
+    title: (student) => student.preferred_name || `${student.name} ${student.lastname_father}`,
     subtitle: (student) => student.classroom_name || t('no_classroom'),
     detail: (student) => calculateAge(student.birthdate),
   };
 
   const studentDetailConfig = [
-    { key: 'first_name', label: t('firstName') },
+    { key: 'name', label: t('firstName') },
     { key: 'middle_name', label: t('middleName') },
-    { key: 'paternal_lastname', label: t('paternalLastname') },
+    { key: 'lastname_father', label: t('paternalLastname') },
     { key: 'maternal_lastname', label: t('maternalLastname') },
     { key: 'preferred_name', label: t('preferredName') },
     { key: 'nationality', label: t('nationality') },
@@ -120,9 +120,9 @@ const StudentsPage = () => {
       {
         title: t('personal_information'),
         fields: [
-          { name: 'first_name', label: t('firstName'), type: 'text', placeholder: t('first_name_placeholder') },
+          { name: 'name', label: t('firstName'), type: 'text', placeholder: t('name_placeholder') },
           { name: 'middle_name', label: t('middleName'), type: 'text', placeholder: t('middle_name_placeholder') },
-          { name: 'paternal_lastname', label: t('paternalLastname'), type: 'text', placeholder: t('paternal_lastname_placeholder') },
+          { name: 'lastname_father', label: t('paternalLastname'), type: 'text', placeholder: t('lastname_father_placeholder') },
           { name: 'maternal_lastname', label: t('maternalLastname'), type: 'text', placeholder: t('maternal_lastname_placeholder') },
           { name: 'preferred_name', label: t('preferredName'), type: 'text', placeholder: t('preferred_name_placeholder') },
           { name: 'nationality', label: t('nationality'), type: 'text', placeholder: t('nationality_placeholder') },

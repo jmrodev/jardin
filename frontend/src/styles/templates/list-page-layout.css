@@ -1,6 +1,6 @@
 .list-page-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 180px 1fr;
   gap: var(--spacing-large);
   padding: var(--spacing-medium);
   height: calc(100vh - var(--header-height, 60px) - var(--spacing-medium) * 2);

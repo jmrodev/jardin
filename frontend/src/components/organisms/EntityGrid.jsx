@@ -78,9 +78,9 @@ const EntityGrid = ({
       {
         title: t('personal_information'),
         fields: [
-          { name: 'first_name', label: t('firstName'), type: 'text' },
+          { name: 'name', label: t('firstName'), type: 'text' },
           { name: 'middle_name', label: t('middleName'), type: 'text' },
-          { name: 'paternal_lastname', label: t('paternalLastname'), type: 'text' },
+          { name: 'lastname_father', label: t('paternalLastname'), type: 'text' },
           { name: 'maternal_lastname', label: t('maternalLastname'), type: 'text' },
           { name: 'dni', label: t('dni'), type: 'text' },
           { name: 'phone', label: t('phone'), type: 'tel' },
@@ -213,33 +213,37 @@ const EntityGrid = ({
       >
         {selectedEntity && (
           <div className="entity-details">
-            <ul>
-              {detailConfig.map((field) => (
-                <li key={field.key}>
-                  <strong>{field.label}:</strong> {getDisplayValue(selectedEntity, field)}
-                </li>
-              ))}
-            </ul>
+            <div className="entity-details__section">
+              <h3 className="entity-details__section-title">{t('personal_information')}</h3>
+              <div className="entity-details__grid">
+                {detailConfig.map((field) => (
+                  <div key={field.key} className="entity-details__field">
+                    <span className="entity-details__label">{field.label}</span>
+                    <span className="entity-details__value">{getDisplayValue(selectedEntity, field)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {selectedEntity.personType === 'student' && (
               <div className="parent-details">
-                <h4>{t('parents')}</h4>
-                <ul className="parent-list">
+                <h3 className="entity-details__section-title">{t('parents')}</h3>
+                <div className="parent-list">
                   {selectedEntity.parents && selectedEntity.parents.length > 0 ? (
                     selectedEntity.parents.map((parent) => (
-                      <li key={parent.id}>
+                      <div key={parent.id} className="parent-item">
                         <Button
                           onClick={() => handleParentClick(parent)}
                           className="button--link"
                         >
-                          {parent.relationship}: {parent.first_name} {parent.paternal_lastname}
+                          {parent.relationship}: {parent.name} {parent.lastname_father}
                         </Button>
-                      </li>
+                      </div>
                     ))
                   ) : (
-                    <li>{t('no_parents_found')}</li>
+                    <div className="parent-item">{t('no_parents_found')}</div>
                   )}
-                </ul>
+                </div>
                 <Button onClick={() => setCreateParentModalOpen(true)} className="button--primary button--small">{t('addParent')}</Button>
               </div>
             )}
@@ -265,22 +269,64 @@ const EntityGrid = ({
         <DetailModal
           isOpen={isParentDetailModalOpen}
           onClose={() => setParentDetailModalOpen(false)}
-          title={t('detailsOf', { entityName: selectedParent.preferred_name || selectedParent.first_name })}
+          title={t('detailsOf', { entityName: selectedParent.preferred_name || selectedParent.name })}
         >
           <div className="entity-details">
-            <ul>
-              <li><strong>{t('firstName')}:</strong> {selectedParent.first_name}</li>
-              {selectedParent.middle_name && <li><strong>{t('middleName')}:</strong> {selectedParent.middle_name}</li>}
-              <li><strong>{t('preferredName')}:</strong> {selectedParent.preferred_name || 'N/A'}</li>
-              <li><strong>{t('age')}:</strong> {calculateAge(selectedParent.birthdate)}</li>
-              <li><strong>{t('dni')}:</strong> {selectedParent.dni}</li>
-              <li><strong>{t('phone')}:</strong> {selectedParent.phone}</li>
-              <li><strong>{t('email')}:</strong> {selectedParent.email}</li>
-              <li><strong>{t('relationship')}:</strong> {selectedParent.relationship}</li>
-              <li><strong>{t('can_pickup')}:</strong> {selectedParent.can_pickup ? t('yes') : t('no')}</li>
-              <li><strong>{t('can_change_diapers')}:</strong> {selectedParent.can_change_diapers ? t('yes') : t('no')}</li>
-              <li><strong>{t('is_emergency_contact')}:</strong> {selectedParent.is_emergency_contact ? t('yes') : t('no')}</li>
-            </ul>
+            <div className="entity-details__section">
+              <h3 className="entity-details__section-title">{t('personal_information')}</h3>
+              <div className="entity-details__grid">
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('firstName')}</span>
+                  <span className="entity-details__value">{selectedParent.name}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('middleName')}</span>
+                  <span className="entity-details__value">{selectedParent.middle_name}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('paternalLastname')}</span>
+                  <span className="entity-details__value">{selectedParent.lastname_father}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('maternalLastname')}</span>
+                  <span className="entity-details__value">{selectedParent.maternal_lastname}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('dni')}</span>
+                  <span className="entity-details__value">{selectedParent.dni}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('phone')}</span>
+                  <span className="entity-details__value">{selectedParent.phone}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('email')}</span>
+                  <span className="entity-details__value">{selectedParent.email}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('relationship')}</span>
+                  <span className="entity-details__value">{selectedParent.relationship}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="entity-details__section">
+              <h3 className="entity-details__section-title">{t('permissions')}</h3>
+              <div className="entity-details__grid">
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('can_pickup')}</span>
+                  <span className="entity-details__value">{selectedParent.can_pickup ? t('yes') : t('no')}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('can_change_diapers')}</span>
+                  <span className="entity-details__value">{selectedParent.can_change_diapers ? t('yes') : t('no')}</span>
+                </div>
+                <div className="entity-details__field">
+                  <span className="entity-details__label">{t('is_emergency_contact')}</span>
+                  <span className="entity-details__value">{selectedParent.is_emergency_contact ? t('yes') : t('no')}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </DetailModal>
       )}

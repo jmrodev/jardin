@@ -3,52 +3,48 @@ DROP DATABASE IF EXISTS kindergarten_db;
 CREATE DATABASE IF NOT EXISTS kindergarten_db;
 USE kindergarten_db;
 
--- Persons table with Single Table Inheritance
+-- Tabla para almacenar información de todas las personas (estudiantes, padres, personal)
 CREATE TABLE persons (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  person_type ENUM('student', 'teacher', 'director', 'parent', 'admin', 'preceptor') NOT NULL,
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    lastname_father VARCHAR(100) NOT NULL,
+    lastname_mother VARCHAR(100),
+    preferred_name VARCHAR(100),
+    nationality VARCHAR(50),
+    dni VARCHAR(20) UNIQUE,
+    address TEXT,
+    phone VARCHAR(20),
+    email VARCHAR(100) UNIQUE,
+    birthdate DATE,
 
-  -- Common fields for all persons
-  first_name VARCHAR(100) NOT NULL,
-  middle_name VARCHAR(100),
-  paternal_lastname VARCHAR(100) NOT NULL,
-  maternal_lastname VARCHAR(100),
-  preferred_name VARCHAR(100),
-  nationality VARCHAR(100),
-  dni VARCHAR(20) UNIQUE,
-  address TEXT,
-  phone VARCHAR(20),
-  email VARCHAR(100) UNIQUE,
-  birthdate DATE,
+    -- Fields for staff (teacher, director, admin, preceptor)
+    username VARCHAR(50) UNIQUE,
+    password VARCHAR(255),
+    hire_date DATE,
+    active BOOLEAN DEFAULT TRUE,
 
-  -- Fields for staff (teacher, director, admin, preceptor)
-  username VARCHAR(50) UNIQUE,
-  password VARCHAR(255),
-  hire_date DATE,
-  active BOOLEAN DEFAULT TRUE,
+    -- Fields for students
+    registration_date DATE,
+    status VARCHAR(50),
+    classroom VARCHAR(50),
+    shift VARCHAR(50),
+    gender VARCHAR(50),
 
-  -- Fields for students
-  registration_date DATE,
-  status VARCHAR(50),
-  classroom VARCHAR(50),
-  shift VARCHAR(50),
-  gender VARCHAR(50),
+    -- Fields for parents
+    occupation VARCHAR(100),
 
-  -- Fields for parents
-  occupation VARCHAR(100),
+    -- Fields for teachers
+    specialization VARCHAR(100),
 
-  -- Fields for teachers
-  specialization VARCHAR(100),
+    -- Fields for directors
+    administrative_role VARCHAR(100),
 
-  -- Fields for directors
-  administrative_role VARCHAR(100),
-
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  created_by INT,
-  updated_by INT,
-  FOREIGN KEY (created_by) REFERENCES persons(id),
-  FOREIGN KEY (updated_by) REFERENCES persons(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by INT,
+    updated_by INT,
+    FOREIGN KEY (created_by) REFERENCES persons(id),
+    FOREIGN KEY (updated_by) REFERENCES persons(id)
 );
 
 -- Classrooms table
