@@ -107,14 +107,20 @@ CREATE TABLE contacts (
 -- DATA POPULATION SCRIPT (v4 - Internationalized Names & Nationality)
 -- =================================================================
 
--- Deactivate foreign key checks to truncate tables
+-- Deactivate foreign key checks to clear tables
 SET FOREIGN_KEY_CHECKS = 0;
 
--- Truncate tables to clear all previous data and reset auto-increment
-TRUNCATE TABLE attendance;
-TRUNCATE TABLE student_parents;
-TRUNCATE TABLE persons;
-TRUNCATE TABLE classrooms;
+-- Clear tables to reset all previous data and auto-increment
+DELETE FROM attendance;
+DELETE FROM student_parents;
+DELETE FROM persons;
+DELETE FROM classrooms;
+
+-- Reset auto-increment counters
+ALTER TABLE attendance AUTO_INCREMENT = 1;
+ALTER TABLE student_parents AUTO_INCREMENT = 1;
+ALTER TABLE persons AUTO_INCREMENT = 1;
+ALTER TABLE classrooms AUTO_INCREMENT = 1;
 
 -- Reactivate foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
@@ -244,22 +250,47 @@ INSERT INTO student_parents (student_id, parent_id, relationship, can_pickup, is
 
 
 -- Insert Attendance Records for the last 3 days
--- Assuming today is 2024-05-24
+-- Updated for current date: 2025-01-17
 INSERT INTO attendance (student_id, date, status, registered_by) VALUES
--- Day 1: 2024-05-22
-(15, '2024-05-22', 'present', 6), (16, '2024-05-22', 'present', 6), (17, '2024-05-22', 'absent', 6),
-(18, '2024-05-22', 'present', 7), (19, '2024-05-22', 'justified', 7), (20, '2024-05-22', 'present', 7),
-(21, '2024-05-22', 'present', 8), (22, '2024-05-22', 'present', 8), (23, '2024-05-22', 'present', 9),
-(24, '2024-05-22', 'absent', 9), (25, '2024-05-22', 'present', 10), (26, '2024-05-22', 'present', 10),
+-- Day 1: 2025-01-15 (2 days ago)
+(15, '2025-01-15', 'present', 6), (16, '2025-01-15', 'present', 6), (17, '2025-01-15', 'absent', 6),
+(18, '2025-01-15', 'present', 7), (19, '2025-01-15', 'justified', 7), (20, '2025-01-15', 'present', 7),
+(21, '2025-01-15', 'present', 8), (22, '2025-01-15', 'present', 8), (23, '2025-01-15', 'present', 9),
+(24, '2025-01-15', 'absent', 9), (25, '2025-01-15', 'present', 10), (26, '2025-01-15', 'present', 10),
+(27, '2025-01-15', 'present', 11), (28, '2025-01-15', 'justified', 11), (29, '2025-01-15', 'present', 12),
+(30, '2025-01-15', 'present', 12), (31, '2025-01-15', 'absent', 13), (32, '2025-01-15', 'present', 13),
+(33, '2025-01-15', 'present', 14), (34, '2025-01-15', 'present', 6), (35, '2025-01-15', 'justified', 7),
+(36, '2025-01-15', 'present', 8), (37, '2025-01-15', 'present', 9), (38, '2025-01-15', 'absent', 10),
+(39, '2025-01-15', 'present', 11), (40, '2025-01-15', 'present', 12), (41, '2025-01-15', 'justified', 13),
+(42, '2025-01-15', 'present', 14), (43, '2025-01-15', 'present', 6), (44, '2025-01-15', 'present', 7),
 
--- Day 2: 2024-05-23
-(15, '2024-05-23', 'present', 11), (16, '2024-05-23', 'absent', 11), (17, '2024-05-23', 'present', 11),
-(18, '2024-05-23', 'present', 12), (19, '2024-05-23', 'present', 12), (20, '2024-05-23', 'justified', 12),
-(21, '2024-05-23', 'present', 13), (22, '2024-05-23', 'present', 13), (23, '2024-05-23', 'absent', 14),
-(24, '2024-05-23', 'present', 14), (25, '2024-05-23', 'present', 6), (26, '2024-05-23', 'justified', 6),
+-- Day 2: 2025-01-16 (yesterday)
+(15, '2025-01-16', 'present', 11), (16, '2025-01-16', 'absent', 11), (17, '2025-01-16', 'present', 11),
+(18, '2025-01-16', 'present', 12), (19, '2025-01-16', 'present', 12), (20, '2025-01-16', 'justified', 12),
+(21, '2025-01-16', 'present', 13), (22, '2025-01-16', 'present', 13), (23, '2025-01-16', 'absent', 14),
+(24, '2025-01-16', 'present', 14), (25, '2025-01-16', 'present', 6), (26, '2025-01-16', 'justified', 6),
+(27, '2025-01-16', 'present', 7), (28, '2025-01-16', 'present', 7), (29, '2025-01-16', 'present', 8),
+(30, '2025-01-16', 'absent', 8), (31, '2025-01-16', 'present', 9), (32, '2025-01-16', 'justified', 9),
+(33, '2025-01-16', 'present', 10), (34, '2025-01-16', 'present', 10), (35, '2025-01-16', 'present', 11),
+(36, '2025-01-16', 'absent', 11), (37, '2025-01-16', 'present', 12), (38, '2025-01-16', 'justified', 12),
+(39, '2025-01-16', 'present', 13), (40, '2025-01-16', 'present', 13), (41, '2025-01-16', 'present', 14),
+(42, '2025-01-16', 'absent', 14), (43, '2025-01-16', 'present', 6), (44, '2025-01-16', 'present', 7),
 
--- Day 3: 2024-05-24
-(15, '2024-05-24', 'present', 7), (16, '2024-05-24', 'present', 7), (17, '2024-05-24', 'present', 7),
-(18, '2024-05-24', 'absent', 8), (19, '2024-05-24', 'present', 8), (20, '2024-05-24', 'present', 8),
-(21, '2024-05-24', 'justified', 9), (22, '2024-05-24', 'present', 9), (23, '2024-05-24', 'present', 10),
-(24, '2024-05-24', 'present', 10), (25, '2024-05-24', 'absent', 11), (26, '2024-05-24', 'present', 11);
+-- Day 3: 2025-01-17 (today) - Datos completos para todos los estudiantes
+-- Sala de 3 (Estudiantes 15-24)
+(15, '2025-01-17', 'present', 6), (16, '2025-01-17', 'present', 6), (17, '2025-01-17', 'present', 6),
+(18, '2025-01-17', 'absent', 6), (19, '2025-01-17', 'present', 6), (20, '2025-01-17', 'present', 6),
+(21, '2025-01-17', 'justified', 6), (22, '2025-01-17', 'present', 6), (23, '2025-01-17', 'present', 6),
+(24, '2025-01-17', 'present', 6),
+
+-- Sala de 4 (Estudiantes 25-34)
+(25, '2025-01-17', 'absent', 7), (26, '2025-01-17', 'present', 7), (27, '2025-01-17', 'present', 7),
+(28, '2025-01-17', 'present', 7), (29, '2025-01-17', 'justified', 7), (30, '2025-01-17', 'present', 7),
+(31, '2025-01-17', 'present', 7), (32, '2025-01-17', 'absent', 7), (33, '2025-01-17', 'present', 7),
+(34, '2025-01-17', 'present', 7),
+
+-- Sala de 5 (Estudiantes 35-44)
+(35, '2025-01-17', 'present', 8), (36, '2025-01-17', 'justified', 8), (37, '2025-01-17', 'present', 8),
+(38, '2025-01-17', 'present', 8), (39, '2025-01-17', 'absent', 8), (40, '2025-01-17', 'present', 8),
+(41, '2025-01-17', 'present', 8), (42, '2025-01-17', 'justified', 8), (43, '2025-01-17', 'present', 8),
+(44, '2025-01-17', 'present', 8);

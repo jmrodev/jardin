@@ -1,0 +1,29 @@
+### Test Dashboard Statistics Endpoints
+
+### 1. Get Total Statistics
+GET http://localhost:3000/api/dashboard/stats
+Authorization: Bearer {{token}}
+
+### 2. Get Yearly Statistics for 2025
+GET http://localhost:3000/api/dashboard/stats/yearly/2025
+Authorization: Bearer {{token}}
+
+### 3. Get Monthly Statistics for January 2025
+GET http://localhost:3000/api/dashboard/stats/monthly/2025
+Authorization: Bearer {{token}}
+
+### 4. Get Weekly Statistics
+GET http://localhost:3000/api/dashboard/stats/weekly
+Authorization: Bearer {{token}}
+
+### 5. Get Daily Statistics
+GET http://localhost:3000/api/dashboard/stats/daily
+Authorization: Bearer {{token}}
+
+### 6. Test with different years
+GET http://localhost:3000/api/dashboard/stats/yearly/2024
+Authorization: Bearer {{token}}
+
+### 7. Test with different months
+GET http://localhost:3000/api/dashboard/stats/monthly/2024
+Authorization: Bearer {{token}} 

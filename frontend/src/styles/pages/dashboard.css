@@ -24,34 +24,37 @@
 /* Dashboard Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--space-lg);
   margin-top: var(--space-xl);
 }
 
-.card {
+/* Dashboard Cards */
+.dashboard-card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   transition: all var(--transition-fast);
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.card:hover {
+.dashboard-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   border-color: var(--color-primary);
 }
 
-.card-header {
+.dashboard-card-header {
   display: flex;
   align-items: center;
   gap: var(--space-md);
   margin-bottom: var(--space-md);
 }
 
-.card-icon {
+.dashboard-card-icon {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-lg);
@@ -59,20 +62,37 @@
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
-.card-title {
+.dashboard-card-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 0;
 }
 
-.card-count {
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-sm);
+.dashboard-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.dashboard-card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+  flex-grow: 1;
+}
+
+.dashboard-card-button {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: auto;
 }
 
 /* Dashboard Filters (Sidebar) */
@@ -142,6 +162,19 @@
   
   .dashboard-subtitle {
     font-size: var(--font-size-md);
+  }
+  
+  .dashboard-card {
+    padding: var(--space-md);
+  }
+  
+  .dashboard-card-header {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .dashboard-card-icon {
+    width: 40px;
+    height: 40px;
   }
 }
 

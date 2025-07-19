@@ -7,6 +7,7 @@ import StudentsPage from '../pages/StudentsPage';
 import TeachersPage from '../pages/TeachersPage';
 import AttendancePage from '../pages/AttendancePage';
 import ParentsPage from '../pages/ParentsPage';
+import StatisticsPage from '../pages/StatisticsPage';
 import LoadingSpinner from '../molecules/LoadingSpinner';
 import MainLayout from './MainLayout';
 
@@ -43,6 +44,10 @@ const AppRoutes = () => {
       <Route 
         path="/parents" 
         element={isAuthenticated ? <MainLayout><ParentsPage /></MainLayout> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/statistics" 
+        element={isAuthenticated ? <MainLayout><StatisticsPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/" 

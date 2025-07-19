@@ -17,6 +17,7 @@ const ListPageLayout = ({ filters, children, entityType, onAddNew }) => {
     { path: '/teachers', label: t('nav.teachers'), icon: 'GraduationCap' },
     { path: '/parents', label: t('nav.parents'), icon: 'UserCheck' },
     { path: '/attendance', label: t('nav.attendance'), icon: 'CalendarCheck' },
+    { path: '/statistics', label: t('nav.statistics'), icon: 'BarChart3' },
   ];
 
   const isActiveRoute = (path) => {

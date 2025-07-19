@@ -98,7 +98,7 @@ export default function DashboardPage() {
           <p className="dashboard-subtitle">{t('dashboard.subtitle')}</p>
         </div>
 
-        <DashboardGrid stats={stats} />
+        <DashboardGrid />
       </div>
     </ListPageLayout>
   );

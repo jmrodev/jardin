@@ -1,0 +1,4 @@
+### Obtener Estadísticas Demográficas
+GET {{baseUrl}}/dashboard/stats/demographic
+Authorization: Bearer {{authToken}}
+Content-Type: application/json 
