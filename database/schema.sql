@@ -6,9 +6,11 @@ USE kindergarten_db;
 -- Tabla para almacenar información de todas las personas (estudiantes, padres, personal)
 CREATE TABLE persons (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    lastname_father VARCHAR(100) NOT NULL,
-    lastname_mother VARCHAR(100),
+    person_type ENUM('student', 'teacher', 'parent', 'director', 'admin', 'preceptor') NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    middle_name VARCHAR(100),
+    paternal_lastname VARCHAR(100) NOT NULL,
+    maternal_lastname VARCHAR(100),
     preferred_name VARCHAR(100),
     nationality VARCHAR(50),
     dni VARCHAR(20) UNIQUE,
@@ -41,8 +43,8 @@ CREATE TABLE persons (
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_by INT,
-    updated_by INT,
+    created_by BIGINT UNSIGNED,
+    updated_by BIGINT UNSIGNED,
     FOREIGN KEY (created_by) REFERENCES persons(id),
     FOREIGN KEY (updated_by) REFERENCES persons(id)
 );
@@ -58,6 +60,7 @@ CREATE TABLE classrooms (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Add classroom_id to persons table after classrooms is created
 ALTER TABLE persons
   ADD COLUMN classroom_id INT,
   ADD FOREIGN KEY (classroom_id) REFERENCES classrooms(id) ON DELETE SET NULL;
@@ -66,11 +69,11 @@ ALTER TABLE persons
 -- Attendance table
 CREATE TABLE attendance (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  student_id INT NOT NULL,
+  student_id BIGINT UNSIGNED NOT NULL,
   date DATE NOT NULL,
   status ENUM('present', 'absent', 'justified') NOT NULL,
   observations TEXT,
-  registered_by INT,
+  registered_by BIGINT UNSIGNED,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (student_id) REFERENCES persons(id) ON DELETE CASCADE,
@@ -80,8 +83,8 @@ CREATE TABLE attendance (
 
 -- Student-Parent Relationship table
 CREATE TABLE student_parents (
-  student_id INT NOT NULL,
-  parent_id INT NOT NULL,
+  student_id BIGINT UNSIGNED NOT NULL,
+  parent_id BIGINT UNSIGNED NOT NULL,
   relationship VARCHAR(50) NOT NULL, -- e.g., 'Padre', 'Madre', 'Tutor Legal'
   can_pickup BOOLEAN DEFAULT TRUE,
   can_change_diapers BOOLEAN DEFAULT FALSE,

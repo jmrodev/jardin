@@ -60,16 +60,7 @@ export default function MainLayout({ children }) {
               />
             </Button>
 
-            {showDashboardBtn && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleGoDashboard}
-              >
-                <Icon name="Home" size={16} />
-                {t('dashboard.title')}
-              </Button>
-            )}
+
 
             <div className="user-info">
               <span className="user-name">{user?.name}</span>

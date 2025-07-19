@@ -22,6 +22,7 @@ const EntityGrid = ({
   createService, // Nueva prop
   updateService, // Nueva prop
   deleteService, // Nueva prop
+  onOpenCreateModal, // Nueva prop para abrir modal desde fuera
 }) => {
   const { t } = useTranslation();
   const [selectedEntity, setSelectedEntity] = useState(null);
@@ -129,6 +130,20 @@ const EntityGrid = ({
     setCreateModalOpen(true);
   };
 
+  // Escuchar evento para abrir modal desde el sidebar
+  React.useEffect(() => {
+    const handleOpenCreateModal = (event) => {
+      if (event.detail?.entityType === entityType) {
+        openCreateModal();
+      }
+    };
+
+    window.addEventListener('openCreateModal', handleOpenCreateModal);
+    return () => {
+      window.removeEventListener('openCreateModal', handleOpenCreateModal);
+    };
+  }, [entityType]);
+
   const handleCreate = async (formData) => {
     try {
       const response = await createService(entityType, formData);
@@ -185,9 +200,6 @@ const EntityGrid = ({
     <div className="entity-grid-container">
       <div className="entity-grid-header">
         <h2>{t(`${entityType}sManagement`)}</h2>
-        <Button onClick={openCreateModal} className="button--primary">
-          {`${t('addNew')} ${t(entityType)}`}
-        </Button>
       </div>
 
       {entities.length === 0 ? (
@@ -375,6 +387,7 @@ EntityGrid.propTypes = {
   createService: PropTypes.func.isRequired,
   updateService: PropTypes.func.isRequired,
   deleteService: PropTypes.func.isRequired,
+  onOpenCreateModal: PropTypes.func,
 };
 
 EntityGrid.defaultProps = {

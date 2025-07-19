@@ -213,6 +213,11 @@ const StudentsPage = () => {
 
   return (
     <ListPageLayout
+      entityType="student"
+      onAddNew={() => {
+        const event = new CustomEvent('openCreateModal', { detail: { entityType: 'student' } });
+        window.dispatchEvent(event);
+      }}
       filters={
         <FilterPanel
           filterConfig={studentFilterConfig}

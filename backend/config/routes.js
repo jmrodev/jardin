@@ -9,6 +9,7 @@ import { attendanceRoutes } from '../attendance/routes.js';
 import { contactRoutes } from '../contacts/routes.js';
 import auditRoutes from '../audit/routes.js';
 import classroomRoutes from '../classrooms/routes.js';
+import dashboardRoutes from '../dashboard/routes.js';
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use('/attendance', attendanceRoutes);
 router.use('/contacts', contactRoutes);
 router.use('/audit', auditRoutes);
 router.use('/classrooms', classroomRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export default router; 

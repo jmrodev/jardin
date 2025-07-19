@@ -2,8 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../atoms/Icon';
+import PropTypes from 'prop-types';
 
-export default function DashboardGrid() {
+export default function DashboardGrid({ stats = {} }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -11,11 +12,21 @@ export default function DashboardGrid() {
     navigate(link);
   };
 
+  // Función para formatear números
+  const formatNumber = (num) => {
+    return num ? num.toLocaleString('es-ES') : '0';
+  };
+
+  // Función para formatear porcentaje
+  const formatPercentage = (num) => {
+    return num ? `${num}%` : '0%';
+  };
+
   const dashboardCards = [
     {
       id: 1,
       title: t('dashboard.students'),
-      count: 150,
+      count: formatNumber(stats.students || 0),
       description: t('dashboard.studentsDescription'),
       icon: 'Users',
       color: 'bg-blue-500',
@@ -24,7 +35,7 @@ export default function DashboardGrid() {
     {
       id: 2,
       title: t('dashboard.teachers'),
-      count: 25,
+      count: formatNumber(stats.teachers || 0),
       description: t('dashboard.teachersDescription'),
       icon: 'GraduationCap',
       color: 'bg-green-500',
@@ -33,7 +44,7 @@ export default function DashboardGrid() {
     {
       id: 3,
       title: t('dashboard.parents'),
-      count: 300,
+      count: formatNumber(stats.parents || 0),
       description: t('dashboard.parentsDescription'),
       icon: 'UserCheck',
       color: 'bg-purple-500',
@@ -42,7 +53,7 @@ export default function DashboardGrid() {
     {
       id: 4,
       title: t('dashboard.attendance'),
-      count: 95,
+      count: formatPercentage(stats.todayAttendance || 0),
       description: t('dashboard.attendanceDescription'),
       icon: 'CalendarCheck',
       color: 'bg-orange-500',
@@ -74,3 +85,12 @@ export default function DashboardGrid() {
     </div>
   );
 }
+
+DashboardGrid.propTypes = {
+  stats: PropTypes.shape({
+    students: PropTypes.number,
+    teachers: PropTypes.number,
+    parents: PropTypes.number,
+    todayAttendance: PropTypes.number
+  })
+};

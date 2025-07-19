@@ -1,12 +1,22 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import MainLayout from '../templates/MainLayout';
+import ListPageLayout from '../templates/ListPageLayout';
 import Button from '../atoms/Button';
 
 export default function AttendancePage() {
   const { t } = useTranslation();
 
   return (
+    <ListPageLayout
+      entityType="attendance"
+      filters={
+        <div className="attendance-filters">
+          <h4>{t('attendance.filters')}</h4>
+          <p>{t('attendance.filtersDescription')}</p>
+          {/* Aquí se pueden agregar filtros específicos de asistencia */}
+        </div>
+      }
+    >
       <div className="attendance-page">
         <div className="attendance-header">
           <h2 className="attendance-title">{t('attendance.title')}</h2>
@@ -42,5 +52,6 @@ export default function AttendancePage() {
           </div>
         </div>
       </div>
+    </ListPageLayout>
   );
 } 

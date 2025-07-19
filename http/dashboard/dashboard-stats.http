@@ -1,0 +1,9 @@
+### Obtener Estadísticas del Dashboard
+GET {{baseUrl}}/dashboard/stats
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### Obtener Asistencia del Día
+GET {{baseUrl}}/dashboard/attendance/today
+Authorization: Bearer {{token}}
+Content-Type: application/json 

@@ -76,6 +76,20 @@
   color: var(--text-tertiary);
 }
 
+/* Filter field styles for text inputs */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.filter-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
 /* Responsive Filter Panel */
 @media (max-width: 768px) {
   .filter-panel__filters {

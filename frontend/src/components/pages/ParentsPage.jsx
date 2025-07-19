@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import EntityGrid from '@/components/organisms/EntityGrid';
 import LoadingSpinner from '@/components/molecules/LoadingSpinner';
 import ListPageLayout from '@/components/templates/ListPageLayout';
+import FilterPanel from '@/components/molecules/FilterPanel/FilterPanel';
 import personService from '@/services/api/persons';
 
 const ParentsPage = () => {
@@ -20,9 +21,9 @@ const ParentsPage = () => {
   };
 
   const parentDetailConfig = [
-    { key: 'name', label: t('name') },
-    { key: 'lastname_father', label: t('lastnameFather') },
-    { key: 'lastname_mother', label: t('lastnameMother') },
+    { key: 'name', label: t('firstName') },
+    { key: 'lastname_father', label: t('paternalLastname') },
+    { key: 'lastname_mother', label: t('maternalLastname') },
     { key: 'dni', label: t('dni') },
     { key: 'birthdate', label: t('birthdate'), type: 'date' },
     { key: 'address', label: t('address') },
@@ -31,7 +32,7 @@ const ParentsPage = () => {
   ];
 
   const parentFilterConfig = [
-    { name: 'name', label: t('name'), type: 'text', placeholder: t('search_by_name') },
+    { name: 'name', label: t('firstName'), type: 'text', placeholder: t('search_by_name') },
   ];
 
   const parentFormConfig = {
@@ -41,9 +42,9 @@ const ParentsPage = () => {
       {
         title: t('personal_information'),
         fields: [
-            { name: 'name', label: t('name'), type: 'text' },
-            { name: 'lastname_father', label: t('lastnameFather'), type: 'text' },
-            { name: 'lastname_mother', label: t('lastnameMother'), type: 'text' },
+            { name: 'name', label: t('firstName'), type: 'text' },
+            { name: 'lastname_father', label: t('paternalLastname'), type: 'text' },
+            { name: 'lastname_mother', label: t('maternalLastname'), type: 'text' },
             { name: 'dni', label: t('dni'), type: 'text' },
             { name: 'birthdate', label: t('birthdate'), type: 'date' },
         ]
@@ -79,6 +80,10 @@ const ParentsPage = () => {
     setFilters(newFilters);
   };
 
+  const handleClearFilters = () => {
+    setFilters({});
+  };
+
   const handleEntityCreated = (newEntity) => {
     setParents((prev) => [newEntity, ...prev]);
   };
@@ -95,10 +100,17 @@ const ParentsPage = () => {
 
   return (
     <ListPageLayout
+      entityType="parent"
+      onAddNew={() => {
+        const event = new CustomEvent('openCreateModal', { detail: { entityType: 'parent' } });
+        window.dispatchEvent(event);
+      }}
       filters={
         <FilterPanel
           filterConfig={parentFilterConfig}
           onFilterChange={handleFilterChange}
+          activeFilters={filters}
+          onClearFilters={handleClearFilters}
         />
       }
     >

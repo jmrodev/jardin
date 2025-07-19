@@ -132,6 +132,10 @@ const resources = {
       'dashboard.attendance': 'Asistencia',
       'dashboard.attendanceDescription': '',
       'dashboard.viewMore': 'Ver más',
+      'dashboard.quickStats': 'Estadísticas Rápidas',
+      'dashboard.totalStudents': 'Total Estudiantes',
+      'dashboard.totalTeachers': 'Total Maestros',
+      'dashboard.todayAttendance': 'Asistencia Hoy',
       
       // Students Page
       'students.title': 'Gestión de Estudiantes',
@@ -225,6 +229,8 @@ const resources = {
       'attendance.today': 'Hoy',
       'attendance.registerAttendance': 'Registrar Asistencia',
       'attendance.viewReport': 'Ver Reporte',
+      'attendance.filters': 'Filtros de Asistencia',
+      'attendance.filtersDescription': 'Filtra por fecha, sala o estado',
       
       // Login Page
       'login.title': 'Iniciar Sesión',
@@ -334,9 +340,11 @@ const resources = {
       'roles.preceptor': 'Preceptor',
       
       // Navigation
+      'navigation': 'Navegación',
       'nav.dashboard': 'Dashboard',
       'nav.students': 'Estudiantes',
       'nav.teachers': 'Maestros',
+      'nav.parents': 'Padres/Tutores',
       'nav.attendance': 'Asistencia',
       'nav.settings': 'Configuración',
       'nav.profile': 'Perfil',

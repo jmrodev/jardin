@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Select from '@/components/atoms/Select';
-import Button from '@/components/atoms/Button'; // Importar Button
+import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
 import '@/styles/components/molecules/filter-panel.css';
 
 const FilterPanel = ({ filterConfig, onFilterChange, activeFilters, onClearFilters }) => {
@@ -32,8 +33,21 @@ const FilterPanel = ({ filterConfig, onFilterChange, activeFilters, onClearFilte
                 options={filter.options}
                 onChange={handleChange}
                 placeholder={filter.placeholder}
-                value={activeFilters[filter.name] || ''} // Usar el filtro activo
+                value={activeFilters[filter.name] || ''}
               />
+            );
+          } else if (filter.type === 'text') {
+            return (
+              <div key={filter.name} className="filter-field">
+                <label className="filter-label">{filter.label}</label>
+                <Input
+                  name={filter.name}
+                  type="text"
+                  placeholder={filter.placeholder}
+                  value={activeFilters[filter.name] || ''}
+                  onChange={handleChange}
+                />
+              </div>
             );
           }
           return null;

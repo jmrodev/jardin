@@ -101,6 +101,11 @@ const TeachersPage = () => {
 
   return (
     <ListPageLayout
+      entityType="teacher"
+      onAddNew={() => {
+        const event = new CustomEvent('openCreateModal', { detail: { entityType: 'teacher' } });
+        window.dispatchEvent(event);
+      }}
       filters={
         <FilterPanel
           filterConfig={teacherFilterConfig}

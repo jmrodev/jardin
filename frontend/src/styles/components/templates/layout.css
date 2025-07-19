@@ -5,6 +5,7 @@
   min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
+  overflow-x: hidden;
 }
 
 .header {
@@ -15,7 +16,8 @@
   border-bottom: 1px solid var(--border-primary);
   box-shadow: var(--shadow-sm);
   padding: var(--space-sm) var(--space-lg);
-  backdrop-filter: blur(8px); /* Efecto de desenfoque para navegadores compatibles */
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
 }
 
 .header-content {
@@ -45,7 +47,7 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 }
 
 .user-info {
@@ -65,10 +67,10 @@
 
 .main {
   flex-grow: 1;
-  padding: var(--space-lg);
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .footer {
@@ -78,4 +80,5 @@
   text-align: center;
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
+  flex-shrink: 0;
 }
