@@ -40,42 +40,52 @@ export default function MainLayout({ children }) {
     <div className="layout">
       <header className="header">
         <div className="header-content">
+          {/* Brand Section - Left */}
           <div className="brand">
             <Icon name="GraduationCap" size={32} className="logo" />
             <h1 className="title">{t(titleKey)}</h1>
           </div>
 
+          {/* Header Actions - Right */}
           <div className="header-actions">
-            <LanguageSelector />
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="theme-button"
-            >
-              <Icon
-                name={theme === 'dark' ? 'Sun' : 'Moon'}
-                size={20}
-              />
-            </Button>
-
-
-
-            <div className="user-info">
-              <span className="user-name">{user?.name}</span>
-              <span className="user-role">{t(`roles.${user?.role}`)}</span>
+            {/* UI Controls Group */}
+            <div className="header-controls">
+              <LanguageSelector />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
+                className="theme-button"
+                title={theme === 'dark' ? t('theme.lightMode') : t('theme.darkMode')}
+              >
+                <Icon
+                  name={theme === 'dark' ? 'Sun' : 'Moon'}
+                  size={20}
+                />
+              </Button>
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-              className="logout-button"
-            >
-              <Icon name="LogOut" size={16} />
-              {t('dashboard.logout')}
-            </Button>
+            {/* Separator */}
+            <div className="header-separator"></div>
+
+            {/* User Controls Group */}
+            <div className="user-controls">
+              <div className="user-info">
+                <span className="user-name">{user?.name}</span>
+                <span className="user-role">{t(`roles.${user?.role}`)}</span>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="logout-button"
+                title={t('dashboard.logout')}
+              >
+                <Icon name="LogOut" size={16} />
+                <span className="logout-text">{t('dashboard.logout')}</span>
+              </Button>
+            </div>
           </div>
         </div>
       </header>

@@ -19,9 +19,10 @@ const LanguageSelector = () => {
           size="sm"
           onClick={() => changeLanguage('es')}
           className="language-button"
+          title={t('language.spanish')}
         >
           <Icon name="Flag" size={16} />
-          {t('language.spanish')}
+          <span className="language-text">{t('language.spanish')}</span>
         </Button>
         
         <Button
@@ -29,9 +30,10 @@ const LanguageSelector = () => {
           size="sm"
           onClick={() => changeLanguage('en')}
           className="language-button"
+          title={t('language.english')}
         >
           <Icon name="Flag" size={16} />
-          {t('language.english')}
+          <span className="language-text">{t('language.english')}</span>
         </Button>
       </div>
     </div>

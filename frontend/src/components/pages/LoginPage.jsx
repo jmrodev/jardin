@@ -112,6 +112,7 @@ const LoginPage = () => {
             error={errors.username}
             required
             placeholder={t('login.username')}
+            autoComplete="username"
           />
           
           <Input
@@ -123,6 +124,7 @@ const LoginPage = () => {
             error={errors.password}
             required
             placeholder={t('login.password')}
+            autoComplete="current-password"
           />
           
           <Button

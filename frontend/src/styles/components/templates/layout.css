@@ -26,12 +26,14 @@
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
+  gap: var(--space-lg);
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  flex-shrink: 0;
 }
 
 .brand .logo {
@@ -42,9 +44,34 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   margin: 0;
+  white-space: nowrap;
 }
 
 .header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-shrink: 0;
+}
+
+/* UI Controls Group */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Separator */
+.header-separator {
+  width: 1px;
+  height: 32px;
+  background-color: var(--border-primary);
+  margin: 0 var(--space-sm);
+  flex-shrink: 0;
+}
+
+/* User Controls Group */
+.user-controls {
   display: flex;
   align-items: center;
   gap: var(--space-md);
@@ -55,14 +82,46 @@
   flex-direction: column;
   align-items: flex-end;
   font-size: var(--font-size-xs);
+  min-width: 0;
 }
 
 .user-name {
   font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
 
 .user-role {
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* Logout Button */
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+}
+
+.logout-text {
+  display: inline;
+}
+
+/* Theme Button */
+.theme-button {
+  padding: var(--space-xs);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.theme-button:hover {
+  background-color: var(--bg-tertiary);
 }
 
 .main {
@@ -81,4 +140,58 @@
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-content {
+    gap: var(--space-md);
+  }
+  
+  .brand .title {
+    font-size: var(--font-size-base);
+  }
+  
+  .header-actions {
+    gap: var(--space-sm);
+  }
+  
+  .user-controls {
+    gap: var(--space-sm);
+  }
+  
+  .user-name,
+  .user-role {
+    max-width: 80px;
+  }
+  
+  .logout-text {
+    display: none;
+  }
+  
+  .header-separator {
+    margin: 0 var(--space-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--space-xs) var(--space-md);
+  }
+  
+  .brand .logo {
+    font-size: 24px;
+  }
+  
+  .brand .title {
+    font-size: var(--font-size-sm);
+  }
+  
+  .user-info {
+    display: none;
+  }
+  
+  .header-separator {
+    display: none;
+  }
 }

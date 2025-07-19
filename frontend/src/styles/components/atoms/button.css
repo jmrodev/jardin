@@ -117,10 +117,51 @@ button.xl {
   min-height: var(--button-xl-min-height);
 }
 
+/* Language Selector Styles */
+.language-selector-container {
+  display: flex;
+  align-items: center;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.language-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.language-button:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.language-text {
+  display: inline;
+}
+
 /* Responsive */
 @media (min-width:768x) {
   button,
   .button{   padding: var(--button-lg-padding);
     font-size: var(--button-lg-font-size);
+  }
+}
+
+/* Responsive Language Selector */
+@media (max-width: 768px) {
+  .language-text {
+    display: none;
+  }
+  
+  .language-button {
+    padding: var(--space-xs);
   }
 } 

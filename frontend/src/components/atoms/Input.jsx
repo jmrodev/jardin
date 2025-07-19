@@ -10,6 +10,7 @@ const Input = ({
   error,
   id,
   name,
+  label,
   className = '',
   as: Component = 'input',
   ...props
@@ -24,6 +25,12 @@ const Input = ({
 
   return (
     <div className="input-wrapper">
+      {label && (
+        <label htmlFor={inputId} className="input-label">
+          {label}
+          {required && <span className="input-required">*</span>}
+        </label>
+      )}
       <Component
         id={inputId}
         name={name}
