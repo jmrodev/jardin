@@ -44,135 +44,35 @@ export default function StatisticsPage() {
     setLoading(true);
     setError(null);
     try {
-      console.log('📡 Intentando obtener estadísticas del servidor...');
-      // Obtener estadísticas totales (endpoint existente)
-      const totalStats = await dashboardService.getStats();
-      console.log('✅ Datos del servidor obtenidos:', totalStats);
-      console.log('📊 Datos del servidor (data):', totalStats.data);
-      
-      // Obtener estadísticas específicas según el período seleccionado
-      let detailedStats = {};
-      
-      try {
-        if (selectedPeriod === 'yearly') {
-          const yearlyStats = await dashboardService.getYearlyStats(selectedYear);
-          detailedStats = yearlyStats.data;
-        } else if (selectedPeriod === 'monthly') {
-          const monthlyStats = await dashboardService.getMonthlyStats(selectedYear);
-          detailedStats = monthlyStats.data;
-        } else if (selectedPeriod === 'weekly') {
-          const weeklyStats = await dashboardService.getWeeklyStats();
-          detailedStats = weeklyStats.data;
-        } else if (selectedPeriod === 'daily') {
-          const dailyStats = await dashboardService.getDailyStats();
-          detailedStats = dailyStats.data;
-        } else {
-          // Para 'total', usar los datos del endpoint principal
-          detailedStats = totalStats.data;
-        }
-        console.log('✅ Datos detallados obtenidos:', detailedStats);
-        console.log('📊 Datos detallados (data):', detailedStats.data);
-        
-        // Asegurar que detailedStats tenga la estructura correcta
-        if (detailedStats && detailedStats.data) {
-          detailedStats = detailedStats.data;
-        }
-      } catch (detailedError) {
-        console.warn('⚠️ Error fetching detailed stats, using fallback data:', detailedError);
-        // Si fallan los endpoints detallados, usar datos básicos
-        detailedStats = {
-          totalStudents: totalStats.data.totalStudents || 0,
-          totalTeachers: totalStats.data.totalTeachers || 0,
-          totalParents: totalStats.data.totalParents || 0,
-          attendanceRate: totalStats.data.attendanceRate || 0
-        };
+      console.log(`📡 Intentando obtener estadísticas para el período: ${selectedPeriod}`);
+      let statsData;
+      switch (selectedPeriod) {
+        case 'yearly':
+          statsData = (await dashboardService.getYearlyStats(selectedYear)).data;
+          break;
+        case 'monthly':
+          statsData = (await dashboardService.getMonthlyStats(selectedYear)).data;
+          break;
+        case 'weekly':
+          statsData = (await dashboardService.getWeeklyStats()).data;
+          break;
+        case 'daily':
+          statsData = (await dashboardService.getDailyStats()).data;
+          break;
+        default:
+          statsData = (await dashboardService.getStats()).data;
+          break;
       }
-
-      console.log('📊 Configurando estadísticas finales...');
-      const finalStats = {
-        total: detailedStats,
-        yearly: detailedStats,
-        monthly: detailedStats,
-        weekly: detailedStats,
-        daily: detailedStats
-      };
-      console.log('📊 Estadísticas finales a guardar:', finalStats);
-      setStats(finalStats);
+      console.log('✅ Datos del servidor obtenidos:', statsData);
+      setStats(prevStats => ({ ...prevStats, [selectedPeriod]: statsData }));
       console.log('✅ Estadísticas configuradas exitosamente');
     } catch (err) {
       console.error('❌ Error fetching detailed stats:', err);
-      
-      // Determinar el tipo de error
       let errorMessage = 'Error al cargar las estadísticas detalladas';
       if (err.code === 'ERR_NETWORK' || err.message.includes('Network Error')) {
         errorMessage = t('statistics.serverUnavailable');
-        setError(errorMessage);
-      } else {
-        setError(errorMessage);
       }
-      
-      console.log('🔄 Configurando datos de ejemplo...');
-      // Datos de ejemplo más completos en caso de error
-      const fallbackData = {
-        totalStudents: 25,
-        totalTeachers: 8,
-        totalParents: 30,
-        attendanceRate: 85
-      };
-      
-      // Datos de ejemplo para estadísticas diarias
-      const dailyExampleData = {
-        ...fallbackData,
-        dailyData: [
-          {
-            date: new Date().toISOString(),
-            attendance: 85,
-            presentStudents: 17,
-            totalStudents: 20
-          },
-          {
-            date: new Date(Date.now() - 86400000).toISOString(),
-            attendance: 90,
-            presentStudents: 18,
-            totalStudents: 20
-          },
-          {
-            date: new Date(Date.now() - 172800000).toISOString(),
-            attendance: 80,
-            presentStudents: 16,
-            totalStudents: 20
-          }
-        ]
-      };
-
-      // Datos de ejemplo para estadísticas mensuales
-      const monthlyExampleData = {
-        ...fallbackData,
-        monthlyData: [
-          { month: 1, attendance: 85, students: 25 },
-          { month: 2, attendance: 88, students: 25 },
-          { month: 3, attendance: 82, students: 25 },
-          { month: 4, attendance: 90, students: 25 },
-          { month: 5, attendance: 87, students: 25 },
-          { month: 6, attendance: 83, students: 25 },
-          { month: 7, attendance: 89, students: 25 },
-          { month: 8, attendance: 91, students: 25 },
-          { month: 9, attendance: 86, students: 25 },
-          { month: 10, attendance: 84, students: 25 },
-          { month: 11, attendance: 88, students: 25 },
-          { month: 12, attendance: 92, students: 25 }
-        ]
-      };
-      
-      console.log('📊 Configurando datos de ejemplo...');
-      setStats({
-        total: fallbackData,
-        yearly: fallbackData,
-        monthly: monthlyExampleData,
-        weekly: fallbackData,
-        daily: dailyExampleData
-      });
-      console.log('✅ Datos de ejemplo configurados');
+      setError(errorMessage);
     } finally {
       setLoading(false);
       console.log('🏁 fetchDetailedStats completado');
@@ -310,9 +210,10 @@ export default function StatisticsPage() {
   };
 
   const getPerformanceAnalysis = (stats) => {
-    const totalPeople = (stats.totalStudents || 0) + (stats.totalTeachers || 0) + (stats.totalParents || 0);
-    const studentRatio = totalPeople > 0 ? Math.round(((stats.totalStudents || 0) / totalPeople) * 100) : 0;
-    const teacherRatio = totalPeople > 0 ? Math.round(((stats.totalTeachers || 0) / totalPeople) * 100) : 0;
+    const totalStudents = stats.totalStudents || 0;
+    const totalTeachers = stats.totalTeachers || 0;
+    const studentRatio = totalStudents > 0 ? Math.round((totalStudents / (totalStudents + totalTeachers)) * 100) : 0;
+    const teacherRatio = totalTeachers > 0 ? Math.round((totalTeachers / (totalStudents + totalTeachers)) * 100) : 0;
     
     return t('statistics.performanceText', {
       studentRatio,
@@ -591,6 +492,7 @@ export default function StatisticsPage() {
                       </div>
                       <p className="prediction-recommendation">
                         {predictions.predictions.staffing.recommendation}
+.
                       </p>
                     </div>
                   </div>
@@ -647,4 +549,4 @@ export default function StatisticsPage() {
       </div>
     </ListPageLayout>
   );
-} 
+}

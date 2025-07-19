@@ -1,28 +1,29 @@
 import { getConnection } from '../config/database.js';
 
+// Helper function to get person counts
+const getPersonCounts = async (connection) => {
+  const [studentsResult] = await connection.execute(
+    'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
+  );
+  const [teachersResult] = await connection.execute(
+    'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
+  );
+  const [parentsResult] = await connection.execute(
+    'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
+  );
+  return {
+    totalStudents: studentsResult[0].count,
+    totalTeachers: teachersResult[0].count,
+    totalParents: parentsResult[0].count,
+  };
+};
+
 // Obtener estadísticas generales del dashboard
 export const getDashboardStats = async () => {
   let connection;
   try {
     connection = await getConnection();
-    
-    // Obtener conteo de estudiantes
-    const [studentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
-    );
-    const totalStudents = studentsResult[0].count;
-
-    // Obtener conteo de maestros
-    const [teachersResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
-    );
-    const totalTeachers = teachersResult[0].count;
-
-    // Obtener conteo de padres/tutores
-    const [parentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
-    );
-    const totalParents = parentsResult[0].count;
+    const { totalStudents, totalTeachers, totalParents } = await getPersonCounts(connection);
     
     // Calcular tasa de asistencia del día actual
     const today = new Date().toISOString().split('T')[0];
@@ -118,22 +119,7 @@ export const getYearlyStats = async (year) => {
   let connection;
   try {
     connection = await getConnection();
-    
-    // Obtener conteos básicos
-    const [studentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
-    );
-    const totalStudents = studentsResult[0].count;
-
-    const [teachersResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
-    );
-    const totalTeachers = teachersResult[0].count;
-
-    const [parentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
-    );
-    const totalParents = parentsResult[0].count;
+    const { totalStudents, totalTeachers, totalParents } = await getPersonCounts(connection);
     
     // Estadísticas de asistencia del año
     const [yearAttendanceResult] = await connection.execute(
@@ -179,22 +165,7 @@ export const getMonthlyStats = async (year) => {
   let connection;
   try {
     connection = await getConnection();
-    
-    // Obtener conteos básicos
-    const [studentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
-    );
-    const totalStudents = studentsResult[0].count;
-
-    const [teachersResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
-    );
-    const totalTeachers = teachersResult[0].count;
-
-    const [parentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
-    );
-    const totalParents = parentsResult[0].count;
+    const { totalStudents, totalTeachers, totalParents } = await getPersonCounts(connection);
     
     // Estadísticas de asistencia del año
     const [yearAttendanceResult] = await connection.execute(
@@ -271,22 +242,7 @@ export const getWeeklyStats = async () => {
   let connection;
   try {
     connection = await getConnection();
-    
-    // Obtener conteos básicos
-    const [studentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
-    );
-    const totalStudents = studentsResult[0].count;
-
-    const [teachersResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
-    );
-    const totalTeachers = teachersResult[0].count;
-
-    const [parentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
-    );
-    const totalParents = parentsResult[0].count;
+    const { totalStudents, totalTeachers, totalParents } = await getPersonCounts(connection);
     
     // Obtener fecha de inicio de la semana actual
     const now = new Date();
@@ -340,22 +296,7 @@ export const getDailyStats = async () => {
   let connection;
   try {
     connection = await getConnection();
-    
-    // Obtener conteos básicos
-    const [studentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "student"'
-    );
-    const totalStudents = studentsResult[0].count;
-
-    const [teachersResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "teacher"'
-    );
-    const totalTeachers = teachersResult[0].count;
-
-    const [parentsResult] = await connection.execute(
-      'SELECT COUNT(*) as count FROM persons WHERE person_type = "parent"'
-    );
-    const totalParents = parentsResult[0].count;
+    const { totalStudents, totalTeachers, totalParents } = await getPersonCounts(connection);
     
     // Obtener fecha de inicio de la semana actual
     const now = new Date();
@@ -384,14 +325,14 @@ export const getDailyStats = async () => {
       });
       
       const presentStudents = dayAttendance.find(a => a.status === 'present')?.count || 0;
-      const totalStudents = dayAttendance.reduce((sum, a) => sum + a.count, 0);
-      const attendance = totalStudents > 0 ? Math.round((presentStudents / totalStudents) * 100) : 0;
+      const totalDayStudents = dayAttendance.reduce((sum, a) => sum + a.count, 0);
+      const attendance = totalDayStudents > 0 ? Math.round((presentStudents / totalDayStudents) * 100) : 0;
       
       dailyData.push({
         date: date.toISOString(),
         attendance,
         presentStudents,
-        totalStudents
+        totalStudents: totalDayStudents
       });
     }
     
