@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../atoms/Icon';
 import dashboardService from '../../services/api/dashboard';
+import { predictiveAnalysis } from '../../utils/predictiveAnalysis';
 
 export default function DemographicAnalysis({ stats, selectedPeriod }) {
   const { t } = useTranslation();
   const [demographicData, setDemographicData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   // Cargar datos demográficos del backend
   useEffect(() => {
@@ -16,12 +18,12 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
       setError(null);
       try {
         const response = await dashboardService.getDemographicStats();
-        console.log('📊 Datos demográficos obtenidos:', response.data);
-        console.log('📊 Datos por sala específicos:', response.data.data.byClassroom);
-        console.log('📊 Estructura completa de datos:', JSON.stringify(response.data.data, null, 2));
-        setDemographicData(response.data.data);
+        if (response && response.data && response.data.data) {
+          setDemographicData(response.data.data);
+        } else {
+          throw new Error('Invalid response format');
+        }
       } catch (err) {
-        console.error('❌ Error fetching demographic data:', err);
         setError(t('statistics.errorDemographic'));
         // Usar datos de ejemplo en caso de error
         setDemographicData({
@@ -65,15 +67,255 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
     return 'danger';
   };
 
+  // Funciones para análisis de insights
+
+
+  const formatNumber = (num) => {
+    if (num === undefined || num === null) return '0';
+    return num.toLocaleString();
+  };
+
+  const formatPercentage = (num) => {
+    if (num === undefined || num === null) return '0%';
+    return `${num.toFixed(1)}%`;
+  };
+
+  const generatePredictions = () => {
+    // Agregar datos actuales al análisis predictivo
+    predictiveAnalysis.addHistoricalData(stats);
+    
+    // Generar predicciones
+    const predictiveReport = predictiveAnalysis.generatePredictiveReport(4);
+    return predictiveReport;
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % 9);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + 9) % 9);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  const slides = [
+    // Resumen (Overview)
+    {
+      id: 'total-students',
+      title: t('statistics.totalStudents'),
+      icon: 'Users',
+      color: 'skyblue',
+      type: 'overview',
+      value: formatNumber(stats.totalStudents || 0),
+      description: t('statistics.students')
+    },
+    {
+      id: 'total-teachers',
+      title: t('statistics.totalTeachers'),
+      icon: 'GraduationCap',
+      color: 'orange',
+      type: 'overview',
+      value: formatNumber(stats.totalTeachers || 0),
+      description: t('statistics.teachers')
+    },
+    {
+      id: 'total-parents',
+      title: t('statistics.totalParents'),
+      icon: 'UserCheck',
+      color: 'lime',
+      type: 'overview',
+      value: formatNumber(stats.totalParents || 0),
+      description: t('statistics.parents')
+    },
+    {
+      id: 'attendance-rate',
+      title: t('statistics.attendanceRate'),
+      icon: 'CalendarCheck',
+      color: 'pink',
+      type: 'overview',
+      value: formatPercentage(stats.attendanceRate || 0),
+      description: t('statistics.attendance')
+    },
+    // Análisis Demográfico
+    {
+      id: 'shift',
+      title: t('statistics.byShift'),
+      icon: 'clock',
+      color: 'skyblue',
+      type: 'demographic',
+      data: demographicData?.byShift,
+      renderItem: (key, data) => {
+        const shiftLabel = key === 'mañana' ? t('statistics.morningShift') : 
+                          key === 'tarde' ? t('statistics.afternoonShift') : 
+                          key.charAt(0).toUpperCase() + key.slice(1);
+        const attendanceRate = calculateAttendanceRate(data.present, data.students);
+        const statusColor = getStatusColor(attendanceRate);
+        
+        return (
+          <div key={key} className="demographic-stat-item">
+            <div className="stat-item-header">
+              <span className="stat-item-label">{shiftLabel}</span>
+              <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
+                {attendanceRate}%
+              </span>
+            </div>
+            <div className="stat-item-details">
+              <div className="stat-item-detail">
+                <Icon name="users" size={12} />
+                <span>{data.students} {t('statistics.students')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="check-circle" size={12} />
+                <span>{data.present} {t('statistics.present')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="x-circle" size={12} />
+                <span>{data.absent} {t('statistics.absent')}</span>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    },
+    {
+      id: 'gender',
+      title: t('statistics.byGender'),
+      icon: 'users',
+      color: 'pink',
+      type: 'demographic',
+      data: demographicData?.byGender,
+      renderItem: (key, data) => {
+        const genderLabel = key === 'masculino' ? t('statistics.male') : 
+                           key === 'femenino' ? t('statistics.female') : 
+                           key.charAt(0).toUpperCase() + key.slice(1);
+        const attendanceRate = calculateAttendanceRate(data.present, data.students);
+        const statusColor = getStatusColor(attendanceRate);
+        
+        return (
+          <div key={key} className="demographic-stat-item">
+            <div className="stat-item-header">
+              <span className="stat-item-label">{genderLabel}</span>
+              <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
+                {attendanceRate}%
+              </span>
+            </div>
+            <div className="stat-item-details">
+              <div className="stat-item-detail">
+                <Icon name="users" size={12} />
+                <span>{data.students} {t('statistics.students')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="check-circle" size={12} />
+                <span>{data.present} {t('statistics.present')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="x-circle" size={12} />
+                <span>{data.absent} {t('statistics.absent')}</span>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    },
+    {
+      id: 'age',
+      title: t('statistics.byAge'),
+      icon: 'calendar',
+      color: 'lime',
+      type: 'demographic',
+      data: demographicData?.byAge,
+      renderItem: (key, data) => {
+        const age = key.replace('age', '');
+        const ageLabel = t(`statistics.age${age}`);
+        const attendanceRate = calculateAttendanceRate(data.present, data.students);
+        const statusColor = getStatusColor(attendanceRate);
+        
+        return (
+          <div key={key} className="demographic-stat-item">
+            <div className="stat-item-header">
+              <span className="stat-item-label">{ageLabel}</span>
+              <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
+                {attendanceRate}%
+              </span>
+            </div>
+            <div className="stat-item-details">
+              <div className="stat-item-detail">
+                <Icon name="users" size={12} />
+                <span>{data.students} {t('statistics.students')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="check-circle" size={12} />
+                <span>{data.present} {t('statistics.present')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="x-circle" size={12} />
+                <span>{data.absent} {t('statistics.absent')}</span>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    },
+    {
+      id: 'classroom',
+      title: t('statistics.byClassroom'),
+      icon: 'home',
+      color: 'purple',
+      type: 'demographic',
+      data: demographicData?.byClassroom,
+      renderItem: (key, data) => {
+        const shiftLabel = data.shift === 'Mañana' ? t('statistics.morningShift') : 
+                          data.shift === 'Tarde' ? t('statistics.afternoonShift') : 
+                          data.shift;
+        const classroomLabel = `${data.classroom} - ${shiftLabel}`;
+        const attendanceRate = calculateAttendanceRate(data.present, data.students);
+        const statusColor = getStatusColor(attendanceRate);
+        
+        return (
+          <div key={key} className="demographic-stat-item">
+            <div className="stat-item-header">
+              <span className="stat-item-label">{classroomLabel}</span>
+              <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
+                {attendanceRate}%
+              </span>
+            </div>
+            <div className="stat-item-details">
+              <div className="stat-item-detail">
+                <Icon name="users" size={12} />
+                <span>{data.students} {t('statistics.students')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="check-circle" size={12} />
+                <span>{data.present} {t('statistics.present')}</span>
+              </div>
+              <div className="stat-item-detail">
+                <Icon name="x-circle" size={12} />
+                <span>{data.absent} {t('statistics.absent')}</span>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    },
+    // Predicciones
+    {
+      id: 'predictions',
+      title: t('statistics.predictions'),
+      icon: 'TrendingUp',
+      color: 'indigo',
+      type: 'predictions',
+      content: generatePredictions()
+    }
+  ];
+
+  const currentSlideData = slides[currentSlide];
+
   if (loading) {
     return (
       <div className="demographic-analysis">
-        <div className="demographic-header">
-          <div className="demographic-header-icon">
-            <Icon name="chart-pie" size={20} />
-          </div>
-          <h3 className="demographic-title">{t('statistics.demographicAnalysis')}</h3>
-        </div>
         <div className="demographic-loading">
           <div className="loading-spinner"></div>
           <p>{t('statistics.loadingDemographic')}</p>
@@ -85,12 +327,6 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
   if (error || !demographicData) {
     return (
       <div className="demographic-analysis">
-        <div className="demographic-header">
-          <div className="demographic-header-icon">
-            <Icon name="chart-pie" size={20} />
-          </div>
-          <h3 className="demographic-title">{t('statistics.demographicAnalysis')}</h3>
-        </div>
         <div className="demographic-error">
           <Icon name="alert-circle" size={24} />
           <p>{t('statistics.errorDemographic')}</p>
@@ -101,205 +337,130 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
 
   return (
     <div className="demographic-analysis">
-      <div className="demographic-header">
-        <div className="demographic-header-icon">
-          <Icon name="chart-pie" size={20} />
-        </div>
-        <h3 className="demographic-title">{t('statistics.demographicAnalysis')}</h3>
-      </div>
+      <div className="demographic-carousel">
+        {/* Flecha izquierda */}
+        <button 
+          className="carousel-arrow carousel-arrow--left" 
+          onClick={prevSlide}
+          aria-label={t('common.previous')}
+        >
+          <Icon name="chevron-left" size={20} />
+        </button>
 
-      <div className="demographic-grid">
-        {/* Análisis por Turno */}
-        <div className="demographic-card" data-border-color="skyblue">
-          <div className="demographic-card-header">
-            <div className="demographic-card-icon card-icon--skyblue">
-              <Icon name="clock" size={16} />
+        {/* Contenido del carrusel */}
+        <div className="carousel-content">
+          <div className="demographic-card" data-border-color={currentSlideData.color}>
+            <div className="demographic-card-header">
+              <div className={`demographic-card-icon card-icon--${currentSlideData.color}`}>
+                <Icon name={currentSlideData.icon} size={16} />
+              </div>
+              <h4 className="demographic-card-title">{currentSlideData.title}</h4>
             </div>
-            <h4 className="demographic-card-title">{t('statistics.byShift')}</h4>
-          </div>
-          <div className="demographic-card-content">
-            {demographicData.byShift && Object.entries(demographicData.byShift).map(([shift, data]) => {
-              const shiftLabel = shift === 'mañana' ? t('statistics.morningShift') : 
-                                shift === 'tarde' ? t('statistics.afternoonShift') : 
-                                shift.charAt(0).toUpperCase() + shift.slice(1);
-              const attendanceRate = calculateAttendanceRate(data.present, data.students);
-              const statusColor = getStatusColor(attendanceRate);
-              
-              return (
-                <div key={shift} className="demographic-stat-item">
-                  <div className="stat-item-header">
-                    <span className="stat-item-label">{shiftLabel}</span>
-                    <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
-                      {attendanceRate}%
-                    </span>
-                  </div>
-                  <div className="stat-item-details">
-                    <div className="stat-item-detail">
-                      <Icon name="users" size={12} />
-                      <span>{data.students} {t('statistics.students')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="check-circle" size={12} />
-                      <span>{data.present} {t('statistics.present')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="x-circle" size={12} />
-                      <span>{data.absent} {t('statistics.absent')}</span>
-                    </div>
-                  </div>
+            <div className="demographic-card-content">
+              {currentSlideData.type === 'overview' ? (
+                // Renderizar tarjeta de resumen
+                <div className="overview-content">
+                  <div className="overview-value">{currentSlideData.value}</div>
+                  <div className="overview-description">{currentSlideData.description}</div>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Análisis por Género */}
-        <div className="demographic-card" data-border-color="pink">
-          <div className="demographic-card-header">
-            <div className="demographic-card-icon card-icon--pink">
-              <Icon name="users" size={16} />
-            </div>
-            <h4 className="demographic-card-title">{t('statistics.byGender')}</h4>
-          </div>
-          <div className="demographic-card-content">
-            {demographicData.byGender && Object.entries(demographicData.byGender).map(([gender, data]) => {
-              const genderLabel = gender === 'masculino' ? t('statistics.male') : 
-                                 gender === 'femenino' ? t('statistics.female') : 
-                                 gender.charAt(0).toUpperCase() + gender.slice(1);
-              const attendanceRate = calculateAttendanceRate(data.present, data.students);
-              const statusColor = getStatusColor(attendanceRate);
-              
-              return (
-                <div key={gender} className="demographic-stat-item">
-                  <div className="stat-item-header">
-                    <span className="stat-item-label">{genderLabel}</span>
-                    <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
-                      {attendanceRate}%
-                    </span>
-                  </div>
-                  <div className="stat-item-details">
-                    <div className="stat-item-detail">
-                      <Icon name="users" size={12} />
-                      <span>{data.students} {t('statistics.students')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="check-circle" size={12} />
-                      <span>{data.present} {t('statistics.present')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="x-circle" size={12} />
-                      <span>{data.absent} {t('statistics.absent')}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Análisis por Edad */}
-        <div className="demographic-card" data-border-color="lime">
-          <div className="demographic-card-header">
-            <div className="demographic-card-icon card-icon--lime">
-              <Icon name="calendar" size={16} />
-            </div>
-            <h4 className="demographic-card-title">{t('statistics.byAge')}</h4>
-          </div>
-          <div className="demographic-card-content">
-            {demographicData.byAge && Object.entries(demographicData.byAge).map(([ageKey, data]) => {
-              const age = ageKey.replace('age', '');
-              const ageLabel = t(`statistics.age${age}`);
-              const attendanceRate = calculateAttendanceRate(data.present, data.students);
-              const statusColor = getStatusColor(attendanceRate);
-              
-              return (
-                <div key={ageKey} className="demographic-stat-item">
-                  <div className="stat-item-header">
-                    <span className="stat-item-label">{ageLabel}</span>
-                    <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
-                      {attendanceRate}%
-                    </span>
-                  </div>
-                  <div className="stat-item-details">
-                    <div className="stat-item-detail">
-                      <Icon name="users" size={12} />
-                      <span>{data.students} {t('statistics.students')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="check-circle" size={12} />
-                      <span>{data.present} {t('statistics.present')}</span>
-                    </div>
-                    <div className="stat-item-detail">
-                      <Icon name="x-circle" size={12} />
-                      <span>{data.absent} {t('statistics.absent')}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Análisis por Sala */}
-        <div className="demographic-card" data-border-color="purple">
-          <div className="demographic-card-header">
-            <div className="demographic-card-icon card-icon--purple">
-              <Icon name="home" size={16} />
-            </div>
-            <h4 className="demographic-card-title">{t('statistics.byClassroom')}</h4>
-          </div>
-          <div className="demographic-card-content">
-            {console.log('🔍 Datos por sala recibidos:', demographicData.byClassroom)}
-            {demographicData.byClassroom && Object.keys(demographicData.byClassroom).length > 0 ? (
-              Object.entries(demographicData.byClassroom).map(([key, data]) => {
-                console.log('🔍 Procesando sala:', key, data);
-                const shiftLabel = data.shift === 'Mañana' ? t('statistics.morningShift') : 
-                                  data.shift === 'Tarde' ? t('statistics.afternoonShift') : 
-                                  data.shift;
-                const classroomLabel = `${data.classroom} - ${shiftLabel}`;
-                const attendanceRate = calculateAttendanceRate(data.present, data.students);
-                const statusColor = getStatusColor(attendanceRate);
-                
-                return (
-                  <div key={key} className="demographic-stat-item">
+              ) : currentSlideData.type === 'demographic' ? (
+                // Renderizar datos demográficos
+                currentSlideData.data && Object.keys(currentSlideData.data).length > 0 ? (
+                  Object.entries(currentSlideData.data).map(([key, data]) => 
+                    currentSlideData.renderItem(key, data)
+                  )
+                ) : (
+                  <div className="demographic-stat-item">
                     <div className="stat-item-header">
-                      <span className="stat-item-label">{classroomLabel}</span>
-                      <span className={`stat-item-rate stat-item-rate--${statusColor}`}>
-                        {attendanceRate}%
-                      </span>
+                      <span className="stat-item-label">{t('common.noData')}</span>
                     </div>
                     <div className="stat-item-details">
                       <div className="stat-item-detail">
-                        <Icon name="users" size={12} />
-                        <span>{data.students} {t('statistics.students')}</span>
-                      </div>
-                      <div className="stat-item-detail">
-                        <Icon name="check-circle" size={12} />
-                        <span>{data.present} {t('statistics.present')}</span>
-                      </div>
-                      <div className="stat-item-detail">
-                        <Icon name="x-circle" size={12} />
-                        <span>{data.absent} {t('statistics.absent')}</span>
+                        <Icon name="alert-circle" size={12} />
+                        <span>No hay datos disponibles</span>
                       </div>
                     </div>
                   </div>
-                );
-              })
-            ) : (
-              <div className="demographic-stat-item">
-                <div className="stat-item-header">
-                  <span className="stat-item-label">{t('common.noData')}</span>
+                )
+              ) : currentSlideData.type === 'predictions' ? (
+                // Renderizar predicciones
+                <div className="predictions-content">
+                  {currentSlideData.content && (
+                    <div className="predictions-grid">
+                      <div className="prediction-card">
+                        <h4>{t('statistics.attendancePrediction')}</h4>
+                        <div className="prediction-data">
+                          {currentSlideData.content.predictions.attendance.predictions.map((pred, index) => (
+                            <div key={index} className="prediction-item">
+                              <span className="prediction-period">Período {pred.period}</span>
+                              <span className="prediction-value">{pred.predicted}%</span>
+                              <span className={`prediction-trend ${pred.trend}`}>
+                                <Icon name={pred.trend === 'increasing' ? 'TrendingUp' : pred.trend === 'decreasing' ? 'TrendingDown' : 'Minus'} size={12} />
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="prediction-recommendation">
+                          {currentSlideData.content.predictions.attendance.recommendation}
+                        </p>
+                      </div>
+
+                      <div className="prediction-card">
+                        <h4>{t('statistics.enrollmentPrediction')}</h4>
+                        <div className="prediction-data">
+                          {currentSlideData.content.predictions.enrollment.predictions.map((pred, index) => (
+                            <div key={index} className="prediction-item">
+                              <span className="prediction-period">Período {pred.period}</span>
+                              <span className="prediction-value">{pred.predicted} estudiantes</span>
+                              <span className={`prediction-trend ${pred.trend}`}>
+                                <Icon name={pred.trend === 'increasing' ? 'TrendingUp' : pred.trend === 'decreasing' ? 'TrendingDown' : 'Minus'} size={12} />
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="prediction-recommendation">
+                          {currentSlideData.content.predictions.enrollment.recommendation}
+                        </p>
+                      </div>
+
+                      <div className="prediction-card">
+                        <h4>{t('statistics.staffingPrediction')}</h4>
+                        <div className="prediction-data">
+                          {currentSlideData.content.predictions.staffing.predictions.map((pred, index) => (
+                            <div key={index} className="prediction-item">
+                              <span className="prediction-period">Período {pred.period}</span>
+                              <span className="prediction-value">
+                                {pred.neededTeachers} maestros
+                                {pred.deficit > 0 && <span className="deficit"> (+{pred.deficit})</span>}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="prediction-recommendation">
+                          {currentSlideData.content.predictions.staffing.recommendation}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="stat-item-details">
-                  <div className="stat-item-detail">
-                    <Icon name="alert-circle" size={12} />
-                    <span>No hay datos de salas disponibles</span>
-                  </div>
+              ) : (
+                // Renderizar insights
+                <div className="insight-content">
+                  <p className="insight-text">{currentSlideData.content}</p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
+
+        {/* Flecha derecha */}
+        <button 
+          className="carousel-arrow carousel-arrow--right" 
+          onClick={nextSlide}
+          aria-label={t('common.next')}
+        >
+          <Icon name="chevron-right" size={20} />
+        </button>
       </div>
     </div>
   );

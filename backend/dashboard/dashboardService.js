@@ -375,72 +375,68 @@ export const getDemographicStats = async () => {
     connection = await getConnection();
     
     // Estadísticas por turno
-    console.log('🔍 Ejecutando consulta de estadísticas por turno...');
-    console.log('📅 Fecha actual (CURDATE):', new Date().toISOString().split('T')[0]);
-    
-    // Verificar qué fechas hay en la base de datos
-    const [dateCheck] = await connection.execute(
-      'SELECT DISTINCT DATE(date) as attendance_date FROM attendance ORDER BY attendance_date DESC LIMIT 5'
-    );
-    console.log('📅 Fechas disponibles en la base de datos:', dateCheck.map(d => d.attendance_date));
+    const today = new Date().toISOString().split('T')[0];
     
     const [shiftStats] = await connection.execute(
       `SELECT 
         COALESCE(p.shift, 'Sin turno') as shift,
         COUNT(*) as students,
-        0 as present,
-        0 as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
-       GROUP BY p.shift`
+       GROUP BY p.shift`,
+      [today]
     );
 
     // Estadísticas por género
-    console.log('🔍 Ejecutando consulta de estadísticas por género...');
     const [genderStats] = await connection.execute(
       `SELECT 
         COALESCE(p.gender, 'Sin género') as gender,
         COUNT(*) as students,
-        0 as present,
-        0 as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
-       GROUP BY p.gender`
+       GROUP BY p.gender`,
+      [today]
     );
 
     // Estadísticas por edad
-    console.log('🔍 Ejecutando consulta de estadísticas por edad...');
     const [ageStats] = await connection.execute(
       `SELECT 
         COALESCE(YEAR(CURDATE()) - YEAR(p.birthdate), 0) as age,
         COUNT(*) as students,
-        0 as present,
-        0 as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
        GROUP BY YEAR(CURDATE()) - YEAR(p.birthdate)
-       ORDER BY age`
+       ORDER BY age`,
+      [today]
     );
 
     // Estadísticas por sala
-    console.log('🔍 Ejecutando consulta de estadísticas por sala...');
     const [classroomStats] = await connection.execute(
       `SELECT 
         COALESCE(c.name, 'Sin sala') as classroom,
         COALESCE(p.shift, 'Sin turno') as shift,
         COUNT(*) as students,
-        0 as present,
-        0 as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
        LEFT JOIN classrooms c ON p.classroom_id = c.id
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
        GROUP BY c.name, p.shift
-       ORDER BY c.name, p.shift`
+       ORDER BY c.name, p.shift`,
+      [today]
     );
-    console.log('📊 Resultados de estadísticas por sala:', classroomStats);
 
     // Procesar datos por turno
-    console.log('🔍 Procesando datos por turno...');
     const byShift = {};
     shiftStats.forEach(stat => {
       const shift = stat.shift || 'Sin turno';
@@ -450,10 +446,8 @@ export const getDemographicStats = async () => {
         absent: stat.absent || 0
       };
     });
-    console.log('📊 Datos finales por turno:', byShift);
 
     // Procesar datos por género
-    console.log('🔍 Procesando datos por género...');
     const byGender = {};
     genderStats.forEach(stat => {
       const gender = stat.gender || 'Sin género';
@@ -463,10 +457,8 @@ export const getDemographicStats = async () => {
         absent: stat.absent || 0
       };
     });
-    console.log('📊 Datos finales por género:', byGender);
 
     // Procesar datos por edad
-    console.log('🔍 Procesando datos por edad...');
     const byAge = {};
     ageStats.forEach(stat => {
       const age = stat.age || 0;
@@ -476,10 +468,8 @@ export const getDemographicStats = async () => {
         absent: stat.absent || 0
       };
     });
-    console.log('📊 Datos finales por edad:', byAge);
 
     // Procesar datos por sala
-    console.log('🔍 Procesando datos por sala...');
     const byClassroom = {};
     classroomStats.forEach(stat => {
       const classroom = stat.classroom || 'Sin sala';
@@ -492,9 +482,7 @@ export const getDemographicStats = async () => {
         present: stat.present || 0,
         absent: stat.absent || 0
       };
-      console.log(`📊 Procesado sala ${key}:`, byClassroom[key]);
     });
-    console.log('📊 Datos finales por sala:', byClassroom);
 
     // Asegurar que siempre haya datos por defecto si no hay resultados
     if (Object.keys(byShift).length === 0) {
@@ -533,7 +521,6 @@ export const getDemographicStats = async () => {
       }
     };
     
-    console.log('📊 Resultado final del endpoint demográfico:', JSON.stringify(result, null, 2));
     return result;
   } catch (error) {
     console.error('Error in getDemographicStats:', error);

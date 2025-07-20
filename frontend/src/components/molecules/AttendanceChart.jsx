@@ -26,9 +26,6 @@ ChartJS.register(
 );
 
 const AttendanceChart = ({ data, type = 'bar', title, height = 300, options = {} }) => {
-  console.log('🎨 AttendanceChart recibió datos:', data);
-  console.log('🎨 AttendanceChart tipo:', type);
-  
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
