@@ -84,6 +84,23 @@ const resources = {
       'statistics.averageTrend': 'Average attendance. Implementing improvement strategies is recommended.',
       'statistics.needsImprovement': 'Attendance needs improvement. Review policies and communication.',
       
+      // Analysis Insights
+      'statistics.trendExcellent': 'Excellent attendance trend. The kindergarten maintains high standards.',
+      'statistics.trendGood': 'Good attendance trend. There is room for improvement.',
+      'statistics.trendAverage': 'Average attendance. Implementing improvement strategies is recommended.',
+      'statistics.trendNeedsImprovement': 'Attendance needs improvement. Review policies and communication.',
+      
+      'statistics.performanceOptimal': 'Optimal teacher-student ratio. Excellent learning conditions.',
+      'statistics.performanceGood': 'Good teacher-student ratio. Adequate learning conditions.',
+      'statistics.performanceOvercrowded': 'High teacher-student ratio. Consider hiring more teachers.',
+      
+      'statistics.demographicsLarge': 'Large kindergarten with diverse student population.',
+      'statistics.demographicsMedium': 'Medium-sized kindergarten with balanced demographics.',
+      'statistics.demographicsSmall': 'Small kindergarten with intimate learning environment.',
+      
+      'statistics.recommendationsLowAttendance': 'Focus on improving attendance through better communication with parents.',
+      'statistics.recommendationsGood': 'Maintain current good practices and continue monitoring.',
+      
       'statistics.performanceText': 'Students represent {{studentRatio}}% of the community. Teachers {{teacherRatio}}%. Current attendance: {{attendanceRate}}%.',
       'statistics.demographicsText': 'Teacher-student ratio: {{teacherStudentRatio}}:1. Parent-student ratio: {{parentStudentRatio}}:1. Total students: {{totalStudents}}.',
       
@@ -114,6 +131,46 @@ const resources = {
       'statistics.monthlyChart': 'Monthly Chart',
       'statistics.dailyChart': 'Daily Chart',
       'statistics.noChartData': 'No data to display in chart',
+      
+      // Demographic Analysis
+      'statistics.demographicAnalysis': 'Demographic Analysis',
+      'statistics.byShift': 'By Shift',
+      'statistics.byGender': 'By Gender',
+      'statistics.byAge': 'By Age',
+      'statistics.present': 'Present',
+      'statistics.absent': 'Absent',
+      'statistics.morningShift': 'Morning Shift',
+      'statistics.afternoonShift': 'Afternoon Shift',
+      'statistics.male': 'Male',
+      'statistics.female': 'Female',
+      'statistics.age3': '3 years old',
+      'statistics.age4': '4 years old',
+      'statistics.age5': '5 years old',
+      'statistics.age6': '6 years old',
+      'statistics.studentsByShift': 'Students by Shift',
+      'statistics.studentsByGender': 'Students by Gender',
+      'statistics.studentsByAge': 'Students by Age',
+      'statistics.studentsByClassroom': 'Students by Classroom',
+      'statistics.attendanceByShift': 'Attendance by Shift',
+      'statistics.attendanceByGender': 'Attendance by Gender',
+      'statistics.attendanceByAge': 'Attendance by Age',
+      'statistics.attendanceByClassroom': 'Attendance by Classroom',
+      'statistics.shiftAnalysis': 'Shift Analysis',
+      'statistics.genderAnalysis': 'Gender Analysis',
+      'statistics.ageAnalysis': 'Age Analysis',
+      'statistics.classroomAnalysis': 'Classroom Analysis',
+      'statistics.byClassroom': 'By Classroom',
+      'statistics.classroom': 'Classroom',
+      'statistics.classroom3': 'Sala de 3',
+      'statistics.classroom4': 'Sala de 4',
+      'statistics.classroom5': 'Sala de 5',
+      'statistics.demographicInsights': 'Demographic Insights',
+      'statistics.demographicTrends': 'Demographic Trends',
+      'statistics.demographicRecommendations': 'Demographic Recommendations',
+      
+      // Demographic Analysis Messages
+      'statistics.loadingDemographic': 'Loading demographic analysis...',
+      'statistics.errorDemographic': 'Error loading demographic data',
       
       // Dashboard Statistics Card
       'dashboard.viewStatistics': 'View Statistics',
@@ -308,6 +365,23 @@ const resources = {
       'statistics.averageTrend': 'Asistencia promedio. Se recomienda implementar estrategias de mejora.',
       'statistics.needsImprovement': 'La asistencia necesita mejorar. Revisar políticas y comunicación.',
       
+      // Insights de Análisis
+      'statistics.trendExcellent': 'Excelente tendencia de asistencia. El jardín mantiene altos estándares.',
+      'statistics.trendGood': 'Buena tendencia de asistencia. Hay espacio para mejorar.',
+      'statistics.trendAverage': 'Asistencia promedio. Se recomienda implementar estrategias de mejora.',
+      'statistics.trendNeedsImprovement': 'La asistencia necesita mejorar. Revisar políticas y comunicación.',
+      
+      'statistics.performanceOptimal': 'Ratio maestro-estudiante óptimo. Excelentes condiciones de aprendizaje.',
+      'statistics.performanceGood': 'Buena ratio maestro-estudiante. Condiciones de aprendizaje adecuadas.',
+      'statistics.performanceOvercrowded': 'Alta ratio maestro-estudiante. Considerar contratar más maestros.',
+      
+      'statistics.demographicsLarge': 'Jardín grande con población estudiantil diversa.',
+      'statistics.demographicsMedium': 'Jardín mediano con demografía equilibrada.',
+      'statistics.demographicsSmall': 'Jardín pequeño con ambiente de aprendizaje íntimo.',
+      
+      'statistics.recommendationsLowAttendance': 'Enfocarse en mejorar la asistencia mediante mejor comunicación con los padres.',
+      'statistics.recommendationsGood': 'Mantener las buenas prácticas actuales y continuar monitoreando.',
+      
       'statistics.performanceText': 'Los estudiantes representan el {{studentRatio}}% de la comunidad. Los maestros el {{teacherRatio}}%. Asistencia actual: {{attendanceRate}}%.',
       'statistics.demographicsText': 'Ratio maestro-estudiante: {{teacherStudentRatio}}:1. Ratio padre-estudiante: {{parentStudentRatio}}:1. Total estudiantes: {{totalStudents}}.',
       
@@ -344,6 +418,8 @@ const resources = {
       'statistics.byShift': 'Por Turno',
       'statistics.byGender': 'Por Género',
       'statistics.byAge': 'Por Edad',
+      'statistics.present': 'Presentes',
+      'statistics.absent': 'Ausentes',
       'statistics.morningShift': 'Turno Mañana',
       'statistics.afternoonShift': 'Turno Tarde',
       'statistics.male': 'Masculino',
@@ -355,15 +431,27 @@ const resources = {
       'statistics.studentsByShift': 'Estudiantes por Turno',
       'statistics.studentsByGender': 'Estudiantes por Género',
       'statistics.studentsByAge': 'Estudiantes por Edad',
+      'statistics.studentsByClassroom': 'Estudiantes por Sala',
       'statistics.attendanceByShift': 'Asistencia por Turno',
       'statistics.attendanceByGender': 'Asistencia por Género',
       'statistics.attendanceByAge': 'Asistencia por Edad',
+      'statistics.attendanceByClassroom': 'Asistencia por Sala',
       'statistics.shiftAnalysis': 'Análisis por Turno',
       'statistics.genderAnalysis': 'Análisis por Género',
       'statistics.ageAnalysis': 'Análisis por Edad',
+      'statistics.classroomAnalysis': 'Análisis por Sala',
+      'statistics.byClassroom': 'Por Sala',
+      'statistics.classroom': 'Sala',
+      'statistics.classroom3': 'Sala de 3',
+      'statistics.classroom4': 'Sala de 4',
+      'statistics.classroom5': 'Sala de 5',
       'statistics.demographicInsights': 'Insights Demográficos',
       'statistics.demographicTrends': 'Tendencias Demográficas',
       'statistics.demographicRecommendations': 'Recomendaciones Demográficas',
+      
+      // Demographic Analysis Messages
+      'statistics.loadingDemographic': 'Cargando análisis demográfico...',
+      'statistics.errorDemographic': 'Error al cargar los datos demográficos',
       
       // Dashboard Statistics Card
       'dashboard.viewStatistics': 'Ver Estadísticas',
