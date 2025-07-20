@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, logoutUser } from '../services/authService';
+import authService from '../services/authService';
 
 const AuthContext = createContext();
 
@@ -15,57 +15,55 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    // Check if token exists and validate it
-    if (token) {
-      // Here you could validate the token with the backend
-      // For now, we'll just set the user from localStorage
-      const savedUser = localStorage.getItem('user');
-      if (savedUser) {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch (error) {
-          console.error('Error parsing saved user:', error);
-          // Clear invalid data
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
-          setToken(null);
-        }
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        setUser(user);
+      } catch (error) {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        setToken(null);
       }
     }
     setLoading(false);
     setInitialized(true);
-  }, [token]);
+  }, []);
 
   const login = async (username, password) => {
+    setLoading(true);
+    setError(null);
+    
     try {
-      const response = await loginUser(username, password);
-      const { token: newToken, user: userData } = response;
+      const response = await authService.login(username, password);
+      const { user, token } = response.data;
       
-      setToken(newToken);
-      setUser(userData);
+      setUser(user);
+      setToken(token);
       
-      localStorage.setItem('token', newToken);
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
       
       return { success: true };
     } catch (error) {
-      console.error('Login error in AuthContext:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || error.message || 'Login failed' 
-      };
+      const errorMessage = error.response?.data?.message || 'Error de autenticación';
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
+    setError(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    logoutUser();
   };
 
   const isAuthenticated = !!token && !!user;
@@ -78,6 +76,7 @@ export const AuthProvider = ({ children }) => {
     user,
     token,
     loading,
+    error,
     initialized,
     isAuthenticated,
     isAdmin,
@@ -85,13 +84,9 @@ export const AuthProvider = ({ children }) => {
     isTeacher,
     isPreceptor,
     login,
-    logout
+    logout,
+    setError
   };
-
-  // Solo renderizar cuando esté inicializado
-  if (!initialized) {
-    return null;
-  }
 
   return (
     <AuthContext.Provider value={value}>

@@ -4,7 +4,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import ListPageLayout from '../templates/ListPageLayout';
 import DashboardGrid from '../organisms/DashboardGrid';
 import LoadingSpinner from '../molecules/LoadingSpinner';
-import personService from '../../services/api/persons';
 import dashboardService from '../../services/api/dashboard';
 
 export default function DashboardPage() {
@@ -24,38 +23,45 @@ export default function DashboardPage() {
     return user.name || user.firstname || user.username || user.email || 'Usuario';
   };
 
-  // Función para obtener estadísticas reales
-  const fetchStats = async () => {
-    setLoading(true);
-    try {
-      // Obtener estadísticas generales del dashboard
-      const statsRes = await dashboardService.getStats();
-      
-      setStats({
-        students: statsRes.data.students || 0,
-        teachers: statsRes.data.teachers || 0,
-        parents: statsRes.data.parents || 0,
-        todayAttendance: statsRes.data.todayAttendance || 0
-      });
-    } catch (err) {
-      console.error('Error fetching dashboard stats:', err);
-      setError('Error al cargar las estadísticas');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchStats();
+    const fetchDashboardStats = async () => {
+      setLoading(true);
+      try {
+        const response = await dashboardService.getStats();
+        // Asegurar que los datos tengan valores por defecto
+        const data = response.data.data || {};
+        setStats({
+          students: data.students || 0,
+          teachers: data.teachers || 0,
+          parents: data.parents || 0,
+          todayAttendance: data.todayAttendance || 0
+        });
+      } catch (err) {
+        setError('Error al cargar las estadísticas del dashboard');
+        // Establecer valores por defecto en caso de error
+        setStats({
+          students: 0,
+          teachers: 0,
+          parents: 0,
+          todayAttendance: 0
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardStats();
   }, []);
 
   // Función para formatear números
   const formatNumber = (num) => {
+    if (num === undefined || num === null) return '0';
     return num.toLocaleString('es-ES');
   };
 
   // Función para formatear porcentaje
   const formatPercentage = (num) => {
+    if (num === undefined || num === null) return '0%';
     return `${num}%`;
   };
 

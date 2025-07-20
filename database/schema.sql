@@ -331,3 +331,144 @@ INSERT INTO attendance (student_id, date, status, registered_by) VALUES
 (41, '2025-01-17', 'present', 8), (42, '2025-01-17', 'present', 8), (43, '2025-01-17', 'absent', 8),
 (44, '2025-01-17', 'present', 8), (45, '2025-01-17', 'present', 8), (46, '2025-01-17', 'present', 8),
 (47, '2025-01-17', 'absent', 8), (48, '2025-01-17', 'present', 8);
+
+-- =================================================================
+-- DATOS DE ASISTENCIA PARA PRUEBAS (HOY Y MAÑANA)
+-- =================================================================
+
+-- Agregar datos de asistencia de ejemplo para hoy y mañana
+-- Fecha: HOY (fecha actual del sistema)
+
+-- =================================================================
+-- DATOS DE ASISTENCIA PARA HOY (CURDATE())
+-- =================================================================
+
+-- SALA DE 3 - MAÑANA (5 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (3 de 5)
+(15, CURDATE(), 'present', 6),  -- Lucas Vega
+(16, CURDATE(), 'present', 6),  -- Martina Rios
+(17, CURDATE(), 'present', 6),  -- Hugo Castillo
+-- Estudiantes ausentes (2 de 5)
+(18, CURDATE(), 'absent', 6),   -- Valeria Navarro
+(19, CURDATE(), 'absent', 6);   -- Mateo Soto
+
+-- SALA DE 3 - TARDE (3 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (2 de 3)
+(20, CURDATE(), 'present', 6),  -- Sofia Molina
+(21, CURDATE(), 'present', 6),  -- Leo Herrera
+-- Estudiante ausente (1 de 3)
+(22, CURDATE(), 'absent', 6);   -- Julia Castro
+
+-- SALA DE 4 - MAÑANA (8 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (6 de 8)
+(23, CURDATE(), 'present', 7),  -- Daniel Ortega
+(24, CURDATE(), 'present', 7),  -- Alba Gimenez
+(25, CURDATE(), 'present', 7),  -- Enzo Reyes
+(26, CURDATE(), 'present', 7),  -- Olivia Vargas
+(27, CURDATE(), 'present', 7),  -- Mario Guerrero
+(28, CURDATE(), 'present', 7),  -- Alejandra Cano
+-- Estudiantes ausentes (2 de 8)
+(29, CURDATE(), 'absent', 7),   -- Diego Prieto
+(30, CURDATE(), 'absent', 7);   -- Carla Santos
+
+-- SALA DE 4 - TARDE (4 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (3 de 4)
+(31, CURDATE(), 'present', 7),  -- Javier Gallego
+(32, CURDATE(), 'present', 7),  -- Lucia Pascual
+(33, CURDATE(), 'present', 7),  -- Marcos Blanco
+-- Estudiante ausente (1 de 4)
+(34, CURDATE(), 'absent', 7);   -- Irene Iglesias
+
+-- SALA DE 5 - MAÑANA (12 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (10 de 12)
+(35, CURDATE(), 'present', 8),  -- Samuel Sanz
+(36, CURDATE(), 'present', 8),  -- Aitana Medina
+(37, CURDATE(), 'present', 8),  -- Hector Rojas
+(38, CURDATE(), 'present', 8),  -- Sara Suarez
+(39, CURDATE(), 'present', 8),  -- Ruben Gil
+(40, CURDATE(), 'present', 8),  -- Marina Vicente
+(41, CURDATE(), 'present', 8),  -- Oscar Mora
+(42, CURDATE(), 'present', 8),  -- Claudia Serrano
+(43, CURDATE(), 'present', 8),  -- Jorge Roca
+(44, CURDATE(), 'present', 8),  -- Nerea Hernandez
+-- Estudiantes ausentes (2 de 12)
+(45, CURDATE(), 'absent', 8),   -- Adrian Vega
+(46, CURDATE(), 'absent', 8);   -- Elena Torres
+
+-- SALA DE 5 - TARDE (2 estudiantes)
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiante presente (1 de 2)
+(47, CURDATE(), 'present', 8),  -- Pablo Flores
+-- Estudiante ausente (1 de 2)
+(48, CURDATE(), 'absent', 8);   -- Carmen Cruz
+
+-- =================================================================
+-- DATOS DE ASISTENCIA PARA MAÑANA (CURDATE() + INTERVAL 1 DAY)
+-- =================================================================
+
+-- SALA DE 3 - MAÑANA (5 estudiantes) - Mejor asistencia mañana
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (4 de 5)
+(15, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Lucas Vega
+(16, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Martina Rios
+(17, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Hugo Castillo
+(18, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Valeria Navarro
+-- Estudiante ausente (1 de 5)
+(19, CURDATE() + INTERVAL 1 DAY, 'absent', 6);   -- Mateo Soto
+
+-- SALA DE 3 - TARDE (3 estudiantes) - Misma asistencia
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (2 de 3)
+(20, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Sofia Molina
+(21, CURDATE() + INTERVAL 1 DAY, 'present', 6),  -- Leo Herrera
+-- Estudiante ausente (1 de 3)
+(22, CURDATE() + INTERVAL 1 DAY, 'absent', 6);   -- Julia Castro
+
+-- SALA DE 4 - MAÑANA (8 estudiantes) - Mejor asistencia
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (7 de 8)
+(23, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Daniel Ortega
+(24, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Alba Gimenez
+(25, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Enzo Reyes
+(26, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Olivia Vargas
+(27, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Mario Guerrero
+(28, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Alejandra Cano
+(29, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Diego Prieto
+-- Estudiante ausente (1 de 8)
+(30, CURDATE() + INTERVAL 1 DAY, 'absent', 7);   -- Carla Santos
+
+-- SALA DE 4 - TARDE (4 estudiantes) - Mejor asistencia
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (4 de 4)
+(31, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Javier Gallego
+(32, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Lucia Pascual
+(33, CURDATE() + INTERVAL 1 DAY, 'present', 7),  -- Marcos Blanco
+(34, CURDATE() + INTERVAL 1 DAY, 'present', 7);  -- Irene Iglesias
+
+-- SALA DE 5 - MAÑANA (12 estudiantes) - Excelente asistencia
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (11 de 12)
+(35, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Samuel Sanz
+(36, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Aitana Medina
+(37, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Hector Rojas
+(38, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Sara Suarez
+(39, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Ruben Gil
+(40, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Marina Vicente
+(41, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Oscar Mora
+(42, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Claudia Serrano
+(43, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Jorge Roca
+(44, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Nerea Hernandez
+(45, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Adrian Vega
+-- Estudiante ausente (1 de 12)
+(46, CURDATE() + INTERVAL 1 DAY, 'absent', 8);   -- Elena Torres
+
+-- SALA DE 5 - TARDE (2 estudiantes) - Mejor asistencia
+INSERT INTO attendance (student_id, date, status, registered_by) VALUES
+-- Estudiantes presentes (2 de 2)
+(47, CURDATE() + INTERVAL 1 DAY, 'present', 8),  -- Pablo Flores
+(48, CURDATE() + INTERVAL 1 DAY, 'present', 8);  -- Carmen Cruz

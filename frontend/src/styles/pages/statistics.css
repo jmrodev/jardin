@@ -376,66 +376,252 @@
   overflow: hidden;
 }
 
+.analysis-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-primary);
+}
+
 .analysis-title {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 1.5rem;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.analysis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+/* Carrusel de Análisis */
+.analysis-carousel {
+  position: relative;
+}
+
+/* Controles de navegación */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
   gap: 1rem;
 }
 
-.analysis-card {
+.carousel-control {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: var(--bg-secondary);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.carousel-control:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.carousel-control:active {
+  transform: scale(0.95);
+}
+
+.carousel-control:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Indicadores */
+.carousel-indicators {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.carousel-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  min-width: 100px;
+  opacity: 0.7;
+}
+
+.carousel-indicator:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.carousel-indicator--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+  opacity: 1;
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.indicator-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.indicator-label {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Contenido del carrusel */
+.carousel-content {
+  margin-bottom: 1rem;
+}
+
+.analysis-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 3px solid var(--border-primary);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
 }
 
 .analysis-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
-.analysis-icon {
+/* Card Border Colors */
+.analysis-card[data-border-color="blue"] {
+  border-color: #3b82f6 !important;
+}
+
+.analysis-card[data-border-color="orange"] {
+  border-color: #f97316 !important;
+}
+
+.analysis-card[data-border-color="green"] {
+  border-color: #22c55e !important;
+}
+
+.analysis-card[data-border-color="purple"] {
+  border-color: #a855f7 !important;
+}
+
+/* Card Header */
+.analysis-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-primary);
+}
+
+.analysis-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--primary-color);
   color: white;
-  border-radius: 50%;
   flex-shrink: 0;
 }
 
-.analysis-content {
-  flex: 1;
+.card-icon--blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
 
-.analysis-content h4 {
-  font-size: 1rem;
-  font-weight: 600;
+.card-icon--orange {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.card-icon--green {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.card-icon--purple {
+  background: linear-gradient(135deg, #a855f7, #9333ea);
+}
+
+.analysis-card-title {
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
 }
 
-.analysis-text {
-  font-size: 0.875rem;
+/* Card Content */
+.analysis-card-content {
+  padding: 0.5rem 0;
+}
+
+.analysis-card-text {
   color: var(--text-secondary);
-  line-height: 1.5;
+  font-size: 1.1rem;
+  line-height: 1.6;
   margin: 0;
+  text-align: justify;
+}
+
+/* Información de navegación */
+.carousel-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-primary);
+}
+
+.carousel-counter {
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  background: var(--color-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.carousel-description {
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+/* Grid Layout (mantener para compatibilidad) */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 /* Responsive Design */
@@ -1127,5 +1313,36 @@
   .demographic-stat {
     font-size: 0.7rem;
     padding: 0.1rem 0;
+  }
+} 
+
+@media (max-width: 480px) {
+  .carousel-indicators {
+    gap: 0.25rem;
+  }
+
+  .carousel-indicator {
+    min-width: 70px;
+    padding: 0.5rem;
+  }
+
+  .indicator-label {
+    display: none;
+  }
+
+  .analysis-card {
+    padding: 1rem;
+    min-height: 150px;
+  }
+
+  .analysis-card-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .carousel-control {
+    width: 40px;
+    height: 40px;
   }
 } 

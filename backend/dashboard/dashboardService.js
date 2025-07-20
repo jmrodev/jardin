@@ -375,128 +375,140 @@ export const getDemographicStats = async () => {
     connection = await getConnection();
     
     // Estadísticas por turno
-    console.log('🔍 Ejecutando consulta de estadísticas por turno...');
-    console.log('📅 Fecha actual (CURDATE):', new Date().toISOString().split('T')[0]);
-    
-    // Verificar qué fechas hay en la base de datos
-    const [dateCheck] = await connection.execute(
-      'SELECT DISTINCT DATE(date) as attendance_date FROM attendance ORDER BY attendance_date DESC LIMIT 5'
-    );
-    console.log('📅 Fechas disponibles en la base de datos:', dateCheck.map(d => d.attendance_date));
+    const today = new Date().toISOString().split('T')[0];
     
     const [shiftStats] = await connection.execute(
       `SELECT 
         COALESCE(p.shift, 'Sin turno') as shift,
         COUNT(*) as students,
-        SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) as present,
-        SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
-       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = CURDATE()
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
-       GROUP BY p.shift`
+       GROUP BY p.shift`,
+      [today]
     );
-    // console.log('📊 Resultados de estadísticas por turno:', shiftStats);
 
     // Estadísticas por género
-    console.log('🔍 Ejecutando consulta de estadísticas por género...');
     const [genderStats] = await connection.execute(
       `SELECT 
         COALESCE(p.gender, 'Sin género') as gender,
         COUNT(*) as students,
-        SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) as present,
-        SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
-       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = CURDATE()
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
-       GROUP BY p.gender`
+       GROUP BY p.gender`,
+      [today]
     );
-    // console.log('📊 Resultados de estadísticas por género:', genderStats);
 
     // Estadísticas por edad
-    console.log('🔍 Ejecutando consulta de estadísticas por edad...');
     const [ageStats] = await connection.execute(
       `SELECT 
         COALESCE(YEAR(CURDATE()) - YEAR(p.birthdate), 0) as age,
         COUNT(*) as students,
-        SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) as present,
-        SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as absent
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
        FROM persons p
-       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = CURDATE()
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
        WHERE p.person_type = 'student'
        GROUP BY YEAR(CURDATE()) - YEAR(p.birthdate)
-       ORDER BY age`
+       ORDER BY age`,
+      [today]
     );
-    // console.log('📊 Resultados de estadísticas por edad:', ageStats);
+
+    // Estadísticas por sala
+    const [classroomStats] = await connection.execute(
+      `SELECT 
+        COALESCE(c.name, 'Sin sala') as classroom,
+        COALESCE(p.shift, 'Sin turno') as shift,
+        COUNT(*) as students,
+        COALESCE(SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END), 0) as present,
+        COALESCE(SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END), 0) as absent
+       FROM persons p
+       LEFT JOIN classrooms c ON p.classroom_id = c.id
+       LEFT JOIN attendance a ON p.id = a.student_id AND DATE(a.date) = ?
+       WHERE p.person_type = 'student'
+       GROUP BY c.name, p.shift
+       ORDER BY c.name, p.shift`,
+      [today]
+    );
 
     // Procesar datos por turno
-    console.log('🔍 Procesando datos por turno...');
     const byShift = {};
     shiftStats.forEach(stat => {
       const shift = stat.shift || 'Sin turno';
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byShift[shift.toLowerCase()] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
-      // console.log(`📊 Procesado turno ${shift}:`, byShift[shift.toLowerCase()]);
     });
-    console.log('📊 Datos finales por turno:', byShift);
 
     // Procesar datos por género
-    console.log('🔍 Procesando datos por género...');
     const byGender = {};
     genderStats.forEach(stat => {
       const gender = stat.gender || 'Sin género';
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byGender[gender.toLowerCase()] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
-      // console.log(`📊 Procesado género ${gender}:`, byGender[gender.toLowerCase()]);
     });
-    console.log('📊 Datos finales por género:', byGender);
 
     // Procesar datos por edad
-    console.log('🔍 Procesando datos por edad...');
     const byAge = {};
     ageStats.forEach(stat => {
       const age = stat.age || 0;
-      const attendance = stat.students > 0 ? 
-        Math.round((stat.present / stat.students) * 100) : 0;
-      
       byAge[`age${age}`] = {
         students: stat.students,
-        attendance,
         present: stat.present || 0,
         absent: stat.absent || 0
       };
-      // console.log(`📊 Procesado edad ${age}:`, byAge[`age${age}`]);
     });
-    console.log('📊 Datos finales por edad:', byAge);
+
+    // Procesar datos por sala
+    const byClassroom = {};
+    classroomStats.forEach(stat => {
+      const classroom = stat.classroom || 'Sin sala';
+      const shift = stat.shift || 'Sin turno';
+      const key = `${classroom} - ${shift}`;
+      byClassroom[key] = {
+        classroom: classroom,
+        shift: shift,
+        students: stat.students,
+        present: stat.present || 0,
+        absent: stat.absent || 0
+      };
+    });
 
     // Asegurar que siempre haya datos por defecto si no hay resultados
     if (Object.keys(byShift).length === 0) {
-      byShift['mañana'] = { students: 0, attendance: 0, present: 0, absent: 0 };
-      byShift['tarde'] = { students: 0, attendance: 0, present: 0, absent: 0 };
+      byShift['mañana'] = { students: 0, present: 0, absent: 0 };
+      byShift['tarde'] = { students: 0, present: 0, absent: 0 };
     }
     
     if (Object.keys(byGender).length === 0) {
-      byGender['masculino'] = { students: 0, attendance: 0, present: 0, absent: 0 };
-      byGender['femenino'] = { students: 0, attendance: 0, present: 0, absent: 0 };
+      byGender['masculino'] = { students: 0, present: 0, absent: 0 };
+      byGender['femenino'] = { students: 0, present: 0, absent: 0 };
     }
     
     if (Object.keys(byAge).length === 0) {
-      byAge['age3'] = { students: 0, attendance: 0, present: 0, absent: 0 };
-      byAge['age4'] = { students: 0, attendance: 0, present: 0, absent: 0 };
-      byAge['age5'] = { students: 0, attendance: 0, present: 0, absent: 0 };
+      byAge['age3'] = { students: 0, present: 0, absent: 0 };
+      byAge['age4'] = { students: 0, present: 0, absent: 0 };
+      byAge['age5'] = { students: 0, present: 0, absent: 0 };
+      byAge['age6'] = { students: 0, present: 0, absent: 0 };
+    }
+
+    if (Object.keys(byClassroom).length === 0) {
+      byClassroom['Sala de 3 - Mañana'] = { classroom: 'Sala de 3', shift: 'Mañana', students: 0, present: 0, absent: 0 };
+      byClassroom['Sala de 3 - Tarde'] = { classroom: 'Sala de 3', shift: 'Tarde', students: 0, present: 0, absent: 0 };
+      byClassroom['Sala de 4 - Mañana'] = { classroom: 'Sala de 4', shift: 'Mañana', students: 0, present: 0, absent: 0 };
+      byClassroom['Sala de 4 - Tarde'] = { classroom: 'Sala de 4', shift: 'Tarde', students: 0, present: 0, absent: 0 };
+      byClassroom['Sala de 5 - Mañana'] = { classroom: 'Sala de 5', shift: 'Mañana', students: 0, present: 0, absent: 0 };
+      byClassroom['Sala de 5 - Tarde'] = { classroom: 'Sala de 5', shift: 'Tarde', students: 0, present: 0, absent: 0 };
     }
 
     const result = {
@@ -504,11 +516,11 @@ export const getDemographicStats = async () => {
       data: {
         byShift,
         byGender,
-        byAge
+        byAge,
+        byClassroom
       }
     };
     
-    console.log('📊 Resultado final del endpoint demográfico:', result);
     return result;
   } catch (error) {
     console.error('Error in getDemographicStats:', error);

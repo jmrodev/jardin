@@ -70,7 +70,6 @@ const EntityGrid = ({
     } catch (error) {
       const errorMessage = error.response?.data?.message || t('error.createParent');
       showToast(errorMessage, 'error');
-      console.error("Error creating and linking parent:", error);
     }
   };
 
@@ -154,7 +153,6 @@ const EntityGrid = ({
     } catch (error) {
       const errorMessage = error.response?.data?.message || `${t('error.creating')} ${t(entityType)}`;
       showToast(errorMessage, 'error');
-      console.error(`${t('error.creating')} ${entityType}:`, error);
     }
   };
 
@@ -168,7 +166,6 @@ const EntityGrid = ({
     } catch (error) {
       const errorMessage = error.response?.data?.message || `${t('error.updating')} ${t(entityType)}`;
       showToast(errorMessage, 'error');
-      console.error(`${t('error.updating')} ${entityType}:`, error);
     }
   };
 
@@ -183,7 +180,6 @@ const EntityGrid = ({
       } catch (error) {
         const errorMessage = error.response?.data?.message || `${t('error.deleting')} ${t(entityType)}`;
         showToast(errorMessage, 'error');
-        console.error(`${t('error.deleting')} ${entityType}:`, error);
       }
     }
   };

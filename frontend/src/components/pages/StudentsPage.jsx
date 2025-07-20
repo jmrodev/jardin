@@ -170,12 +170,13 @@ const StudentsPage = () => {
   useEffect(() => {
     const fetchClassrooms = async () => {
       try {
-        const response = await classroomService.list();
-        setClassrooms(response.data);
+        const response = await classroomService.getClassrooms();
+        setClassrooms(response.data.data);
       } catch (error) {
-        console.error("Error fetching classrooms:", error);
+        setError('Error al cargar las salas');
       }
     };
+
     fetchClassrooms();
   }, []);
 
