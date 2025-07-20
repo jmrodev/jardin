@@ -1,0 +1,49 @@
+/* Carousel Molecule Styles */
+
+.carousel {
+  position: relative;
+  width: 100%;
+}
+
+/* Controles de navegación */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+/* Indicadores */
+.carousel-indicators {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Contenido del carrusel */
+.carousel-content {
+  margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .carousel-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .carousel-indicators {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-indicators {
+    gap: 0.25rem;
+  }
+} 

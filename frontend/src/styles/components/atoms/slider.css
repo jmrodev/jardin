@@ -1,0 +1,365 @@
+/* Slider Atoms - Base Styles */
+
+/* SliderContainer */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-container--horizontal {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.slider-container--vertical {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Snap Types */
+.slider-container--snap-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+.slider-container--snap-proximity {
+  scroll-snap-type: x proximity;
+}
+
+.slider-container--snap-none {
+  scroll-snap-type: none;
+}
+
+.slider-container--vertical.slider-container--snap-mandatory {
+  scroll-snap-type: y mandatory;
+}
+
+.slider-container--vertical.slider-container--snap-proximity {
+  scroll-snap-type: y proximity;
+}
+
+/* Hide Scrollbar */
+.slider-container--no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.slider-container--no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Slider Track */
+.slider-track {
+  display: flex;
+  width: fit-content;
+  height: 100%;
+}
+
+.slider-container--vertical .slider-track {
+  flex-direction: column;
+  height: fit-content;
+  width: 100%;
+}
+
+/* SliderItem */
+.slider-item {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.slider-item--align-start {
+  scroll-snap-align: start;
+}
+
+.slider-item--align-center {
+  scroll-snap-align: center;
+}
+
+.slider-item--align-end {
+  scroll-snap-align: end;
+}
+
+.slider-item--clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.slider-item--clickable:hover {
+  transform: scale(1.02);
+}
+
+/* SliderImage */
+.slider-image {
+  display: block;
+  position: sticky;
+  left: 0;
+  top: 0;
+}
+
+.slider-image--cover {
+  object-fit: cover;
+}
+
+.slider-image--contain {
+  object-fit: contain;
+}
+
+.slider-image--fill {
+  object-fit: fill;
+}
+
+.slider-image--none {
+  object-fit: none;
+}
+
+.slider-image--scale-down {
+  object-fit: scale-down;
+}
+
+.slider-image--clickable {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.slider-image--clickable:hover {
+  transform: scale(1.05);
+}
+
+/* SliderNavigation */
+.slider-navigation {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-navigation--horizontal {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider-navigation--vertical {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider-navigation--overlay {
+  pointer-events: none;
+}
+
+.slider-navigation--overlay .slider-nav-button {
+  pointer-events: auto;
+}
+
+.slider-navigation--side {
+  position: static;
+  transform: none;
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+/* Navigation Buttons */
+.slider-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.slider-nav-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.slider-nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.slider-nav-button:disabled:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: none;
+}
+
+/* Sizes */
+.slider-navigation--sm .slider-nav-button {
+  width: 32px;
+  height: 32px;
+}
+
+.slider-navigation--lg .slider-nav-button {
+  width: 48px;
+  height: 48px;
+}
+
+/* Position Overlay */
+.slider-navigation--overlay.slider-navigation--horizontal {
+  left: 1rem;
+  right: 1rem;
+  justify-content: space-between;
+}
+
+.slider-navigation--overlay.slider-navigation--vertical {
+  top: 1rem;
+  bottom: 1rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* SliderIndicator */
+.slider-indicator {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-indicator--bottom {
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider-indicator--top {
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider-indicator--left {
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider-indicator--right {
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Dots Variant */
+.slider-indicator-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-indicator-dot {
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.slider-indicator-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.slider-indicator-dot--active {
+  background: white;
+  transform: scale(1.3);
+}
+
+/* Numbers Variant */
+.slider-indicator-numbers {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.slider-indicator-current {
+  font-weight: 700;
+}
+
+.slider-indicator-separator {
+  margin: 0 0.25rem;
+  opacity: 0.7;
+}
+
+.slider-indicator-total {
+  opacity: 0.7;
+}
+
+/* Progress Variant */
+.slider-indicator-progress {
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.slider-indicator-progress-bar {
+  height: 100%;
+  background: white;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .slider-nav-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .slider-navigation--overlay.slider-navigation--horizontal {
+    left: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  .slider-navigation--overlay.slider-navigation--vertical {
+    top: 0.5rem;
+    bottom: 0.5rem;
+  }
+  
+  .slider-indicator--bottom {
+    bottom: 0.5rem;
+  }
+  
+  .slider-indicator--top {
+    top: 0.5rem;
+  }
+  
+  .slider-indicator--left {
+    left: 0.5rem;
+  }
+  
+  .slider-indicator--right {
+    right: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-nav-button {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .slider-indicator-dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .slider-indicator-progress {
+    width: 80px;
+    height: 3px;
+  }
+} 
