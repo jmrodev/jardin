@@ -288,8 +288,8 @@
 
 /* Card Content */
 .demographic-card-content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
@@ -300,6 +300,9 @@
   padding: 1.5rem;
   border: 2px solid var(--border-primary);
   transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .demographic-stat-item:hover {
