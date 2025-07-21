@@ -24,7 +24,7 @@
 
 .card--dashboard {
   min-height: 120px;
-  height: 100%;
+  height: auto;
   border-width: 3px;
   border-style: solid;
   border-color: var(--color-primary);
@@ -257,6 +257,102 @@
   padding: var(--space-xs) var(--space-sm);
 }
 
+/* StatCard Component Styles */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  background: var(--color-background);
+  transition: all var(--transition-fast);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-icon-primary {
+  background-color: var(--color-primary);
+}
+
+.stat-icon-success {
+  background-color: var(--color-success);
+}
+
+.stat-icon-warning {
+  background-color: var(--color-warning);
+}
+
+.stat-icon-danger {
+  background-color: var(--color-danger);
+}
+
+.stat-icon-info {
+  background-color: var(--color-info);
+}
+
+.stat-icon-secondary {
+  background-color: var(--color-secondary);
+}
+
+.stat-icon-purple {
+  background-color: #8b5cf6;
+}
+
+.stat-icon-orange {
+  background-color: #f97316;
+}
+
+.stat-icon-teal {
+  background-color: #14b8a6;
+}
+
+.stat-icon-blue {
+  background-color: #3b82f6;
+}
+
+.stat-icon-indigo {
+  background-color: #6366f1;
+}
+
+.stat-icon-green {
+  background-color: #22c55e;
+}
+
+.stat-icon-pink {
+  background-color: #ec4899;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .card {
@@ -280,5 +376,22 @@
   
   .card--student .card-content {
     font-size: var(--font-size-xs);
+  }
+  
+  .stat-card {
+    padding: var(--spacing-xs);
+  }
+  
+  .stat-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .stat-label {
+    font-size: var(--font-size-xs);
+  }
+  
+  .stat-value {
+    font-size: var(--font-size-md);
   }
 } 

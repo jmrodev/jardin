@@ -1,69 +1,222 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
-import Icon from '@/components/atoms/Icon';
-import '@/styles/components/atoms/modal.css';
+import { useTranslation } from 'react-i18next';
+import Icon from '../atoms/Icon';
+import Button from '../atoms/Button';
+import Select from '../atoms/Select';
+import '@/styles/components/molecules/detail-modal.css';
 
-const DetailModal = ({ isOpen, onClose, title, children, variant = 'default' }) => {
+const DetailModal = ({ isOpen, onClose, title, data, type }) => {
+  const { t } = useTranslation();
+  const [selectedPeriod, setSelectedPeriod] = useState('current');
+  const [selectedFilter, setSelectedFilter] = useState('all');
+
   if (!isOpen) return null;
 
-  // Colores para los separadores de modales
-  const modalColors = [
-    { borderColor: '#00bfff', name: 'skyblue' },
-    { borderColor: '#ff8c00', name: 'orange' },
-    { borderColor: '#32cd32', name: 'lime' },
-    { borderColor: '#ff69b4', name: 'pink' },
-    { borderColor: '#9370db', name: 'purple' },
-    { borderColor: 'var(--color-primary)', name: 'primary' },
-    { borderColor: 'var(--color-success)', name: 'success' },
-    { borderColor: 'var(--color-warning)', name: 'warning' }
-  ];
-
-  // Seleccionar color basado en el título o usar uno por defecto
-  const getModalColor = () => {
-    if (title) {
-      const titleHash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      return modalColors[titleHash % modalColors.length];
+  const renderChartSection = () => {
+    switch (type) {
+      case 'students':
+        return (
+          <div className="detail-chart">
+            <h3>{t('statistics.studentTrends')}</h3>
+            <div className="chart-placeholder">
+              <Icon name="BarChart3" size={48} />
+              <p>{t('statistics.chartPlaceholder')}</p>
+            </div>
+          </div>
+        );
+      case 'attendance':
+        return (
+          <div className="detail-chart">
+            <h3>{t('statistics.attendanceTrends')}</h3>
+            <div className="chart-placeholder">
+              <Icon name="TrendingUp" size={48} />
+              <p>{t('statistics.chartPlaceholder')}</p>
+            </div>
+          </div>
+        );
+      case 'demographics':
+        return (
+          <div className="detail-chart">
+            <h3>{t('statistics.demographicAnalysis')}</h3>
+            <div className="chart-placeholder">
+              <Icon name="PieChart" size={48} />
+              <p>{t('statistics.chartPlaceholder')}</p>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="detail-chart">
+            <h3>{t('statistics.dataVisualization')}</h3>
+            <div className="chart-placeholder">
+              <Icon name="BarChart3" size={48} />
+              <p>{t('statistics.chartPlaceholder')}</p>
+            </div>
+          </div>
+        );
     }
-    return modalColors[0]; // skyblue por defecto
   };
 
-  const selectedColor = getModalColor();
+  const renderDataTable = () => {
+    const mockData = [
+      { id: 1, name: 'Ejemplo 1', value: '100', status: 'active' },
+      { id: 2, name: 'Ejemplo 2', value: '85', status: 'active' },
+      { id: 3, name: 'Ejemplo 3', value: '92', status: 'inactive' },
+    ];
 
-  return ReactDOM.createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      <div 
-        className="modal-content" 
-        onClick={(e) => e.stopPropagation()}
-        data-modal-variant={variant}
-        style={{ '--modal-border-color': selectedColor.borderColor }}
-      >
-        <div className="modal-header">
-          <h2 className="modal-title">{title}</h2>
-          <button onClick={onClose} className="modal-close-button">
-            <Icon name="X" size={24} />
-          </button>
+    return (
+      <div className="detail-table">
+        <div className="table-header">
+          <h3>{t('statistics.detailedData')}</h3>
+          <div className="table-actions">
+            <Button variant="outline" size="sm">
+              <Icon name="Download" size={14} />
+              {t('common.export')}
+            </Button>
+          </div>
         </div>
-        <div className="modal-body">
-          {children}
+        
+        <div className="table-container">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>{t('common.id')}</th>
+                <th>{t('common.name')}</th>
+                <th>{t('common.value')}</th>
+                <th>{t('common.status')}</th>
+                <th>{t('common.actions')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mockData.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.value}</td>
+                  <td>
+                    <span className={`status-badge status-${item.status}`}>
+                      {t(`common.${item.status}`)}
+                    </span>
+                  </td>
+                  <td>
+                    <Button variant="ghost" size="sm">
+                      <Icon name="Eye" size={12} />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>,
-    document.getElementById('modal-root')
+    );
+  };
+
+  const renderFilters = () => (
+    <div className="detail-filters">
+      <h3>{t('statistics.filters')}</h3>
+      <div className="filters-content">
+        <div className="filter-group">
+          <label>{t('statistics.period')}</label>
+          <Select
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+            options={[
+              { value: 'current', label: t('statistics.currentPeriod') },
+              { value: 'previous', label: t('statistics.previousPeriod') },
+              { value: 'yearly', label: t('statistics.yearly') },
+            ]}
+          />
+        </div>
+        
+        <div className="filter-group">
+          <label>{t('statistics.filter')}</label>
+          <Select
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+            options={[
+              { value: 'all', label: t('common.all') },
+              { value: 'active', label: t('common.active') },
+              { value: 'inactive', label: t('common.inactive') },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="detail-modal-overlay" onClick={onClose}>
+      <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="detail-modal__header">
+          <div className="modal-title">
+            <h2>{title}</h2>
+            <p>{t('statistics.detailedView')}</p>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="close-button"
+          >
+            <Icon name="X" size={20} />
+          </Button>
+        </div>
+
+        <div className="detail-modal__content">
+          {/* Sección Izquierda - Gráficos y Análisis */}
+          <div className="detail-section detail-section--left">
+            {renderChartSection()}
+            
+            <div className="detail-analysis">
+              <h3>{t('statistics.analysis')}</h3>
+              <div className="analysis-content">
+                <div className="analysis-item">
+                  <span className="analysis-label">{t('statistics.trend')}</span>
+                  <span className="analysis-value positive">+12.5%</span>
+                </div>
+                <div className="analysis-item">
+                  <span className="analysis-label">{t('statistics.average')}</span>
+                  <span className="analysis-value">87.3</span>
+                </div>
+                <div className="analysis-item">
+                  <span className="analysis-label">{t('statistics.peak')}</span>
+                  <span className="analysis-value">94.2</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sección Derecha - Tabla y Filtros */}
+          <div className="detail-section detail-section--right">
+            {renderFilters()}
+            {renderDataTable()}
+          </div>
+        </div>
+
+        <div className="detail-modal__footer">
+          <div className="modal-actions">
+            <Button variant="outline" onClick={onClose}>
+              {t('common.close')}
+            </Button>
+            <Button variant="primary">
+              <Icon name="Download" size={16} />
+              {t('common.exportReport')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
 DetailModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  variant: PropTypes.oneOf(['default', 'form', 'details', 'confirm']),
-};
-
-DetailModal.defaultProps = {
-  title: '',
-  variant: 'default',
+  title: PropTypes.string.isRequired,
+  data: PropTypes.any,
+  type: PropTypes.string,
 };
 
 export default DetailModal; 

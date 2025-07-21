@@ -1,0 +1,109 @@
+/* Simple Carousel */
+.simple-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 200px;
+}
+
+/* Flechas laterales */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-2xl);
+  height: var(--size-2xl);
+  background: var(--bg-card);
+  border: 2px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  z-index: var(--z-dropdown);
+  box-shadow: var(--shadow-md);
+}
+
+.carousel-arrow:hover {
+  background: var(--color-primary);
+  color: var(--text-inverse);
+  border-color: var(--color-primary);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.carousel-arrow:disabled:hover {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border-primary);
+  transform: translateY(-50%);
+}
+
+/* Posicionamiento de flechas */
+.carousel-arrow--left {
+  left: -20px;
+}
+
+.carousel-arrow--right {
+  right: -20px;
+}
+
+/* Contenido del carrusel */
+.carousel-content {
+  flex: 1;
+  padding: 0;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    width: var(--size-xl);
+    height: var(--size-xl);
+  }
+  
+  .carousel-arrow--left {
+    left: -15px;
+  }
+  
+  .carousel-arrow--right {
+    right: -15px;
+  }
+  
+  .carousel-content {
+    padding: 0 var(--space-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-arrow {
+    width: var(--size-lg);
+    height: var(--size-lg);
+  }
+  
+  .carousel-arrow--left {
+    left: -10px;
+  }
+  
+  .carousel-arrow--right {
+    right: -10px;
+  }
+  
+  .carousel-content {
+    padding: 0 var(--space-lg);
+  }
+} 

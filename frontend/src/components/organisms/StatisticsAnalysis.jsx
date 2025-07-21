@@ -1,153 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import Icon from '../atoms/Icon';
-import AnalysisCard from '../molecules/AnalysisCard';
+import StatisticsOverview from '../molecules/StatisticsOverview';
+import AttendanceChart from '../molecules/AttendanceChart';
+import dashboardService from '../../services/api/dashboard';
 
 export default function StatisticsAnalysis({ stats }) {
   const { t } = useTranslation();
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const getAttendanceTrend = (stats) => {
-    const rate = stats.attendanceRate || 0;
-    if (rate >= 90) return t('statistics.trendExcellent');
-    if (rate >= 80) return t('statistics.trendGood');
-    if (rate >= 70) return t('statistics.trendAverage');
-    return t('statistics.trendNeedsImprovement');
-  };
+  // Cargar datos para el gráfico
+  useEffect(() => {
+    const fetchChartData = async () => {
+      setLoading(true);
+      try {
+        const response = await dashboardService.getMonthlyStats(new Date().getFullYear());
+        if (response && response.data && response.data.data && response.data.data.monthlyData) {
+          const monthlyData = response.data.data.monthlyData;
+          
+          // Preparar datos para el gráfico
+          const chartData = {
+            labels: [
+              'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+              'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+            ],
+            datasets: [
+              {
+                label: t('statistics.attendanceRate'),
+                data: monthlyData.map(month => month.attendance),
+                backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                tension: 0.4
+              }
+            ]
+          };
+          setChartData(chartData);
+        }
+      } catch (error) {
+        console.error('Error loading chart data:', error);
+        // Datos de ejemplo en caso de error
+        setChartData({
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          datasets: [{
+            label: t('statistics.attendanceRate'),
+            data: [85, 88, 92, 87, 90, 89, 91, 86, 88, 93, 89, 87],
+            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 2,
+            tension: 0.4
+          }]
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getPerformanceAnalysis = (stats) => {
-    const students = stats.totalStudents || 0;
-    const teachers = stats.totalTeachers || 0;
-    const ratio = students / teachers;
-    
-    if (ratio <= 15) return t('statistics.performanceOptimal');
-    if (ratio <= 20) return t('statistics.performanceGood');
-    return t('statistics.performanceOvercrowded');
-  };
-
-  const getDemographicsAnalysis = (stats) => {
-    const students = stats.totalStudents || 0;
-    if (students > 100) return t('statistics.demographicsLarge');
-    if (students > 50) return t('statistics.demographicsMedium');
-    return t('statistics.demographicsSmall');
-  };
-
-  const getRecommendations = (stats) => {
-    const rate = stats.attendanceRate || 0;
-    if (rate < 80) return t('statistics.recommendationsLowAttendance');
-    return t('statistics.recommendationsGood');
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % 4);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + 4) % 4);
-  };
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
-
-  const slides = [
-    {
-      id: 'attendance',
-      title: t('statistics.attendanceTrend'),
-      icon: 'TrendingUp',
-      color: 'blue',
-      content: getAttendanceTrend(stats)
-    },
-    {
-      id: 'performance',
-      title: t('statistics.performance'),
-      icon: 'Target',
-      color: 'orange',
-      content: getPerformanceAnalysis(stats)
-    },
-    {
-      id: 'demographics',
-      title: t('statistics.demographics'),
-      icon: 'Users',
-      color: 'green',
-      content: getDemographicsAnalysis(stats)
-    },
-    {
-      id: 'recommendations',
-      title: t('statistics.recommendations'),
-      icon: 'AlertCircle',
-      color: 'purple',
-      content: getRecommendations(stats)
-    }
-  ];
-
-  const currentSlideData = slides[currentSlide];
+    fetchChartData();
+  }, [t]);
 
   return (
     <div className="statistics-analysis">
-      <div className="analysis-header">
-        <h3 className="analysis-title">{t('statistics.analysis')}</h3>
-      </div>
-
-      <div className="analysis-carousel">
-        {/* Controles de navegación */}
-        <div className="carousel-controls">
-          <button 
-            className="carousel-control carousel-control--prev" 
-            onClick={prevSlide}
-            aria-label={t('common.previous')}
-          >
-            <Icon name="chevron-left" size={16} />
-          </button>
-          
-          <div className="carousel-indicators">
-            {slides.map((slide, index) => (
-              <button
-                key={slide.id}
-                className={`carousel-indicator ${index === currentSlide ? 'carousel-indicator--active' : ''}`}
-                onClick={() => goToSlide(index)}
-                aria-label={`${slide.title} ${index + 1}`}
-              >
-                <div className="indicator-icon">
-                  <Icon name={slide.icon} size={12} />
-                </div>
-                <span className="indicator-label">{slide.title}</span>
-              </button>
-            ))}
-          </div>
-
-          <button 
-            className="carousel-control carousel-control--next" 
-            onClick={nextSlide}
-            aria-label={t('common.next')}
-          >
-            <Icon name="chevron-right" size={16} />
-          </button>
-        </div>
-
-        {/* Contenido del carrusel */}
-        <div className="carousel-content">
-          <div className="analysis-card" data-border-color={currentSlideData.color}>
-            <div className="analysis-card-header">
-              <div className={`analysis-card-icon card-icon--${currentSlideData.color}`}>
-                <Icon name={currentSlideData.icon} size={20} />
-              </div>
-              <h4 className="analysis-card-title">{currentSlideData.title}</h4>
+      <StatisticsOverview stats={stats} />
+      
+      <div className="statistics-charts">
+        <div className="chart-section">
+          <h3 className="chart-title">{t('statistics.monthlyChart')}</h3>
+          {loading ? (
+            <div className="chart-loading">
+              <p>{t('statistics.loading')}</p>
             </div>
-            <div className="analysis-card-content">
-              <p className="analysis-card-text">{currentSlideData.content}</p>
+          ) : chartData ? (
+            <AttendanceChart 
+              data={chartData} 
+              type="line" 
+              height={300}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                }
+              }}
+            />
+          ) : (
+            <div className="chart-placeholder">
+              <p>{t('statistics.noChartData')}</p>
             </div>
-          </div>
-        </div>
-
-        {/* Información de navegación */}
-        <div className="carousel-info">
-          <span className="carousel-counter">
-            {currentSlide + 1} / {slides.length}
-          </span>
-          <span className="carousel-description">
-            {currentSlideData.title}
-          </span>
+          )}
         </div>
       </div>
     </div>

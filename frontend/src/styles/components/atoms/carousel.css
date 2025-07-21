@@ -1,5 +1,55 @@
 /* Carousel Atoms - Base Styles */
 
+/* Carousel Container */
+.carousel {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Carousel Controls Container */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  position: relative;
+  z-index: var(--z-dropdown);
+}
+
+.carousel-controls--top {
+  order: 1;
+}
+
+.carousel-controls--bottom {
+  order: 3;
+  margin-top: var(--space-md);
+  margin-bottom: 0;
+}
+
+.carousel-controls--overlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+.carousel-controls--overlay .carousel-control {
+  pointer-events: auto;
+}
+
+/* Carousel Content */
+.carousel-content {
+  order: 2;
+  position: relative;
+  z-index: 1;
+}
+
 /* CarouselControl */
 .carousel-control {
   display: flex;
@@ -12,6 +62,9 @@
   cursor: pointer;
   transition: var(--transition-normal);
   flex-shrink: 0;
+  position: relative;
+  z-index: var(--z-dropdown);
+  box-shadow: var(--shadow-md);
 }
 
 .carousel-control:hover {
@@ -39,18 +92,35 @@
 
 /* Sizes */
 .carousel-control--sm {
-  width: 36px;
-  height: 36px;
+  width: var(--button-sm-min-height);
+  height: var(--button-sm-min-height);
 }
 
 .carousel-control--md {
-  width: 48px;
-  height: 48px;
+  width: var(--button-md-min-height);
+  height: var(--button-md-min-height);
 }
 
 .carousel-control--lg {
-  width: 56px;
-  height: 56px;
+  width: var(--button-lg-min-height);
+  height: var(--button-lg-min-height);
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+  justify-content: center;
+}
+
+.carousel-indicators--overlay {
+  position: absolute;
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-dropdown);
 }
 
 /* CarouselIndicator */
@@ -58,8 +128,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  gap: var(--space-sm);
+  padding: var(--space-md);
   background: var(--bg-card);
   border: 2px solid var(--border-primary);
   border-radius: var(--radius-md);
@@ -67,6 +137,9 @@
   transition: var(--transition-normal);
   min-width: 100px;
   opacity: 0.7;
+  position: relative;
+  z-index: var(--z-dropdown);
+  box-shadow: var(--shadow-sm);
 }
 
 .carousel-indicator:hover {
@@ -95,46 +168,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--space-xl);
+  height: var(--space-xl);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.2);
 }
 
 .indicator-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   text-align: center;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 /* Sizes */
 .carousel-indicator--sm {
   min-width: 80px;
-  padding: 0.5rem;
+  padding: var(--space-sm);
 }
 
 .carousel-indicator--sm .indicator-icon {
-  width: 24px;
-  height: 24px;
+  width: var(--space-lg);
+  height: var(--space-lg);
 }
 
 .carousel-indicator--sm .indicator-label {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
 }
 
 .carousel-indicator--lg {
   min-width: 120px;
-  padding: 1rem;
+  padding: var(--space-md);
 }
 
 .carousel-indicator--lg .indicator-icon {
-  width: 40px;
-  height: 40px;
+  width: var(--space-2xl);
+  height: var(--space-2xl);
 }
 
 .carousel-indicator--lg .indicator-label {
-  font-size: 0.8rem;
+  font-size: var(--font-size-sm);
 }
 
 /* CarouselCounter */
@@ -142,23 +215,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: var(--space-md) var(--space-lg);
   background: var(--bg-secondary);
   border-radius: var(--radius-md);
   border: 2px solid var(--border-primary);
+  position: relative;
+  z-index: var(--z-dropdown);
 }
 
 .carousel-counter {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   background: var(--color-primary);
-  color: white;
-  padding: 0.5rem 1rem;
+  color: var(--text-inverse);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-sm);
 }
 
 .carousel-description {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--text-primary);
 }
@@ -167,7 +242,7 @@
 .carousel-slide {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: var(--space-xl);
   border: 3px solid var(--border-primary);
   box-shadow: var(--shadow-md);
   transition: var(--transition-normal);
@@ -227,20 +302,20 @@
 .slide-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
   border-bottom: 2px solid var(--border-primary);
 }
 
 .slide-icon {
-  width: 48px;
-  height: 48px;
+  width: var(--space-2xl);
+  height: var(--space-2xl);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   flex-shrink: 0;
 }
 
@@ -283,14 +358,14 @@
 
 .slide-title {
   color: var(--text-primary);
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   margin: 0;
 }
 
 /* Slide Content */
 .slide-content {
-  padding: 0.5rem 0;
+  padding: var(--space-sm) 0;
 }
 
 /* Responsive Design */

@@ -3,6 +3,65 @@
 .carousel {
   position: relative;
   width: 100%;
+  z-index: 1;
+}
+
+/* Carousel con controles superpuestos */
+.carousel--overlay {
+  position: relative;
+}
+
+.carousel--top .carousel-controls--top {
+  position: relative;
+  z-index: 30;
+  margin-bottom: 1rem;
+}
+
+.carousel--bottom .carousel-controls--bottom {
+  position: relative;
+  z-index: 30;
+  margin-top: 1rem;
+}
+
+.carousel--overlay .carousel-controls--overlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.carousel--overlay .carousel-control--overlay {
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.carousel--overlay .carousel-control--overlay:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel--overlay .carousel-indicators--overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(4px);
 }
 
 /* Controles de navegación */
@@ -12,6 +71,8 @@
   justify-content: space-between;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  position: relative;
+  z-index: 20;
 }
 
 /* Indicadores */
@@ -27,6 +88,8 @@
 /* Contenido del carrusel */
 .carousel-content {
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive Design */
