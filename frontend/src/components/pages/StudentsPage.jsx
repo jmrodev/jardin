@@ -242,7 +242,7 @@ const StudentsPage = () => {
             cardConfig={studentCardConfig}
             detailConfig={studentDetailConfig}
             formConfig={studentFormConfig}
-            createService={personService.create}
+            createService={(data) => personService.create({ ...data, person_type: 'student' })}
             updateService={personService.update}
             deleteService={personService.delete}
           />

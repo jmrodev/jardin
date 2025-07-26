@@ -1,6 +1,6 @@
 import express from 'express';
-import { login } from './login.js';
-import { validateToken } from './validateToken.js';
+import { login } from '../auth/login.js';
+import { validateToken } from '../auth/validateToken.js';
 
 const router = express.Router();
 

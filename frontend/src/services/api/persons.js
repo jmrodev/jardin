@@ -2,23 +2,23 @@ import api from './base.js';
 
 const personService = {
   list(personType, params = {}) {
-    return api.get(`/${personType}s`, { params });
+    return api.get('/persons', { params: { ...params, person_type: personType } });
   },
 
   get(id, personType) {
-    return api.get(`/${personType}s/${id}`);
+    return api.get(`/persons/${id}`, { params: { person_type: personType } });
   },
 
-  create(personType, data) {
-    return api.post(`/${personType}s`, data);
+  create(data) {
+    return api.post(`/persons`, data);
   },
 
-  update(id, personType, data) {
-    return api.put(`/${personType}s/${id}`, data);
+  update(id, data) {
+    return api.put(`/persons/${id}`, data);
   },
 
-  delete(id, personType) {
-    return api.delete(`/${personType}s/${id}`);
+  delete(id) {
+    return api.delete(`/persons/${id}`);
   },
 
   getParentsByStudentId(studentId) {

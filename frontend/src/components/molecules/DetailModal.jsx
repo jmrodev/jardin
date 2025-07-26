@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Icon from '../atoms/Icon';
 import Button from '../atoms/Button';
 import Select from '../atoms/Select';
+import AttendanceChart from './AttendanceChart';
+import DemographicAnalysis from './DemographicAnalysis';
 import '@/styles/components/molecules/detail-modal.css';
 
 const DetailModal = ({ isOpen, onClose, title, data, type }) => {
@@ -16,6 +18,7 @@ const DetailModal = ({ isOpen, onClose, title, data, type }) => {
   const renderChartSection = () => {
     switch (type) {
       case 'students':
+        // For students, we might want a different type of chart or a list
         return (
           <div className="detail-chart">
             <h3>{t('statistics.studentTrends')}</h3>
@@ -26,23 +29,38 @@ const DetailModal = ({ isOpen, onClose, title, data, type }) => {
           </div>
         );
       case 'attendance':
+        // Assuming data for attendance is an array of { date, present, absent }
+        const attendanceChartData = {
+          labels: data?.map(item => item.date),
+          datasets: [
+            {
+              label: t('common.present'),
+              data: data?.map(item => (item.present / (item.present + item.absent)) * 100 || 0),
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+            {
+              label: t('common.absent'),
+              data: data?.map(item => (item.absent / (item.present + item.absent)) * 100 || 0),
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1,
+            },
+          ],
+        };
         return (
           <div className="detail-chart">
             <h3>{t('statistics.attendanceTrends')}</h3>
-            <div className="chart-placeholder">
-              <Icon name="TrendingUp" size={48} />
-              <p>{t('statistics.chartPlaceholder')}</p>
-            </div>
+            <AttendanceChart data={attendanceChartData} type="line" title={t('statistics.dailyAttendance')} />
           </div>
         );
       case 'demographics':
+        // DemographicAnalysis fetches its own data, so we just render it
         return (
           <div className="detail-chart">
             <h3>{t('statistics.demographicAnalysis')}</h3>
-            <div className="chart-placeholder">
-              <Icon name="PieChart" size={48} />
-              <p>{t('statistics.chartPlaceholder')}</p>
-            </div>
+            <DemographicAnalysis stats={data} /> {/* Pass data as stats if it's the main stats object */}
           </div>
         );
       default:
@@ -59,11 +77,122 @@ const DetailModal = ({ isOpen, onClose, title, data, type }) => {
   };
 
   const renderDataTable = () => {
-    const mockData = [
-      { id: 1, name: 'Ejemplo 1', value: '100', status: 'active' },
-      { id: 2, name: 'Ejemplo 2', value: '85', status: 'active' },
-      { id: 3, name: 'Ejemplo 3', value: '92', status: 'inactive' },
-    ];
+    let columns = [];
+    let rows = [];
+
+    if (!data) {
+      return (
+        <div className="detail-table">
+          <p>{t('common.noDataAvailable')}</p>
+        </div>
+      );
+    }
+
+    switch (type) {
+      case 'students':
+        columns = [
+          { key: 'id', label: t('common.id') },
+          { key: 'first_name', label: t('common.firstName') },
+          { key: 'paternal_lastname', label: t('common.lastName') },
+          { key: 'classroom', label: t('common.classroom') },
+          { key: 'status', label: t('common.status') },
+        ];
+        rows = data.map(student => ({
+          id: student.id,
+          first_name: student.first_name,
+          paternal_lastname: student.paternal_lastname,
+          classroom: student.classroom, // Assuming classroom name is directly available
+          status: student.status,
+        }));
+        break;
+      case 'attendance':
+        columns = [
+          { key: 'date', label: t('common.date') },
+          { key: 'present', label: t('common.present') },
+          { key: 'absent', label: t('common.absent') },
+          { key: 'total', label: t('common.total') },
+          { key: 'percentage', label: t('common.percentage') },
+        ];
+        rows = data.map(record => ({
+          date: record.date,
+          present: record.present,
+          absent: record.absent,
+          total: record.present + record.absent,
+          percentage: ((record.present / (record.present + record.absent)) * 100 || 0).toFixed(2) + '%',
+        }));
+        break;
+      case 'demographics':
+        columns = [
+          { key: 'category', label: t('common.category') },
+          { key: 'item', label: t('common.item') },
+          { key: 'students', label: t('statistics.students') },
+          { key: 'present', label: t('common.present') },
+          { key: 'absent', label: t('common.absent') },
+          { key: 'percentage', label: t('common.percentage') },
+        ];
+        rows = [];
+        if (data.byShift) {
+          Object.entries(data.byShift).forEach(([shift, stats]) => {
+            rows.push({
+              category: t('statistics.byShift'),
+              item: shift,
+              students: stats.students,
+              present: stats.present,
+              absent: stats.absent,
+              percentage: ((stats.present / stats.students) * 100 || 0).toFixed(2) + '%',
+            });
+          });
+        }
+        if (data.byGender) {
+          Object.entries(data.byGender).forEach(([gender, stats]) => {
+            rows.push({
+              category: t('statistics.byGender'),
+              item: gender,
+              students: stats.students,
+              present: stats.present,
+              absent: stats.absent,
+              percentage: ((stats.present / stats.students) * 100 || 0).toFixed(2) + '%',
+            });
+          });
+        }
+        if (data.byAge) {
+          Object.entries(data.byAge).forEach(([age, stats]) => {
+            rows.push({
+              category: t('statistics.byAge'),
+              item: age,
+              students: stats.students,
+              present: stats.present,
+              absent: stats.absent,
+              percentage: ((stats.present / stats.students) * 100 || 0).toFixed(2) + '%',
+            });
+          });
+        }
+        if (data.byClassroom) {
+          Object.entries(data.byClassroom).forEach(([classroom, stats]) => {
+            rows.push({
+              category: t('statistics.byClassroom'),
+              item: classroom,
+              students: stats.students,
+              present: stats.present,
+              absent: stats.absent,
+              percentage: ((stats.present / stats.students) * 100 || 0).toFixed(2) + '%',
+            });
+          });
+        }
+        break;
+      default:
+        // Fallback for unknown types or if data is not structured as expected
+        columns = [
+          { key: 'id', label: t('common.id') },
+          { key: 'name', label: t('common.name') },
+          { key: 'value', label: t('common.value') },
+          { key: 'status', label: t('common.status') },
+        ];
+        rows = [
+          { id: 1, name: 'No Data', value: 'N/A', status: 'inactive' },
+        ];
+        break;
+    }
 
     return (
       <div className="detail-table">
@@ -81,31 +210,39 @@ const DetailModal = ({ isOpen, onClose, title, data, type }) => {
           <table className="data-table">
             <thead>
               <tr>
-                <th>{t('common.id')}</th>
-                <th>{t('common.name')}</th>
-                <th>{t('common.value')}</th>
-                <th>{t('common.status')}</th>
+                {columns.map(col => (
+                  <th key={col.key}>{col.label}</th>
+                ))}
                 <th>{t('common.actions')}</th>
               </tr>
             </thead>
             <tbody>
-              {mockData.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.value}</td>
-                  <td>
-                    <span className={`status-badge status-${item.status}`}>
-                      {t(`common.${item.status}`)}
-                    </span>
-                  </td>
-                  <td>
-                    <Button variant="ghost" size="sm">
-                      <Icon name="Eye" size={12} />
-                    </Button>
-                  </td>
+              {rows.length > 0 ? (
+                rows.map((item, index) => (
+                  <tr key={index}>
+                    {columns.map(col => (
+                      <td key={col.key}>
+                        {col.key === 'status' ? (
+                          <span className={`status-badge status-${item[col.key]}`}>
+                            {t(`common.${item[col.key]}`)}
+                          </span>
+                        ) : (
+                          item[col.key]
+                        )}
+                      </td>
+                    ))}
+                    <td>
+                      <Button variant="ghost" size="sm">
+                        <Icon name="Eye" size={12} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length + 1}>{t('common.noData')}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -168,24 +305,6 @@ const DetailModal = ({ isOpen, onClose, title, data, type }) => {
           {/* Sección Izquierda - Gráficos y Análisis */}
           <div className="detail-section detail-section--left">
             {renderChartSection()}
-            
-            <div className="detail-analysis">
-              <h3>{t('statistics.analysis')}</h3>
-              <div className="analysis-content">
-                <div className="analysis-item">
-                  <span className="analysis-label">{t('statistics.trend')}</span>
-                  <span className="analysis-value positive">+12.5%</span>
-                </div>
-                <div className="analysis-item">
-                  <span className="analysis-label">{t('statistics.average')}</span>
-                  <span className="analysis-value">87.3</span>
-                </div>
-                <div className="analysis-item">
-                  <span className="analysis-label">{t('statistics.peak')}</span>
-                  <span className="analysis-value">94.2</span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Sección Derecha - Tabla y Filtros */}

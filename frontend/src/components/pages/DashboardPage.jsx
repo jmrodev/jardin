@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import ListPageLayout from '../templates/ListPageLayout';
 import DashboardGrid from '../organisms/DashboardGrid';
 import LoadingSpinner from '../molecules/LoadingSpinner';
-import dashboardService from '../../services/api/dashboard';
+import { getStatistics } from '../../services/api/statistics';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -13,7 +13,7 @@ export default function DashboardPage() {
     students: 0,
     teachers: 0,
     parents: 0,
-    todayAttendance: 0
+    attendance: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,14 +27,14 @@ export default function DashboardPage() {
     const fetchDashboardStats = async () => {
       setLoading(true);
       try {
-        const response = await dashboardService.getStats();
+        const response = await getStatistics();
         // Asegurar que los datos tengan valores por defecto
-        const data = response.data.data || {};
+        const data = response || {};
         setStats({
           students: data.students || 0,
           teachers: data.teachers || 0,
           parents: data.parents || 0,
-          todayAttendance: data.todayAttendance || 0
+          attendance: data.attendance || 0
         });
       } catch (err) {
         setError('Error al cargar las estadísticas del dashboard');
@@ -43,7 +43,7 @@ export default function DashboardPage() {
           students: 0,
           teachers: 0,
           parents: 0,
-          todayAttendance: 0
+          attendance: 0
         });
       } finally {
         setLoading(false);
@@ -62,7 +62,7 @@ export default function DashboardPage() {
   // Función para formatear porcentaje
   const formatPercentage = (num) => {
     if (num === undefined || num === null) return '0%';
-    return `${num}%`;
+    return `${parseFloat(num).toFixed(1)}%`;
   };
 
   return (
@@ -91,7 +91,7 @@ export default function DashboardPage() {
               </div>
               <div className="quick-stat">
                 <span className="quick-stat-label">{t('dashboard.todayAttendance')}</span>
-                <span className="quick-stat-value">{formatPercentage(stats.todayAttendance)}</span>
+                <span className="quick-stat-value">{formatPercentage(stats.attendance)}</span>
               </div>
             </div>
           )}

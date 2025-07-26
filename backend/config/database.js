@@ -13,12 +13,12 @@ const dbConfig = {
   queueLimit: 0
 };
 
-let pool;
+const pool = mysql.createPool(dbConfig);
 
 export const connectDatabase = async () => {
   try {
-    pool = mysql.createPool(dbConfig);
-    await pool.getConnection();
+    // Test the connection by executing a simple query
+    await pool.query('SELECT 1');
     console.log('Database connected successfully');
   } catch (error) {
     console.error('Error connecting to database:', error);
@@ -27,8 +27,8 @@ export const connectDatabase = async () => {
 };
 
 export const getConnection = () => {
-  if (!pool) {
-    throw new Error('Database not connected');
-  }
-  return pool.getConnection();
-}; 
+  return pool;
+};
+
+// Export the pool directly for a more direct usage pattern
+export { pool }; 

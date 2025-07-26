@@ -2,11 +2,12 @@ import express from 'express';
 import { getConnection } from '../config/database.js';
 import { getAuditHistory, getAuditStats } from '../middleware/auditMiddleware.js';
 import { authorizeRoles } from '../auth/authorizeRoles.js';
+import asyncHandler from '../middleware/asyncHandler.js';
 
 const router = express.Router();
 
 // Obtener historial de auditoría de un registro específico
-router.get('/history/:table/:id', authorizeRoles(['admin', 'director']), async (req, res) => {
+router.get('/history/:table/:id', authorizeRoles(['admin', 'director']), asyncHandler(async (req, res) => {
   try {
     const { table, id } = req.params;
     const history = await getAuditHistory(table, id);
@@ -22,10 +23,10 @@ router.get('/history/:table/:id', authorizeRoles(['admin', 'director']), async (
       error: 'Error interno del servidor'
     });
   }
-});
+}));
 
 // Obtener estadísticas de auditoría
-router.get('/stats', authorizeRoles(['admin', 'director']), async (req, res) => {
+router.get('/stats', authorizeRoles(['admin', 'director']), asyncHandler(async (req, res) => {
   try {
     const { table, userId, dateFrom, dateTo } = req.query;
     const stats = await getAuditStats(table, userId, dateFrom, dateTo);
@@ -41,10 +42,10 @@ router.get('/stats', authorizeRoles(['admin', 'director']), async (req, res) => 
       error: 'Error interno del servidor'
     });
   }
-});
+}));
 
 // Obtener historial de auditoría con filtros
-router.get('/logs', authorizeRoles(['admin', 'director']), async (req, res) => {
+router.get('/logs', authorizeRoles(['admin', 'director']), asyncHandler(async (req, res) => {
   try {
     const { table, recordId, action, userId, limit = 50, offset = 0 } = req.query;
     
@@ -111,6 +112,6 @@ router.get('/logs', authorizeRoles(['admin', 'director']), async (req, res) => {
       error: 'Error interno del servidor'
     });
   }
-});
+}));
 
 export default router; 

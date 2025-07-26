@@ -1,11 +1,53 @@
 import personService from '../services/personService.js';
 
-const getPersons = (personType) => async (req, res) => {
+// Generic getPersons for /persons route (person_type from query)
+const getPersons = async (req, res) => {
+  try {
+    const personType = req.query.person_type; // Get person_type from query for generic route
+    const filters = req.query;
+    const persons = await personService.getPersons(personType, filters);
+    res.json(persons);
+  } catch (error) {
+    console.error('Error in getPersons (generic):', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Generic createPerson for /persons route (person_type from body)
+const createPerson = async (req, res) => {
+  try {
+    const personData = { ...req.body }; // person_type should be in req.body
+    if (!personData.person_type) {
+      return res.status(400).json({ message: 'person_type is required in request body.' });
+    }
+    const person = await personService.createPerson(personData);
+    res.status(201).json(person);
+  } catch (error) {
+    console.error('Error in createPerson (generic):', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Higher-order function for specific person types (e.g., /students, /parents)
+const getPersonsByType = (personType) => async (req, res) => {
   try {
     const filters = req.query;
     const persons = await personService.getPersons(personType, filters);
     res.json(persons);
   } catch (error) {
+    console.error(`Error in getPersonsByType (${personType}):`, error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Higher-order function for specific person types (e.g., /students, /parents)
+const createPersonByType = (personType) => async (req, res) => {
+  try {
+    const personData = { ...req.body, person_type: personType };
+    const person = await personService.createPerson(personData);
+    res.status(201).json(person);
+  } catch (error) {
+    console.error(`Error in createPersonByType (${personType}):`, error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -15,17 +57,8 @@ const getPerson = async (req, res) => {
     const person = await personService.getPerson(req.params.id);
     res.json(person);
   } catch (error) {
+    console.error('Error in getPerson:', error);
     res.status(404).json({ message: error.message });
-  }
-};
-
-const createPerson = (personType) => async (req, res) => {
-  try {
-    const personData = { ...req.body, person_type: personType };
-    const person = await personService.createPerson(personData);
-    res.status(201).json(person);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 };
 
@@ -34,6 +67,7 @@ const updatePerson = async (req, res) => {
     const person = await personService.updatePerson(req.params.id, req.body);
     res.json(person);
   } catch (error) {
+    console.error('Error in updatePerson:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -43,6 +77,7 @@ const deletePerson = async (req, res) => {
     await personService.deletePerson(req.params.id);
     res.status(204).send();
   } catch (error) {
+    console.error('Error in deletePerson:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -52,6 +87,7 @@ const getParentsByStudentId = async (req, res) => {
     const parents = await personService.getParentsByStudentId(req.params.studentId);
     res.json(parents);
   } catch (error) {
+    console.error('Error in getParentsByStudentId:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -83,5 +119,7 @@ export default {
   updatePerson,
   deletePerson,
   getParentsByStudentId,
-  createAndLinkParent
+  createAndLinkParent,
+  getPersonsByType, // Export the new higher-order functions
+  createPersonByType,
 };

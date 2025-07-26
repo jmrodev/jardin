@@ -5,7 +5,7 @@ import LoadingSpinner from '../molecules/LoadingSpinner';
 import StatCard from '../atoms/StatCard';
 import DetailModal from '../molecules/DetailModal';
 import StatisticsGrid from '../organisms/StatisticsGrid';
-import dashboardService from '../../services/api/dashboard';
+import { getStatistics } from '../../services/api/statistics';
 import '@/styles/pages/statistics.css';
 
 export default function StatisticsPage() {
@@ -89,7 +89,7 @@ export default function StatisticsPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await dashboardService.getStats();
+      const response = await getStatistics();
       // Si hay datos del backend, usarlos; si no, usar datos de ejemplo
       const statsData = response?.data || getMockStats();
       setStats(statsData);

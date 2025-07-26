@@ -18,37 +18,13 @@ export default function DemographicAnalysis({ stats, selectedPeriod }) {
       setError(null);
       try {
         const response = await dashboardService.getDemographicStats();
-        if (response && response.data && response.data.data) {
-          setDemographicData(response.data.data);
+        if (response && response.data) {
+          setDemographicData(response.data);
         } else {
           throw new Error('Invalid response format');
         }
       } catch (err) {
         setError(t('statistics.errorDemographic'));
-        // Usar datos de ejemplo en caso de error
-        setDemographicData({
-          byShift: {
-            morning: { students: 15, present: 13, absent: 2 },
-            afternoon: { students: 15, present: 12, absent: 3 }
-          },
-          byGender: {
-            male: { students: 16, present: 14, absent: 2 },
-            female: { students: 14, present: 12, absent: 2 }
-          },
-          byAge: {
-            age3: { students: 8, present: 7, absent: 1 },
-            age4: { students: 10, present: 9, absent: 1 },
-            age5: { students: 12, present: 10, absent: 2 }
-          },
-          byClassroom: {
-            'Sala de 3 - Mañana': { classroom: 'Sala de 3', shift: 'Mañana', students: 5, present: 4, absent: 1 },
-            'Sala de 3 - Tarde': { classroom: 'Sala de 3', shift: 'Tarde', students: 3, present: 3, absent: 0 },
-            'Sala de 4 - Mañana': { classroom: 'Sala de 4', shift: 'Mañana', students: 8, present: 7, absent: 1 },
-            'Sala de 4 - Tarde': { classroom: 'Sala de 4', shift: 'Tarde', students: 4, present: 3, absent: 1 },
-            'Sala de 5 - Mañana': { classroom: 'Sala de 5', shift: 'Mañana', students: 10, present: 9, absent: 1 },
-            'Sala de 5 - Tarde': { classroom: 'Sala de 5', shift: 'Tarde', students: 4, present: 3, absent: 1 }
-          }
-        });
       } finally {
         setLoading(false);
       }
