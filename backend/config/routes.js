@@ -5,6 +5,7 @@ import { parentRoutes } from '../parents/routes.js';
 import { directorRoutes } from '../directors/routes.js';
 import { attendanceRoutes } from '../attendance/routes.js';
 import { contactRoutes } from '../contacts/routes.js';
+import { statisticsRoutes } from '../statistics/routes.js';
 import personsRouter from '../persons/routes.js';
 import auditRoutes from '../audit/routes.js';
 
@@ -19,6 +20,7 @@ export const configureRoutes = (app) => {
   app.use('/api/directors', directorRoutes);
   app.use('/api/attendance', attendanceRoutes);
   app.use('/api/contacts', contactRoutes);
+  app.use('/api/statistics', statisticsRoutes);
   app.use('/api/persons', personsRouter);
   app.use('/api/audit', auditRoutes);
 }; 

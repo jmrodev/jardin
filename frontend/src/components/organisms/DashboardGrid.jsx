@@ -47,6 +47,15 @@ export default function DashboardGrid() {
       icon: 'CalendarCheck',
       color: 'bg-orange-500',
       link: '/attendance'
+    },
+    {
+      id: 5,
+      title: t('dashboard.statistics'),
+      count: '',
+      description: t('dashboard.statisticsDescription'),
+      icon: 'BarChart',
+      color: 'bg-red-500',
+      link: '/statistics'
     }
   ];
 

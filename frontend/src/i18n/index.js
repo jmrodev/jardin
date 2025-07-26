@@ -28,6 +28,8 @@ const resources = {
       'dashboard.parentsDescription': '',
       'dashboard.attendance': 'Asistencia',
       'dashboard.attendanceDescription': '',
+      'dashboard.statistics': 'Estadísticas',
+      'dashboard.statisticsDescription': '',
       'dashboard.viewMore': 'Ver más',
       
       // Students Page
@@ -248,6 +250,8 @@ const resources = {
       'dashboard.parentsDescription': '',
       'dashboard.attendance': 'Attendance',
       'dashboard.attendanceDescription': '',
+      'dashboard.statistics': 'Statistics',
+      'dashboard.statisticsDescription': '',
       'dashboard.viewMore': 'View more',
       
       // Students Page

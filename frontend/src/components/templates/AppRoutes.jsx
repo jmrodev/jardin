@@ -8,10 +8,11 @@ import TeachersPage from '../pages/TeachersPage';
 import AttendancePage from '../pages/AttendancePage';
 import PersonsPage from '../pages/PersonsPage';
 import ParentsPage from '../pages/ParentsPage';
+import StatisticsPage from '../pages/StatisticsPage';
 import LoadingSpinner from '../molecules/LoadingSpinner';
 import MainLayout from './MainLayout';
 
-const AppRoutes = () => {
+const AppRoutes = () =>;
   const { isAuthenticated, loading, initialized } = useAuth();
 
   // Mostrar loading mientras se inicializa el contexto
@@ -48,6 +49,10 @@ const AppRoutes = () => {
       <Route 
         path="/parents" 
         element={isAuthenticated ? <MainLayout><ParentsPage /></MainLayout> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/statistics" 
+        element={isAuthenticated ? <MainLayout><StatisticsPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/" 
