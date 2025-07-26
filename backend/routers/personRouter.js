@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validationResult } } from 'express-validator';
+import { validationResult } from 'express-validator';
 import personController from '../controllers/personController.js';
 import { personValidationRules } from '../validators/personValidator.js';
 import asyncHandler from '../middleware/asyncHandler.js';

@@ -11,7 +11,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 
-// Configure basic middleware
+// Middleware to parse JSON
+app.use(express.json());
+
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+
+// Configure basic middleware (excluding body parsers now)
 configureMiddleware(app);
 
 // Configure CORS
