@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     }
     setLoading(false);
     setInitialized(true);
-  }, [token]);
+  }, []);
 
   const login = async (username, password) => {
     try {

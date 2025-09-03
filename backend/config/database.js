@@ -1,10 +1,11 @@
 import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 const dbConfig = {
   host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -13,6 +14,7 @@ const dbConfig = {
   queueLimit: 0
 };
 
+console.log(dbConfig.host,dbConfig.user,dbConfig.password,dbConfig.database,dbConfig.port)
 let pool;
 
 export const connectDatabase = async () => {

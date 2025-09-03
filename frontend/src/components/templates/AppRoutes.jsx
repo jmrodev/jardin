@@ -12,7 +12,7 @@ import StatisticsPage from '../pages/StatisticsPage';
 import LoadingSpinner from '../molecules/LoadingSpinner';
 import MainLayout from './MainLayout';
 
-const AppRoutes = () =>;
+const AppRoutes = () => {
   const { isAuthenticated, loading, initialized } = useAuth();
 
   // Mostrar loading mientras se inicializa el contexto

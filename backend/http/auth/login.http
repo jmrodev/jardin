@@ -1,15 +1,15 @@
 ### Admin Login
 #@name login
-POST http://localhost:3000/api/auth/login
+POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@kindergarten.com",
-  "password": "password"
+  "username": "admin",
+  "password": "Admin1234"
 }
 
 ### Teacher Login (when created)
-POST http://localhost:3000/api/auth/login
+POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
@@ -18,5 +18,5 @@ Content-Type: application/json
 }
 
 ### Verify Token
-GET http://localhost:3000/api/auth/verify
+GET http://localhost:3001/api/auth/verify
 Authorization: Bearer {{authToken}} 
