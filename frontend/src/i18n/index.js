@@ -30,6 +30,8 @@ const resources = {
       'dashboard.attendanceDescription': '',
       'dashboard.statistics': 'Estadísticas',
       'dashboard.statisticsDescription': '',
+      'dashboard.auditLogs': 'Registros de Auditoría',
+      'dashboard.auditLogsDescription': 'Ver el historial de cambios del sistema',
       'dashboard.viewMore': 'Ver más',
       
       // Students Page
@@ -143,7 +145,16 @@ const resources = {
       'common.yes': 'Sí',
       'common.no': 'No',
       'common.ok': 'OK',
+      'common.cardView': 'Vista de Tarjetas',
+      'common.tableView': 'Vista de Tabla',
+      'common.page': 'Página',
+      'common.of': 'de',
+      'common.createdAt': 'Fecha de Creación',
+      'common.updatedAt': 'Última Actualización',
       'common.noData': 'No hay datos disponibles',
+      'errorFetchingLogs': 'Error al obtener los registros de auditoría',
+      'noAuditLogs': 'No hay registros de auditoría disponibles',
+      'auditLogs': 'Registros de Auditoría',
       
       // Roles
       'roles.admin': 'Administrador',
@@ -223,6 +234,14 @@ const resources = {
       'filters.years': 'años',
       'filters.activeFilters': 'Filtros activos',
       'filters.noResults': 'No se encontraron resultados con los filtros aplicados',
+
+      // Responsibles
+      'responsibles': 'Responsables',
+      'selectPerson': 'Seleccionar persona',
+      'canPickup': 'Puede retirar',
+      'canChangeDiapers': 'Puede cambiar pañales',
+      'remove': 'Quitar',
+      'addResponsible': 'Añadir Responsable',
     }
   },
   en: {
@@ -252,6 +271,8 @@ const resources = {
       'dashboard.attendanceDescription': '',
       'dashboard.statistics': 'Statistics',
       'dashboard.statisticsDescription': '',
+      'dashboard.auditLogs': 'Audit Logs',
+      'dashboard.auditLogsDescription': 'View system change history',
       'dashboard.viewMore': 'View more',
       
       // Students Page
@@ -345,7 +366,16 @@ const resources = {
       'common.yes': 'Yes',
       'common.no': 'No',
       'common.ok': 'OK',
+      'common.cardView': 'Card View',
+      'common.tableView': 'Table View',
+      'common.page': 'Page',
+      'common.of': 'of',
+      'common.createdAt': 'Created At',
+      'common.updatedAt': 'Last Updated',
       'common.noData': 'No data available',
+      'errorFetchingLogs': 'Error fetching audit logs',
+      'noAuditLogs': 'No audit logs available',
+      'auditLogs': 'Audit Logs',
       
       // Roles
       'roles.admin': 'Administrator',
@@ -401,6 +431,14 @@ const resources = {
       'persons.dni': 'DNI',
       'persons.phone': 'Phone',
       'persons.email': 'Email',
+
+      // Responsibles
+      'responsibles': 'Responsibles',
+      'selectPerson': 'Select person',
+      'canPickup': 'Can pickup',
+      'canChangeDiapers': 'Can change diapers',
+      'remove': 'Remove',
+      'addResponsible': 'Add Responsible',
     }
   }
 };

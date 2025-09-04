@@ -6,37 +6,72 @@ export const createStudent = async (req, res) => {
   if (!validation.valid) {
     return res.status(400).json({ error: validation.message });
   }
+
+  const pool = getConnection();
+  let connection; // Declare connection here to be accessible in catch block
+
   try {
     const {
-      firstname, lastname_father, lastname_mother, address, dni, birth_date,
+      firstname, lastname_father, lastname_mother, address, dni, birth_date, gender,
       classroom, shift, special_education, needs_assistant,
       special_diet, celiac, diabetic, takes_dairy,
       care_diseases, medication, diapers, diaper_responsible,
-      authorized_pickups
+      responsibles // This is the new array of responsible persons
     } = req.body;
-    const pool = getConnection();
-    const [result] = await pool.execute(
+    const userId = req.user.id;
+
+    connection = await pool.getConnection();
+    await connection.beginTransaction();
+
+    // 1. Insert the student
+    const [studentResult] = await connection.execute(
       `INSERT INTO students (
-        firstname, lastname_father, lastname_mother, address, dni, birth_date,
+        firstname, lastname_father, lastname_mother, address, dni, birth_date, gender,
         classroom, shift, special_education, needs_assistant,
         special_diet, celiac, diabetic, takes_dairy,
         care_diseases, medication, diapers, diaper_responsible,
-        authorized_pickups
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        created_by, updated_by
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        firstname, lastname_father, lastname_mother, address, dni, birth_date,
+        firstname, lastname_father, lastname_mother, address, dni, birth_date, gender,
         classroom, shift, special_education, needs_assistant,
         special_diet, celiac, diabetic, takes_dairy,
         care_diseases, medication, diapers, diaper_responsible,
-        JSON.stringify(authorized_pickups)
+        userId, userId
       ]
     );
+
+    const studentId = studentResult.insertId;
+
+    // 2. Insert into student_responsibles
+    if (responsibles && Array.isArray(responsibles) && responsibles.length > 0) {
+      const responsiblePromises = responsibles.map(resp => {
+        return connection.execute(
+          `INSERT INTO student_responsibles (student_id, person_id, can_pickup, can_change_diapers, notes, type, created_by, updated_by)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          [studentId, resp.person_id, resp.can_pickup || false, resp.can_change_diapers || false, resp.notes || '', resp.type, userId, userId]
+        );
+      });
+      await Promise.all(responsiblePromises);
+    }
+
+    await connection.commit();
+
     res.status(201).json({
-      id: result.insertId,
+      id: studentId,
       message: 'Estudiante creado exitosamente'
     });
+
   } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
     console.error('Error creando estudiante:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: 'Error interno del servidor al crear estudiante.' });
+
+  } finally {
+    if (connection) {
+      connection.release();
+    }
   }
-}; 
+};

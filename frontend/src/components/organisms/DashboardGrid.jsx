@@ -56,6 +56,15 @@ export default function DashboardGrid() {
       icon: 'BarChart',
       color: 'bg-red-500',
       link: '/statistics'
+    },
+    {
+      id: 6,
+      title: t('dashboard.auditLogs'),
+      count: '',
+      description: t('dashboard.auditLogsDescription'),
+      icon: 'ScrollText',
+      color: 'bg-gray-500',
+      link: '/audit-logs'
     }
   ];
 
@@ -66,7 +75,6 @@ export default function DashboardGrid() {
           key={card.id} 
           className="card"
           onClick={() => handleViewMore(card.link)}
-          style={{ cursor: 'pointer' }}
           tabIndex={0}
           role="button"
           onKeyPress={e => { if (e.key === 'Enter') handleViewMore(card.link); }}

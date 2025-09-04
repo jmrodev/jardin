@@ -38,3 +38,24 @@ The frontend is a React application built with Vite.
 *   **Linting:**
     *   ESLint is configured in `eslint.config.js`.
     *   To run the linter: `pnpm lint` in the `frontend` directory.
+## Gemini Added Context
+
+### Teacher and Parent Creation
+
+*   **Teacher Creation Bug:** The `createTeacher` function (`backend/teachers/createTeacher.js`) was missing the `username` field, which is a `NOT NULL` and `UNIQUE` requirement for the `staff` table. This has been fixed by modifying the function to accept and use the `username` from the request body.
+*   **Parent/Person Relationship:** In the database, a "parent" is represented as a `person` (in the `persons` table) who is then linked to a `student` via the `student_responsibles` table. This is a composition/association, not direct inheritance. The `createParent` function (`backend/parents/createParent.js`) is currently flawed as it attempts to insert into a non-existent `parents` table.
+*   **Staff as Parents:** To allow staff members to be parents of students, they must also have a record in the `persons` table. This leads to data duplication (name, DNI, etc.) between `staff` and `persons` tables. The user has opted for this approach for simplicity, rather than a more complex schema change to link `staff` and `persons` directly.
+
+### Audit Logs
+
+*   **Audit Log Access:** The `/api/audit/logs` endpoint can be used to retrieve system change history.
+*   **Authentication/Authorization Fixes:**
+    *   The `validateToken` middleware was not applied to audit routes, causing "User not authenticated" errors. This has been fixed by adding `router.use(validateToken);` in `backend/audit/routes.js`.
+    *   The `authorizeRoles` middleware was incorrectly called with an array of roles (e.g., `authorizeRoles(['admin', 'director'])`), leading to "Access denied. Insufficient permissions." errors. This has been fixed by calling it with individual roles (e.g., `authorizeRoles('admin', 'director')`).
+*   **Dashboard Integration:** An "Audit Logs" card has been added to the dashboard (`frontend/src/components/organisms/DashboardGrid.jsx`) linking to a new `AuditLogsPage` (`frontend/src/components/pages/AuditLogsPage.jsx`). Translation keys for this feature have been added to `frontend/src/i18n/index.js`.
+
+### General
+
+*   **Port Configuration:** Both frontend and backend are configured to use port `3001`.
+*   **Sample Data Creation:** A script (`create_sample_data.js`) has been used to create a sample student and teacher.
+*   **Default Admin Credentials:** The default admin username is `admin` and the password is `Admin1234`.

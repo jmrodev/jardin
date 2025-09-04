@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS students (
   medication TEXT DEFAULT NULL,
   diapers BOOLEAN DEFAULT FALSE,
   diaper_responsible VARCHAR(100) DEFAULT NULL,
-  authorized_pickups JSON DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   created_by INT,
@@ -182,8 +181,7 @@ BEGIN
     'care_diseases', NEW.care_diseases,
     'medication', NEW.medication,
     'diapers', NEW.diapers,
-    'diaper_responsible', NEW.diaper_responsible,
-    'authorized_pickups', NEW.authorized_pickups
+    'diaper_responsible', NEW.diaper_responsible
   ), NEW.created_by);
 END//
 
@@ -211,8 +209,7 @@ BEGIN
     'care_diseases', OLD.care_diseases,
     'medication', OLD.medication,
     'diapers', OLD.diapers,
-    'diaper_responsible', OLD.diaper_responsible,
-    'authorized_pickups', OLD.authorized_pickups
+    'diaper_responsible', OLD.diaper_responsible
   ), JSON_OBJECT(
     'firstname', NEW.firstname,
     'lastname_father', NEW.lastname_father,
@@ -232,8 +229,7 @@ BEGIN
     'care_diseases', NEW.care_diseases,
     'medication', NEW.medication,
     'diapers', NEW.diapers,
-    'diaper_responsible', NEW.diaper_responsible,
-    'authorized_pickups', NEW.authorized_pickups
+    'diaper_responsible', NEW.diaper_responsible
   ), NEW.updated_by);
 END//
 
@@ -261,8 +257,7 @@ BEGIN
     'care_diseases', OLD.care_diseases,
     'medication', OLD.medication,
     'diapers', OLD.diapers,
-    'diaper_responsible', OLD.diaper_responsible,
-    'authorized_pickups', OLD.authorized_pickups
+    'diaper_responsible', OLD.diaper_responsible
   ), OLD.updated_by);
 END//
 

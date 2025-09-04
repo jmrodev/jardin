@@ -5,6 +5,8 @@ import StudentForm from '../organisms/StudentForm';
 import StudentFilters from '../molecules/StudentFilters/StudentFilters';
 import { useTranslation } from 'react-i18next';
 import DetailModal from '../molecules/DetailModal';
+import Table from '../organisms/Table'; // Import Table component
+import Button from '../atoms/Button'; // Import Button for toggle
 import formatDate from '../../utils/formatDate';
 
 export default function StudentsPage() {
@@ -19,11 +21,15 @@ export default function StudentsPage() {
     age: '',
     gender: ''
   });
+  const [viewMode, setViewMode] = useState('card'); // New state for view mode
+  const [pagination, setPagination] = useState({ total: 0, limit: 10, offset: 0 }); // New state for pagination
+  const [sort, setSort] = useState({ orderBy: 'id', orderDirection: 'asc' }); // New state for sorting
+
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchStudents();
-  }, []);
+  }, [pagination.limit, pagination.offset, sort.orderBy, sort.orderDirection]); // Depend on pagination and sort
 
   useEffect(() => {
     applyFilters();
@@ -31,11 +37,29 @@ export default function StudentsPage() {
 
   const fetchStudents = async () => {
     try {
-      const data = await getStudents();
-      setStudents(data);
+      const params = {
+        limit: pagination.limit,
+        offset: pagination.offset,
+        orderBy: sort.orderBy,
+        orderDirection: sort.orderDirection
+      };
+      const response = await getStudents(params); // Pass params to getStudents
+      setStudents(response.data);
+      setPagination(prev => ({ ...prev, total: response.pagination.total })); // Update total from response
     } catch (error) {
       alert(t('fetchStudentsError'));
     }
+  };
+
+  const handlePageChange = (newOffset) => {
+    setPagination(prev => ({ ...prev, offset: newOffset }));
+  };
+
+  const handleSort = (columnKey) => {
+    setSort(prev => ({
+      orderBy: columnKey,
+      orderDirection: prev.orderBy === columnKey && prev.orderDirection === 'asc' ? 'desc' : 'asc'
+    }));
   };
 
   // Función para calcular la edad basada en la fecha de nacimiento
@@ -102,7 +126,18 @@ export default function StudentsPage() {
       setShowForm(false);
       alert(t('studentAdded'));
     } catch (error) {
-      alert(t('addStudentError'));
+      console.error("Error adding student:", error);
+      if (error.response) {
+        console.error("Error data:", error.response.data);
+        console.error("Error status:", error.response.status);
+        alert(`${t('addStudentError')}: ${error.response.data.error || 'Server error'}`);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        alert(`${t('addStudentError')}: No response from server.`);
+      } else {
+        console.error('Error', error.message);
+        alert(`${t('addStudentError')}: ${error.message}`);
+      }
     }
   };
 
@@ -151,49 +186,79 @@ export default function StudentsPage() {
     </div>
   );
 
+  const tableColumns = [
+    { key: 'id', header: 'ID' },
+    { key: 'firstname', header: t('name') },
+    { key: 'lastname_father', header: t('lastnameFather') },
+    { key: 'lastname_mother', header: t('lastnameMother') },
+    { key: 'dni', header: t('dni') },
+    { key: 'classroom', header: t('classroom') },
+    { key: 'shift', header: t('filters.shift') },
+    { key: 'gender', header: t('filters.gender') },
+    { key: 'birth_date', header: t('birthDate'), render: (date) => formatDate(date) },
+    { key: 'created_at', header: t('common.createdAt'), render: (date) => formatDate(date) },
+    { key: 'updated_at', header: t('common.updatedAt'), render: (date) => formatDate(date) },
+  ];
+
   return (
     <div className="students-page">
-      {/* Componente de filtros */}
       <StudentFilters
         filters={filters}
         onFilterChange={handleFilterChange}
         onClearFilters={handleClearFilters}
       />
 
-      <EntityGrid
-        title={t('studentsManagement')}
-        entities={filteredStudents}
-        onAdd={() => setShowForm(true)}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        entityType="estudiante"
-        renderEntityCard={renderStudentCard}
-        addButtonText={t('addStudent')}
-        emptyMessage={filteredStudents.length === 0 && students.length > 0 ? t('filters.noResults') : t('noStudents')}
-        detailFields={[
-          { key: 'firstname', label: t('name') },
-          { key: 'lastname_father', label: t('lastnameFather') },
-          { key: 'lastname_mother', label: t('lastnameMother') },
-          { key: 'dni', label: t('dni') },
-          { key: 'address', label: 'Dirección' },
-          { key: 'classroom', label: t('classroom') },
-          { key: 'shift', label: t('filters.shift') },
-          { key: 'gender', label: t('filters.gender') },
-          { key: 'birth_date', label: t('birthDate'), type: 'date' },
-          { key: 'age', label: t('filters.age'), type: 'calculated' },
-          { key: 'created_at', label: 'Fecha de registro', type: 'date' },
-          { key: 'updated_at', label: 'Última actualización', type: 'date' }
-        ]}
-      />
+      <div className="view-toggle-buttons mb-4">
+        <Button onClick={() => setViewMode('card')} variant={viewMode === 'card' ? 'primary' : 'secondary'}>
+          {t('common.cardView')}
+        </Button>
+        <Button onClick={() => setViewMode('table')} variant={viewMode === 'table' ? 'primary' : 'secondary'}>
+          {t('common.tableView')}
+        </Button>
+      </div>
 
-      {/* Modal para agregar nuevo estudiante */}
+      {viewMode === 'card' ? (
+        <EntityGrid
+          title={t('studentsManagement')}
+          entities={filteredStudents}
+          onAdd={() => setShowForm(true)}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          entityType="estudiante"
+          renderEntityCard={renderStudentCard}
+          addButtonText={t('addStudent')}
+          emptyMessage={filteredStudents.length === 0 && students.length > 0 ? t('filters.noResults') : t('noStudents')}
+          detailFields={[
+            { key: 'firstname', label: t('name') },
+            { key: 'lastname_father', label: t('lastnameFather') },
+            { key: 'lastname_mother', label: t('lastnameMother') },
+            { key: 'dni', label: t('dni') },
+            { key: 'address', label: 'Dirección' },
+            { key: 'classroom', label: t('classroom') },
+            { key: 'shift', label: t('filters.shift') },
+            { key: 'gender', label: t('filters.gender') },
+            { key: 'birth_date', label: t('birthDate'), type: 'date' },
+            { key: 'age', label: t('filters.age'), type: 'calculated' },
+            { key: 'created_at', label: 'Fecha de registro', type: 'date' },
+            { key: 'updated_at', label: 'Última actualización', type: 'date' }
+          ]}
+        />
+      ) : (
+        <Table
+          data={filteredStudents} // Use filteredStudents for table as well
+          columns={tableColumns}
+          onSort={handleSort}
+          pagination={{ ...pagination, onPageChange: handlePageChange }}
+        />
+      )}
+
+      {/* Modals remain the same */}
       {showForm && (
         <DetailModal isOpen={showForm} onClose={() => setShowForm(false)}>
           <StudentForm onSubmit={handleAddStudent} onCancel={() => setShowForm(false)} />
         </DetailModal>
       )}
 
-      {/* Modal para editar estudiante */}
       <DetailModal isOpen={editModalOpen} onClose={handleEditCancel}>
         <StudentForm initialData={editData} onSubmit={handleEditSave} onCancel={handleEditCancel} />
       </DetailModal>

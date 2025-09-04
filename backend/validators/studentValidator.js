@@ -7,8 +7,7 @@ export function validateStudentData(data) {
   const {
     classroom, shift, special_education,
     needs_assistant, special_diet, celiac, diabetic, takes_dairy,
-    care_diseases, medication, diapers, diaper_responsible,
-    authorized_pickups
+    care_diseases, medication, diapers, diaper_responsible
   } = data;
 
   if (!classroom || !shift) {
@@ -37,9 +36,7 @@ export function validateStudentData(data) {
     }
   }
 
-  if (!authorized_pickups || !Array.isArray(authorized_pickups) || authorized_pickups.length === 0) {
-    return { valid: false, message: 'Debe indicar al menos una persona autorizada a retirar al estudiante.' };
-  }
+  
 
   return { valid: true };
 } 
