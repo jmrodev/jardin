@@ -5,7 +5,6 @@ import StudentForm from '../organisms/StudentForm';
 import StudentFilters from '../molecules/StudentFilters/StudentFilters';
 import { useTranslation } from 'react-i18next';
 import DetailModal from '../molecules/DetailModal';
-import Table from '../organisms/Table'; // Import Table component
 import Button from '../atoms/Button'; // Import Button for toggle
 import formatDate from '../../utils/formatDate';
 
@@ -22,14 +21,12 @@ export default function StudentsPage() {
     gender: ''
   });
   const [viewMode, setViewMode] = useState('card'); // New state for view mode
-  const [pagination, setPagination] = useState({ total: 0, limit: 10, offset: 0 }); // New state for pagination
-  const [sort, setSort] = useState({ orderBy: 'id', orderDirection: 'asc' }); // New state for sorting
 
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchStudents();
-  }, [pagination.limit, pagination.offset, sort.orderBy, sort.orderDirection]); // Depend on pagination and sort
+  }, []);
 
   useEffect(() => {
     applyFilters();
@@ -51,17 +48,6 @@ export default function StudentsPage() {
     } catch (error) {
       alert(t('fetchStudentsError'));
     }
-  };
-
-  const handlePageChange = (newOffset) => {
-    setPagination(prev => ({ ...prev, offset: newOffset }));
-  };
-
-  const handleSort = (columnKey) => {
-    setSort(prev => ({
-      orderBy: columnKey,
-      orderDirection: prev.orderBy === columnKey && prev.orderDirection === 'asc' ? 'desc' : 'asc'
-    }));
   };
 
   // Función para calcular la edad basada en la fecha de nacimiento
@@ -210,49 +196,31 @@ export default function StudentsPage() {
         onClearFilters={handleClearFilters}
       />
 
-      <div className="view-toggle-buttons mb-4">
-        <Button onClick={() => setViewMode('card')} variant={viewMode === 'card' ? 'primary' : 'secondary'}>
-          {t('common.cardView')}
-        </Button>
-        <Button onClick={() => setViewMode('table')} variant={viewMode === 'table' ? 'primary' : 'secondary'}>
-          {t('common.tableView')}
-        </Button>
-      </div>
-
-      {viewMode === 'card' ? (
-        <EntityGrid
-          title={t('studentsManagement')}
-          entities={filteredStudents}
-          onAdd={() => setShowForm(true)}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          entityType="estudiante"
-          renderEntityCard={renderStudentCard}
-          addButtonText={t('addStudent')}
-          emptyMessage={filteredStudents.length === 0 && students.length > 0 ? t('filters.noResults') : t('noStudents')}
-          detailFields={[
-            { key: 'firstname', label: t('name') },
-            { key: 'lastname_father', label: t('lastnameFather') },
-            { key: 'lastname_mother', label: t('lastnameMother') },
-            { key: 'dni', label: t('dni') },
-            { key: 'address', label: 'Dirección' },
-            { key: 'classroom', label: t('classroom') },
-            { key: 'shift', label: t('filters.shift') },
-            { key: 'gender', label: t('filters.gender') },
-            { key: 'birth_date', label: t('birthDate'), type: 'date' },
-            { key: 'age', label: t('filters.age'), type: 'calculated' },
-            { key: 'created_at', label: 'Fecha de registro', type: 'date' },
-            { key: 'updated_at', label: 'Última actualización', type: 'date' }
-          ]}
-        />
-      ) : (
-        <Table
-          data={filteredStudents} // Use filteredStudents for table as well
-          columns={tableColumns}
-          onSort={handleSort}
-          pagination={{ ...pagination, onPageChange: handlePageChange }}
-        />
-      )}
+      <EntityGrid
+        title={t('studentsManagement')}
+        entities={filteredStudents}
+        onAdd={() => setShowForm(true)}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        entityType="estudiante"
+        renderEntityCard={renderStudentCard}
+        addButtonText={t('addStudent')}
+        emptyMessage={filteredStudents.length === 0 && students.length > 0 ? t('filters.noResults') : t('noStudents')}
+        detailFields={[
+          { key: 'firstname', label: t('name') },
+          { key: 'lastname_father', label: t('lastnameFather') },
+          { key: 'lastname_mother', label: t('lastnameMother') },
+          { key: 'dni', label: t('dni') },
+          { key: 'address', label: 'Dirección' },
+          { key: 'classroom', label: t('classroom') },
+          { key: 'shift', label: t('filters.shift') },
+          { key: 'gender', label: t('filters.gender') },
+          { key: 'birth_date', label: t('birthDate'), type: 'date' },
+          { key: 'age', label: t('filters.age'), type: 'calculated' },
+          { key: 'created_at', label: 'Fecha de registro', type: 'date' },
+          { key: 'updated_at', label: 'Última actualización', type: 'date' }
+        ]}
+      />
 
       {/* Modals remain the same */}
       {showForm && (
