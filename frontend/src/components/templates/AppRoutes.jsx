@@ -9,7 +9,6 @@ import AttendancePage from '../pages/AttendancePage';
 import PersonsPage from '../pages/PersonsPage';
 import ParentsPage from '../pages/ParentsPage';
 import StatisticsPage from '../pages/StatisticsPage';
-import AuditLogsPage from '../pages/AuditLogsPage';
 import LoadingSpinner from '../molecules/LoadingSpinner';
 import MainLayout from './MainLayout';
 
@@ -54,10 +53,6 @@ const AppRoutes = () => {
       <Route 
         path="/statistics" 
         element={isAuthenticated ? <MainLayout><StatisticsPage /></MainLayout> : <Navigate to="/login" />} 
-      />
-      <Route 
-        path="/audit-logs" 
-        element={isAuthenticated ? <MainLayout><AuditLogsPage /></MainLayout> : <Navigate to="/login" />} 
       />
       <Route 
         path="/" 

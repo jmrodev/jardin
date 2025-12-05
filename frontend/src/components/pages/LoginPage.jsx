@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { resetAdminPassword } from '../../services/authService';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
@@ -72,6 +73,23 @@ const LoginPage = () => {
     }
   };
 
+  const handleResetAdmin = async () => {
+    if (!window.confirm('WARNING: This will reset the admin password to "Admin1234". Are you sure?')) {
+      return;
+    }
+
+    try {
+      const result = await resetAdminPassword();
+      if (result.success) {
+        alert(result.message);
+        // Autofill for convenience
+        setFormData({ username: 'admin', password: 'Admin1234' });
+      }
+    } catch (error) {
+      alert('Error resetting password: ' + error.message);
+    }
+  };
+
   return (
     <div className="login-page-container">
       <div className="login-page-header-actions">
@@ -134,6 +152,19 @@ const LoginPage = () => {
           >
             {loading ? t('common.loading') : t('login.loginButton')}
           </Button>
+
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleResetAdmin}
+              className="reset-admin-button"
+              style={{ color: 'red', borderColor: 'red' }}
+            >
+              ⚠️ Reset Admin Password
+            </Button>
+          </div>
         </form>
         
         <div className="login-footer">
