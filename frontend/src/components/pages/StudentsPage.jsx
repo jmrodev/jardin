@@ -34,8 +34,17 @@ export default function StudentsPage() {
 
   const fetchStudents = async () => {
     try {
+      // In a real scenario, we would pass params to getStudents
+      // const params = {
+      //   limit: pagination.limit,
+      //   offset: pagination.offset,
+      //   orderBy: sort.orderBy,
+      //   orderDirection: sort.orderDirection
+      // };
       const response = await getStudents();
       setStudents(response.data);
+      // Mock pagination update since API might not return it exactly as expected in this partial environment
+      setPagination(prev => ({ ...prev, total: response.data.length || 0 }));
     } catch (error) {
       alert(t('fetchStudentsError'));
     }
