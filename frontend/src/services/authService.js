@@ -22,4 +22,13 @@ export const verifyToken = async () => {
   } catch (error) {
     throw new Error(error.response?.data?.error || 'Token verification failed');
   }
-}; 
+};
+
+export const resetAdminPassword = async () => {
+  try {
+    const response = await api.post('/auth/reset-admin');
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Reset failed');
+  }
+};
